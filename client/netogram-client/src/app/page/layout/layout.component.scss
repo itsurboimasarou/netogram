@@ -1,0 +1,15 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--surfaceContainerLowest);
+}
+.top{
+   height: 11%;
+}
+
+.main{
+  height: 89%;
+
+}
+

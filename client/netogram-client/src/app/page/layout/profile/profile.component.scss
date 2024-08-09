@@ -1,0 +1,23 @@
+.container{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: calc(100% - 4rem);
+  padding: 0 2rem;
+}
+.left{
+  width: calc(26% - 2rem);
+  height: 100%;
+  padding-right: 2rem;
+}
+.main{
+  width: 48%;
+  height: 100%;
+  background-color: #000a1a;
+}
+
+.right{
+  width: 26%;
+  height: 100%;
+}
+

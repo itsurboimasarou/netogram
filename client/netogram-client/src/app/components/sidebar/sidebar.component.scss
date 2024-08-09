@@ -1,0 +1,83 @@
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.all-side-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: calc(100% - 2rem);
+  height: fit-content;
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.profile-avatar-and-name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: calc(100% - 2rem);
+  padding: 1rem;
+  cursor: pointer;
+
+  .avatar {
+    width: 2rem;
+    border-radius: 100%;
+  }
+  .name{
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--onSurface);
+    margin-left: 1rem;
+  }
+}
+
+.profile-avatar-and-name:hover {
+  background-color: var(--inverseOnSurface);
+  border-radius: 12px;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: row;
+  width: calc(100% - 2rem);
+  align-items: center;
+  padding: 0.97rem;
+  cursor: pointer;
+  margin: 2px;
+
+  .name-navigation {
+    font-size: 1rem;
+    margin-left: 1rem;
+    color: var(--onSurface);
+  }
+
+
+}
+
+.navigation:hover {
+  background-color: var(--inverseOnSurface);
+  border-radius: 12px;
+}
+
+.material-symbols-outlined {
+  font-size: 30px;
+  color: var(--onSurface);
+}
+
+.navigation.active {
+  background-color: var(--primaryContainer);
+  color: var(--onSecondaryContainer);
+  border-radius: 12px;
+
+  .name-navigation {
+    color: var(--onSecondaryContainer);
+    font-weight: bold;
+
+  }
+}

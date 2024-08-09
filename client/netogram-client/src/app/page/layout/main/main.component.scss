@@ -1,0 +1,21 @@
+.container{
+
+  height: calc(100% - 64px);
+  width: calc(100% - 4rem);
+  display: grid;
+  grid-template-columns: 2fr 5fr 2fr;
+  padding: 2rem 2rem 0 2rem;
+}
+.left{
+
+  height: 100%;
+}
+.main{
+  margin-inline: 2rem;
+  height: 100%;
+}
+
+.right{
+  height: 100%;
+}
+

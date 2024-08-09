@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="all-side-bar">
+    <div class=""></div>
+
+    @for (link of navLinks; track $index) {
+      <div class="navigation" (click)="setActive(link)" [ngClass]="{'active': activeLink === link}">
+        <span class="material-symbols-outlined">{{ link.icon }}</span>
+        <span class="name-navigation">{{ link.label }}</span>
+      </div>
+    }
+    <div class="profile-avatar-and-name" (click)="navigateToProfile()">
+      <img src="{{user.profilePic}}" alt="Avatar" class="avatar">
+      <span class="name">{{ user.userName }}</span>
+    </div>
+  </div>
+</div>
