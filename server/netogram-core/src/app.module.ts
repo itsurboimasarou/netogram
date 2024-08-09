@@ -6,6 +6,9 @@ import { AuthModule } from './auth/auth.module';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {FirebaseModule} from "nestjs-firebase";
 import {AuthMiddleware} from "./auth/firebase-auth.middleware";
+import { StorageModule } from './storage/storage.module';
+import {IdgenService} from "./utils/idgen/idgen.service";
+import {IdgenModule} from "./utils/idgen/idgen.module";
 
 @Module({
   imports: [
@@ -24,10 +27,12 @@ import {AuthMiddleware} from "./auth/firebase-auth.middleware";
       ssl: { rejectUnauthorized: false },
 
     }),
-      AuthModule, AuthModule
+      AuthModule,
+      StorageModule,
+      IdgenModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, IdgenService],
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
