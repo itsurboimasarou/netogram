@@ -1,1 +1,15 @@
-<p>friend-request works!</p>
+<div class="container">
+  <div *ngFor="let user of userList | slice:start:end; let i = index" class="userBox">
+    <img [src]="user.avatar"/>
+    <div class="user">
+      <div class="nameUser">
+        <span>{{user.name}}</span><br>
+      </div>
+      <p>{{user.mutualFriends}}</p>
+    </div>
+    <button mat-flat-button class="button">Confirm</button>
+    <button mat-stroked-button class="button">Delete</button>
+  </div>
+</div>
+<mat-paginator [length]="userList.length" [hidePageSize]="true" [pageSizeOptions]="[6]" (page)="handlePageEvent($event)" aria-label="Select page">
+</mat-paginator>

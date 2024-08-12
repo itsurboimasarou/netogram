@@ -1,0 +1,45 @@
+.friends{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: start;
+  justify-content: space-between;
+}
+.friendcontainer {
+  width: 45%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.friendavaname {
+  display: flex;
+}
+.nameUser >span{
+  margin: 0;
+  font-weight: bold;
+  width: 100%;
+  row-gap: 10px;
+}
+#more{
+  color: var(--onBackground);
+}
+
+
+#optionMenu{
+  display: flex;
+}
+.friendcontainer img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.optionBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
