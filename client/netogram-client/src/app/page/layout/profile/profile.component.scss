@@ -27,7 +27,7 @@
   width: 100%;
   height: 45%;
   border-radius: 12px;
-  background-color: var(--surfaceContainerHigh);
+  background-color: var(--surface);
 }
 
 .coverContainer{
@@ -90,6 +90,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .addfrButtonContainer button{
@@ -109,7 +110,7 @@
 .descriptionContainer{
   width: calc(100% - 2rem);
   height: fit-content;
-  background-color: var(--surfaceContainerHigh);
+  background-color: var(--surface);
   border-radius: 12px;
   padding: 1rem;
   margin-top: 20px;
