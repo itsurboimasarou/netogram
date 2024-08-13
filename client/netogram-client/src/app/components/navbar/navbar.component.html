@@ -1,1 +1,38 @@
-<p>navbar works!</p>
+<div class="fullwcontainer">
+  <div class="container">
+    <div class="left">
+      <img src="https://s3-alpha-sig.figma.com/img/c5a3/3479/c49de5e37183d320456e6f5439c3cd09?Expires=1724025600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=eMWpyqjm-b-tElZXg3RjuXMrPqD0e7ZwuX4W-e0NUh~UnW7vmMI7L0k6pLsq1P-ST-nni~gkrOB87XF~crQ7qxBgmftH35yXvIrTotg1rV7oafr6CbpaQf01wR3LfIv~Bb8PLPSc9MdF02sw5NT9FNBT0cetvtS5psQrhGBCBWt50Reu380Nd4xaKzNDiComyQ0-hILsNeq7rbWD~UzNjzjHvZAGva6fUwLOAYJiSoiu7wBi9fLUxGJkCsqLaXofDtEdT6v4pgcjfRLGsAcAez0nncoIJTkkcZg4stOec9Gc--EvkWimbIDbKDU5MC0uV~su1EA0OofO5dZmHoBhbA__">
+    </div>
+    <div class="main">
+      <div class="search">
+        <span class="material-symbols-outlined">
+          search
+        </span>
+        <input placeholder="Search" id="searchInput">
+      </div>
+    </div>
+    <div class="right">
+      <div (click)="setActive(link)" [ngClass]="{'active': this.activeLink == true}" id="notiIcon">
+        <span id="notiIconsym" class="material-symbols-outlined">
+          notifications
+        </span>
+      </div>
+      <img src="{{user.profilePic}}" alt="Avatar" class="avatar">
+      <span class="name">{{ user.userName }}</span>
+      <button mat-button [matMenuTriggerFor]="menu"><span class="material-symbols-outlined">
+        keyboard_arrow_down
+      </span></button>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <div class="logoutBox">
+            <span class="material-symbols-outlined" id="logoutIcon">logout</span>
+            Log out
+          </div>
+        </button>
+      </mat-menu>
+
+
+    </div>
+  </div>
+</div>

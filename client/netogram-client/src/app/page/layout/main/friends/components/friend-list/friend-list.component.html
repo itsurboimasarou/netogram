@@ -1,0 +1,38 @@
+<div class="friends">
+  @for(friend of friendsList | slice:start:end; track $index ){
+
+    <div class="friendcontainer">
+      <div class="friendavaname">
+        <img src="{{friend.avatar}}"/>
+        <div class="nameMutual">
+          <div class="nameUser">
+            <span>{{ friend.name }}</span><br>
+          </div>
+          <p>{{friend.mutualFriends}}</p>
+        </div>
+      </div>
+      <div id="icon">
+        <button id="menuButton" mat-button [matMenuTriggerFor]="menu">
+        <span id="more" class="material-symbols-outlined">
+          more_horiz
+        </span>
+        </button>
+        <mat-menu id="optionMenu" style="display: flex; flex-direction: row" #menu="matMenu">
+          <button mat-menu-item>
+              <div class="optionBox">
+                <span class="material-symbols-outlined">person_cancel</span>
+                Unfriend
+              </div>
+            </button>
+        </mat-menu>
+      </div>
+    </div>
+  }
+</div>
+
+<mat-paginator [length]="friendsList.length" [hidePageSize]="true" [pageSizeOptions]="[12]" (page)="handlePageEvent($event)" aria-label="Select page">
+</mat-paginator>
+
+
+
+

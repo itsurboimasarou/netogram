@@ -1,0 +1,108 @@
+.fullwcontainer{
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  height: 9vh;
+  width: 100%;
+}
+.container{
+  display: flex;
+  justify-content: center;
+  background-color: var(--surface);
+  height: 100%;
+  width: calc(100% - 4rem);
+}
+.left{
+  width: calc(26% - 2rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 1rem;
+}
+.main{
+  width: 48%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  //background-color: #E22;
+}
+.right{
+  width: 26%;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+img{
+  width: 180px;
+  margin: 0;
+}
+
+.search{
+  display: flex;
+  align-items: center ;
+  width: 70%;
+  height: 65%;
+  background-color: var(--surfaceContainerHighest);
+  border-radius: 12px;
+  margin-left: 10%;
+}
+
+.material-symbols-outlined{
+  font-size: 30px;
+  color: #191C20;
+  margin: 10px;
+  cursor: pointer;
+}
+#searchInput{
+  width: calc(100% - 30px);
+  height: 90%;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #191C20;
+  outline: none;
+  background-color: var(--surfaceContainerHighest);
+}
+
+.avatar{
+  width: 2rem;
+  border-radius: 100%;
+  margin: 10px;
+}
+
+#notiIcon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  margin: 20px;
+  background-color: var(--surface); ;
+}
+#notiIcon:hover{
+  background-color: var(--surfaceContainerHighest);
+  color: var(--onSecondaryContainer);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+#notiIconsym{
+  //background-color: var(--inverseOnSurface);
+}
+
+#notiIcon.active {
+  background-color: var(--primaryContainer);
+  color: var(--onSecondaryContainer);
+  border-radius: 12px;
+}
+
+#logoutIcon{
+  margin: 0 15px 0 0;
+}
+
+.logoutBox{
+  display: flex; align-items: center
+}

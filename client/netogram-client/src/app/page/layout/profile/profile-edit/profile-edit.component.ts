@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectionStrategy, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,6 +6,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatDialog} from "@angular/material/dialog";
+import {CdkVirtualScrollViewport, ScrollingModule} from '@angular/cdk/scrolling';
+
 @Component({
   selector: 'app-profile-edit',
   standalone: true,
@@ -16,7 +19,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    CdkVirtualScrollViewport,
   ],
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.scss']
@@ -28,7 +32,8 @@ export class ProfileEditComponent {
   profilePictureUrl: string;
   coverPhotoUrl: string;
 
-  constructor(private fb: FormBuilder) {
+
+  constructor(private fb: FormBuilder, private dialog: MatDialog, private scroll: ScrollingModule) {
     this.profileForm = this.fb.group({
       name: ['', Validators.required], //Required Input
       bio: ['']
@@ -41,11 +46,13 @@ export class ProfileEditComponent {
     if (this.profileForm.valid) {
       console.log(this.profileForm.value);
       // Handle form submission
+      this.dialog.closeAll();
     }
   }
 
   onClose() {
-  }
+    this.dialog.closeAll();
+    }
 
   changeProfilePicture() {
     const input = document.createElement('input');
@@ -68,6 +75,7 @@ export class ProfileEditComponent {
     this.profilePictureUrl = this.defaultProfilePicture;
   }
 
+  //
   changeCoverPhoto() {
     const input = document.createElement('input');
     input.type = 'file';
