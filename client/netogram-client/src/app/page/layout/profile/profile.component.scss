@@ -6,8 +6,27 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
+  height: 100%;
+  width: calc(100% - 4rem);
+  padding: 0 2rem;
+}
+.container{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: calc(100% - 4rem);
+  padding: 0 2rem;
+}
+
+.left{
+  width: calc(26% - 2rem);
+  height: 100%;
+  padding-right: 2rem;
+}
+.main{
+  width: 48%;
+  height: 100%;
 }
 
 .profile-edit-container {
@@ -19,88 +38,105 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.profile-edit-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  h2 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 500;
-  }
-}
 
-mat-form-field {
+
+//
+.mainContainer{
   width: 100%;
-  margin-bottom: 12px;
+  height: 45%;
+  border-radius: 12px;
+  background-color: var(--surface);
 }
 
-.small-input {
-  font-size: 14px;
-  .mat-form-field-wrapper {
-    padding-bottom: 0.5em;
-  }
-  .mat-form-field-infix {
-    padding: 0.5em 0;
-  }
-}
-
-.photo-section {
-  margin-bottom: 16px;
-
-  h3 {
-    margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-}
-
-.profile-picture-container {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.profile-picture {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.cover-photo-container {
+.coverContainer{
   width: 100%;
-  height: 180px;
-  overflow: hidden;
-  border-radius: 4px;
-  margin-bottom: 12px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 60%;
 }
-
-.cover-photo {
+.coverContainer img{
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  border-radius: 12px 12px 0 0;
 }
 
-.submit-button {
+.profileContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  margin-top: 12px;
-  color: white;
-  background-color: rgba(143, 73, 82, 1) !important;
-  //Used !important to override Angular Material styles
+  height: 40%;
+  //background-color: var(--surfaceContainerLowest);
+  border-radius: 0 0 12px 12px;
 }
 
-.profile-picture-container button,
-.cover-photo-container button {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: rgba(255, 255, 255, 0.7);
+.avatarContainer{
+  width: 20%;
+  height: 100%;
+  margin-right: 1rem;
 }
+
+.avatarContainer img{
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+  border-radius: 50%;
+  position: relative;
+  left: 15%;
+  transform: translateY(-20%);
+}
+
+.nameContainer{
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nameContainer span{
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--onBackground);
+}
+
+.nameContainer *{
+  margin-left: 20px;
+}
+
+.addfrButtonContainer{
+  width: calc(30% - 1rem);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addfrButtonContainer button{
+  border-radius: 12px;
+}
+
+.box{
+  display: flex;
+  align-items: center;
+}
+
+.box span{
+  margin-right: 5px;
+}
+
+//
+.descriptionContainer{
+  width: calc(100% - 2rem);
+  height: fit-content;
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 20px;
+}
+.descriptionContainer h3{
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--onBackground);
+  margin: 0;
+}
+

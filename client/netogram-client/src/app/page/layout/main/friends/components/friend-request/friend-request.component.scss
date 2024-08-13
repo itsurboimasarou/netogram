@@ -1,0 +1,125 @@
+.friendsBox{
+  //background-color: white;
+  border-radius: 12px 12px 0 0;
+}
+.box {
+  width: calc(100% - 60px);
+  background-color: white;
+  padding: 20px 30px 20px 30px;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+h2{
+  font-weight: bold;
+  font-size: 24px;
+  margin: 0;
+}
+
+h3{
+  font-weight: bold;
+  font-size: 20px;
+  margin: 0;
+}
+
+.buttonAll{
+  margin: 0px 5px 0px 0;
+}
+.userBox {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+}
+
+.userBox img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.userBox .user {
+  flex-grow: 1;
+}
+
+.userBox .icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: blue;
+  margin: 15px;
+}
+
+.nameUser >span{
+  margin: 0;
+  font-weight: bold;
+  width: 100%;
+  row-gap: 10px;
+}
+p{
+  font-size: 14px;
+  margin: 0;
+}
+
+.button {
+  width: 15%;
+  margin: 3px;
+}
+
+.friends{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: start;
+  justify-content: space-between;
+}
+.container{
+  width: 96%;
+}
+
+.friendcontainer {
+  width: 48%;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tabgr{
+  padding: 0;
+}
+
+.friendcontainer img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.friendavaname {
+  display: flex;
+}
+
+.nameMutual{
+}
+
+#more{
+  color: var(--onBackground);
+}
+
+#menuButton{
+  border-radius: 50%;
+}
+
+#optionMenu{
+  display: flex;
+}
+
+.container button{
+  border-radius: 12px;
+}

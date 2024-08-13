@@ -18,6 +18,10 @@ export const MAIN_ROUTES: Routes = [
       {
         path: 'friends',
         loadChildren: () => import('./friends/friends.routes').then(m => m.FRIENDS_ROUTES)
+      },
+      {
+        path: 'notifications',
+        loadChildren: () => import('./notifications/notifications.routes').then(m => m.Notifications_Routes)
       }
     ]
   }
