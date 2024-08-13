@@ -1,0 +1,41 @@
+<div class="card-container">
+  @for (user of postUser ; track $index) {
+   <div class="post-user-container">
+     <img src="{{ user.avatar }}" alt="Profile Picture" id="profile-pic"/>
+     <div class="post-info">
+       <span class="username">{{ user.name }}</span>
+       <span class="post-time">{{ user.postTime }}</span>
+     </div>
+     <div class="post-options">
+       <button mat-icon-button>
+         <span class="material-symbols-outlined">more_horiz</span>
+       </button>
+     </div>
+   </div>
+    <p id="post-caption">{{ user.caption }}</p>
+    <img src="{{ user.postImage }}" alt="Post Image" id="post-image"/>
+    <hr>
+    <div class="post-actions">
+      <div class="on-post-actions">
+        <button mat-button (click)="toggleFavorite()">
+          <mat-icon [ngClass]="{'favorite': favoriteIcon === 'favorite'}">{{ favoriteIcon }}</mat-icon>
+          {{ user.likes }} likes
+        </button>
+        <button mat-button>
+          <mat-icon>{{ commentIcon }}</mat-icon>
+          {{ user.comments }} comments
+        </button>
+        <button mat-button (click)="toggleShare()">
+          <mat-icon>{{ shareIcon }}</mat-icon>
+          {{ user.shares }} shares
+        </button>
+      </div>
+      <div class="save-post-action">
+        <button mat-icon-button (click)="toggleBookmark()">
+          <mat-icon>{{ bookmarkIcon }}</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  }
+</div>
