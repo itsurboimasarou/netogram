@@ -44,7 +44,7 @@ export class AppComponent implements OnInit{
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         let idToken = await user.getIdToken(true);
-        this.router.navigate(['/loading']).then();
+        // this.router.navigate(['/loading']).then();
         this.uid = user.uid;
 
         let auth: AuthCredentialModel = {
