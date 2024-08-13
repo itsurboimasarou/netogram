@@ -5,6 +5,8 @@ import {AsyncPipe, NgClass} from "@angular/common";
 import {filter} from "rxjs/operators";
 import {Store} from "@ngrx/store";
 import {ProfileState} from "../../ngrx/profile/profile.state";
+import * as AuthActions from "../../ngrx/auth/auth.actions";
+import * as ProfileActions from "../../ngrx/profile/profile.actions";
 
 @Component({
   selector: 'app-navbar',
@@ -52,6 +54,12 @@ export class NavbarComponent implements OnInit{
     } else {
       this.activeLink = false;
     }
+  }
+
+  logout() {
+    this.store.dispatch(AuthActions.signOut());
+    this.store.dispatch(ProfileActions.clearGetState());
+    this.route.navigate(['/login']).then();
   }
 
 }

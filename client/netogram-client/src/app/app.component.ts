@@ -57,7 +57,7 @@ export class AppComponent implements OnInit{
         this.store.dispatch(AuthActions.storeIdToken({ idToken: idToken }));
         this.store.dispatch(AuthActions.storeAuthCredential({ auth: auth }));
       } else {
-        this.router.navigate(['/login']).then();
+        // this.router.navigate(['/login']).then();
       }
     });
   }

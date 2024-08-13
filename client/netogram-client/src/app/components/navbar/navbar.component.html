@@ -31,8 +31,8 @@
 
       <mat-menu #menu="matMenu">
         <button mat-menu-item>
-          <div class="logoutBox">
-            <span class="material-symbols-outlined" id="logoutIcon">logout</span>
+          <div class="logoutBox" (click)="logout()">
+            <span class="material-symbols-outlined" id="logoutIcon" >logout</span>
             Log out
           </div>
         </button>
