@@ -11,7 +11,7 @@
 }
 
 .profile-edit-container {
-  background-color: white;
+  background-color: var(--surfaceContainer);
   border-radius: 12px;
   padding: 20px;
   width: 600px;
@@ -92,9 +92,8 @@ mat-form-field {
 .submit-button {
   width: 100%;
   margin-top: 12px;
-  color: white;
-  background-color: rgba(143, 73, 82, 1) !important;
-  //Used !important to override Angular Material styles
+  color: var(--surfaceContainer);
+  background-color: var(--onPrimaryContainer) !important;
 }
 
 .profile-picture-container button,
