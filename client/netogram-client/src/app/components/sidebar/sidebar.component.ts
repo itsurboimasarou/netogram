@@ -60,6 +60,8 @@ export class SidebarComponent implements OnInit {
       this.activeLink = this.navLinks[1];
     } else if (this.route.url.match(/\/profile\/\d+/)) {
       this.activeLink = this.navLinks[2];
+    } else {
+      this.activeLink = { label: 'Notifications', route: 'notifications', icon: 'home_app_logo' };
     }
   }
 }
