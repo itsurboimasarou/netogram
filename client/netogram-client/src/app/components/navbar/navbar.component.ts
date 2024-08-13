@@ -1,18 +1,23 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 import {MaterialModule} from "../../shared/material.module";
-import {NgClass} from "@angular/common";
+import {AsyncPipe, NgClass} from "@angular/common";
 import {filter} from "rxjs/operators";
+import {Store} from "@ngrx/store";
+import {ProfileState} from "../../ngrx/profile/profile.state";
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MaterialModule, NgClass],
+  imports: [MaterialModule, NgClass, AsyncPipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
-export class NavbarComponent {
-  constructor(private route: Router) {
+export class NavbarComponent implements OnInit{
+  constructor(
+    private route: Router,
+    private store: Store<{profile: ProfileState}>,
+  ) {
   }
 
   ngOnInit(): void {
@@ -25,6 +30,7 @@ export class NavbarComponent {
     this.setActiveLinkBasedOnUrl();
   }
 
+  profileMine$ = this.store.select('profile', 'mine');
   user = {
     uid: '12',
     userName: 'John Doe',

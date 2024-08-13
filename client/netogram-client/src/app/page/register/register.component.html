@@ -4,20 +4,24 @@
     <div id="text">
       <h2>Personal Information</h2>
     </div>
-    <mat-form-field appearance="fill">
-      <mat-label>First name</mat-label>
-      <input matInput>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Last name</mat-label>
-      <input matInput color="primary">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <!--    <mat-label>Email Address</mat-label>-->
-      <input disabled value="tn212079@gmail.com" matInput color="primary">
-    </mat-form-field>
+    <form [formGroup]="regisForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="userName">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <!--    <mat-label>Email Address</mat-label>-->
+        <input  value="tn212079@gmail.com"
+               matInput color="primary"
+               formControlName="email"
+                readonly
+        >
+      </mat-form-field>
+    </form>
+
     <div id="nextBox">
-      <button style="width: 35%;height: 40px" mat-flat-button color="primary">Next</button>
+      <button style="width: 35%;height: 40px" mat-flat-button color="primary" (click)="register()">Next</button>
     </div>
   </div>
 

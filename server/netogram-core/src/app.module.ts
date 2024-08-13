@@ -9,6 +9,7 @@ import {AuthMiddleware} from "./auth/firebase-auth.middleware";
 import { StorageModule } from './storage/storage.module';
 import {IdgenService} from "./utils/idgen/idgen.service";
 import {IdgenModule} from "./utils/idgen/idgen.module";
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import {IdgenModule} from "./utils/idgen/idgen.module";
       AuthModule,
       StorageModule,
       IdgenModule,
+      ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService, IdgenService],

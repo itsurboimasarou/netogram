@@ -17,8 +17,14 @@
           notifications
         </span>
       </div>
-      <img src="{{user.profilePic}}" alt="Avatar" class="avatar">
-      <span class="name">{{ user.userName }}</span>
+      @if(!(profileMine$ | async)?.avatarUrl){
+        <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
+        <span class="name">John Doe</span>
+      } @else {
+        <img src="{{(profileMine$|async)?.avatarUrl}}" alt="Avatar" class="avatar">
+        <span class="name">{{ (profileMine$|async)?.userName }}</span>
+      }
+
       <button mat-button [matMenuTriggerFor]="menu"><span class="material-symbols-outlined">
         keyboard_arrow_down
       </span></button>
