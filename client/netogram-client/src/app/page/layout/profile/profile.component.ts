@@ -3,6 +3,7 @@ import {ActivatedRoute, RouterOutlet} from "@angular/router";
 import {SidebarComponent} from "../../../components/sidebar/sidebar.component";
 import {MaterialModule} from "../../../shared/material.module";
 import {Location} from "@angular/common";
+import {PostComponent} from "../../../components/post/post.component";
 
 @Component({
   selector: 'app-profile',
@@ -11,6 +12,7 @@ import {Location} from "@angular/common";
     RouterOutlet,
     SidebarComponent,
     MaterialModule,
+    PostComponent,
 
   ],
   templateUrl: './profile.component.html',
