@@ -1,24 +1,33 @@
 import {Component, OnInit} from '@angular/core';
 import {MaterialModule} from "../../shared/material.module";
-import {NgClass} from "@angular/common";
+import {AsyncPipe, NgClass} from "@angular/common";
 import {Router, NavigationEnd} from "@angular/router";
 import {filter} from "rxjs/operators";
+import {Store} from "@ngrx/store";
+import {ProfileState} from "../../ngrx/profile/profile.state";
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [MaterialModule, NgClass],
+  imports: [MaterialModule, NgClass, AsyncPipe],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent implements OnInit {
-  constructor(private route: Router) {
+  constructor(
+    private route: Router,
+    private store: Store<{profile: ProfileState}>,
+  ) {
     if (this.route.url.includes('/home') ) {
       this.activeLink = this.navLinks[0];
     }else if (this.route.url.includes('/friends')) {
       this.activeLink = this.navLinks[1];
     }
+
   }
+
+  profileMine$ = this.store.select('profile', 'mine');
+
 
   ngOnInit(): void {
 

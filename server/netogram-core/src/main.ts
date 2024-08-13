@@ -13,6 +13,7 @@ async function bootstrap() {
       storageBucket: "gs://social-network-29cc2.appspot.com"
     });
   }
+  app.enableCors()
   await app.listen(3000);
 }
 bootstrap();
