@@ -1,11 +1,5 @@
-//.container{
-//  width: 100%;
-//  height: 100%;
-//  background-color: var(--primary);
-//}
-
 .create-post {
-  width: 95%;
+  width: calc(100% - 2rem);
   padding: 20px;
   background-color: var(--surface);
   border-radius: 12px;
@@ -46,7 +40,7 @@ hr {
   border-radius: 12px;
   margin-left: 15px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 20px;
   padding: 10px 20px;
   height: 55px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
