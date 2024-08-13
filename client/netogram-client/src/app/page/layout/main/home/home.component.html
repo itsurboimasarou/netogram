@@ -1,6 +1,15 @@
-<mat-form-field appearance="outline">
-  <mat-label>Outline form field</mat-label>
-  <input matInput placeholder="Placeholder">
-  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-  <mat-hint>Hint</mat-hint>
-</mat-form-field>
+<div class="create-post">
+  <div class="on-create-post">
+    <img src="{{profilePic}}" alt="Avatar" class="avatar">
+    <mat-card id="post-content" appearance="outlined">
+      <mat-card-content>What's on your mind?</mat-card-content>
+    </mat-card>
+    <a mat-fab extended id="share-post-button">Share post</a>
+  </div>
+  <hr>
+  <button id="add-image" mat-button><mat-icon appearance="outlined">add_photo_alternate</mat-icon>Image</button>
+</div>
+<br>
+<div class="post">
+  <app-post></app-post>
+</div>
