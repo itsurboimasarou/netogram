@@ -27,6 +27,10 @@ export const routes: Routes = [
     loadChildren: () => import('./page/loading/loading.routes').then(m => m.LOADING_ROUTES)
   },
   {
+    path: 'detail',
+    loadChildren: () => import('./page/detail/detail.routes').then(m => m.DETAIL_ROUTES)
+  },
+  {
     path: '**',
     redirectTo: 'login',
   },
@@ -34,6 +38,7 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
-  }
+  },
+
 
 ];

@@ -1,11 +1,5 @@
-//.container{
-//  width: 100%;
-//  height: 100%;
-//  background-color: var(--primary);
-//}
-
 .create-post {
-  width: 95%;
+  width: calc(100% - 13rem);
   padding: 20px;
   background-color: var(--surface);
   border-radius: 12px;

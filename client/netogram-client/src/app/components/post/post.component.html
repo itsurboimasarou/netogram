@@ -1,19 +1,30 @@
 <div class="card-container">
   @for (user of postUser ; track $index) {
-   <div class="post-user-container">
-     <img src="{{ user.avatar }}" alt="Profile Picture" id="profile-pic"/>
-     <div class="post-info">
-       <span class="username">{{ user.name }}</span>
-       <span class="post-time">{{ user.postTime }}</span>
-     </div>
-     <div class="post-options">
-       <button mat-icon-button>
-         <span class="material-symbols-outlined">more_horiz</span>
-       </button>
-     </div>
-   </div>
+    <div class="post-user-container">
+      <img src="{{ user.avatar }}" alt="Profile Picture" id="profile-pic"/>
+      <div class="post-info">
+        <span class="username">{{ user.name }}</span>
+        <span class="post-time">{{ user.postTime }}</span>
+      </div>
+      <div class="post-options">
+        <button mat-icon-button>
+          <span class="material-symbols-outlined">more_horiz</span>
+        </button>
+      </div>
+    </div>
     <p id="post-caption">{{ user.caption }}</p>
-    <img src="{{ user.postImage }}" alt="Post Image" id="post-image"/>
+    <div class="carousel-container">
+      <button mat-icon-button class="carousel-button prev" (click)="prevImage(carousel)"><mat-icon>arrow_back_ios</mat-icon></button>
+      <div class="carousel-images"
+           (mousedown)="onMouseDown($event, carousel)"
+           (mouseleave)="onMouseLeave()"
+           (mouseup)="onMouseUp()"
+           (mousemove)="onMouseMove($event, carousel)"
+           #carousel>
+        <img *ngFor="let image of postUser[0].postImages; let i = index" [src]="image" class="post-image" draggable="false" (mousedown)="$event.preventDefault()">
+      </div>
+      <button mat-icon-button class="carousel-button next" (click)="nextImage(carousel)"><mat-icon>arrow_forward_ios</mat-icon></button>
+    </div>
     <hr>
     <div class="post-actions">
       <div class="on-post-actions">
@@ -35,7 +46,6 @@
           <mat-icon>{{ bookmarkIcon }}</mat-icon>
         </button>
       </div>
-
     </div>
   }
 </div>
