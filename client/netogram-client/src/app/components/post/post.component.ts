@@ -61,35 +61,36 @@ export class PostComponent {
     this.bookmarkIcon = this.bookmarkIcon === 'bookmark_outlined' ? 'bookmark' : 'bookmark_outlined';
   }
 
-  prevImage(postIndex: number) {
-    this.activeImageIndex[postIndex] = (this.activeImageIndex[postIndex] > 0) ? this.activeImageIndex[postIndex] - 1 : this.postUser[postIndex].postImages.length - 1;
+  prevImage(carousel: HTMLDivElement) {
+    const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
+    carousel.scrollLeft -= imageWidth + 10; // 10 is the gap between images
   }
 
-  nextImage(postIndex: number) {
-    this.activeImageIndex[postIndex] = (this.activeImageIndex[postIndex] < this.postUser[postIndex].postImages.length - 1) ? this.activeImageIndex[postIndex] + 1 : 0;
+  nextImage(carousel: HTMLDivElement) {
+    const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
+    carousel.scrollLeft += imageWidth + 10; // 10 is the gap between images
   }
 
-  startDrag(event: MouseEvent, postIndex: number) {
-    const target = event.currentTarget as HTMLElement | null;
-    if (target && event.target instanceof HTMLImageElement) {
-      this.isDragging = true;
-      this.startX = event.pageX - target.offsetLeft;
-      this.scrollLeft = target.scrollLeft;
-    }
+  onMouseDown(event: MouseEvent, carousel: HTMLDivElement) {
+    event.preventDefault(); // Prevent default behavior to ensure smooth dragging
+    this.isDragging = true;
+    this.startX = event.pageX - carousel.offsetLeft;
+    this.scrollLeft = carousel.scrollLeft;
   }
 
-  onDrag(event: MouseEvent, postIndex: number) {
-    if (!this.isDragging) return;
-    event.preventDefault();
-    const target = event.currentTarget as HTMLElement | null;
-    if (target) {
-      const x = event.pageX - target.offsetLeft;
-      const walk = (x - this.startX) * 2; // Adjusted scroll sensitivity
-      target.scrollLeft = this.scrollLeft - walk;
-    }
-  }
-
-  endDrag(event: MouseEvent, postIndex: number) {
+  onMouseLeave() {
     this.isDragging = false;
+  }
+
+  onMouseUp() {
+    this.isDragging = false;
+  }
+
+  onMouseMove(event: MouseEvent, carousel: HTMLDivElement) {
+    if (!this.isDragging) return;
+    event.preventDefault(); // Prevent default behavior
+    const x = event.pageX - carousel.offsetLeft;
+    const walk = (x - this.startX) * 2; // Adjust the multiplier to control the scroll speed
+    carousel.scrollLeft = this.scrollLeft - walk;
   }
 }

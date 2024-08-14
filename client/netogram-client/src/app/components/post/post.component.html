@@ -14,11 +14,16 @@
     </div>
     <p id="post-caption">{{ user.caption }}</p>
     <div class="carousel-container">
-      <button mat-icon-button class="carousel-button prev" (click)="prevImage($index)"><mat-icon>arrow_back_ios</mat-icon></button>
-      <div class="carousel-images" (mousedown)="startDrag($event, 0)" (mousemove)="onDrag($event, 0)" (mouseup)="endDrag($event, 0)">
-        <img *ngFor="let image of postUser[0].postImages; let i = index" [src]="image" class="post-image" [ngClass]="{'active': activeImageIndex[0] === i}">
+      <button mat-icon-button class="carousel-button prev" (click)="prevImage(carousel)"><mat-icon>arrow_back_ios</mat-icon></button>
+      <div class="carousel-images"
+           (mousedown)="onMouseDown($event, carousel)"
+           (mouseleave)="onMouseLeave()"
+           (mouseup)="onMouseUp()"
+           (mousemove)="onMouseMove($event, carousel)"
+           #carousel>
+        <img *ngFor="let image of postUser[0].postImages; let i = index" [src]="image" class="post-image" draggable="false" (mousedown)="$event.preventDefault()">
       </div>
-      <button mat-icon-button class="carousel-button next" (click)="nextImage($index)"><mat-icon>arrow_forward_ios</mat-icon></button>
+      <button mat-icon-button class="carousel-button next" (click)="nextImage(carousel)"><mat-icon>arrow_forward_ios</mat-icon></button>
     </div>
     <hr>
     <div class="post-actions">
