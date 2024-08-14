@@ -1,33 +1,47 @@
-import { Component } from '@angular/core';
-import {
-    MatAnchor,
-    MatButton,
-    MatFabAnchor,
-    MatFabButton,
-    MatIconButton,
-    MatMiniFabButton
-} from "@angular/material/button";
-import {MatDivider} from "@angular/material/divider";
-import {MatIcon} from "@angular/material/icon";
-import {RouterLink} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
 
+import {Router, RouterLink} from "@angular/router";
+import {MaterialModule} from "../../shared/material.module";
+import {AsyncPipe} from "@angular/common";
+import {Store} from "@ngrx/store";
+import {AuthState} from "../../ngrx/auth/auth.state";
+import {ProfileState} from "../../ngrx/profile/profile.state";
+import {Subscription} from "rxjs";
+import * as AuthActions from "../../ngrx/auth/auth.actions";
 @Component({
   selector: 'app-login',
   standalone: true,
     imports: [
-        MatAnchor,
-        MatButton,
-        MatDivider,
-        MatFabAnchor,
-        MatFabButton,
-        MatIcon,
-        MatIconButton,
-        MatMiniFabButton,
-        RouterLink
+        MaterialModule,
+        RouterLink,
+      AsyncPipe
     ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
 
+export class LoginComponent implements OnInit{
+  constructor(
+    private router: Router,
+    private store: Store<{
+      auth: AuthState;
+      profile: ProfileState;
+    }>,
+  ) {}
+
+  subscriptions: Subscription[] = [];
+  isLoadingSignIn = false;
+
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.store.select('auth').subscribe((auth: AuthState) => {
+        if (auth.loginWithGoogleSuccess) {
+          this.router.navigate(['/register']).then();
+        }
+      }),
+    );
+  }
+  loginWithGoogle() {
+    this.store.dispatch(AuthActions.signInWithGoogle());
+  }
 }

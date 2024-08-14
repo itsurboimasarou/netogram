@@ -2,7 +2,7 @@
   <div class="on-create-post">
     <img src="{{profilePic}}" alt="Avatar" class="avatar">
     <mat-card id="post-content" appearance="outlined">
-      <mat-card-content>What's on your mind?</mat-card-content>
+      <mat-card-content (click)="this.openDialog()">What's on your mind?</mat-card-content>
     </mat-card>
     <a mat-fab extended id="share-post-button">Share post</a>
   </div>

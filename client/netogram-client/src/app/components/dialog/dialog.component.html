@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="post">
+    <div class="post-header">
+      <div class="right-top">
+        <div class="profile-pic">
+          <img src="https://s3-alpha-sig.figma.com/img/57bf/d562/43f1eda09c78fa01cb765443993748ee?Expires=1724630400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=od4oykUfzTnlRHnw5UXGy1sSwgmHF3krWd0hgWnOedZqVo~-D~iPpz-7Kmd8ZuXOhmVzfyn7aw6NTkOXV2O4m-Hxd6aWZWjkeS3~qorw-XkrlwCRSTdgQgA-QckGzOMo3Wta2Ogvp-27X~XD4hdExWipXyWM7XNduLBVLT1MxNHP6cB1dG8vFzDHt5xaALBz9F1xzmsv1cUlIMUyOSSXOV0MObBmvHJAHqAhFuPlFW4fbXkxYnOkigvv6aInZMfgOij6xZshJq3eFhPNkELK2C01HH4~lIoZaoy-tsH9zJ-eClwj-17A2uknvVYd4H8Z-6YYaEyFQLJO3CyEXxtdBA__" alt="Fried Dog" />
+        </div>
+        <div class="username">Fried Dog</div>
+      </div>
+      <div>
+        <button id="closeBut" (click)="onNoClick()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+    </div>
+    <div class="post-content">
+      <textarea #postTextarea placeholder="What's on your mind?"></textarea>
+      <div #imageContainer class="image-container"></div>
+    </div>
+    <div class="post-actions">
+      <button (click)="addProfilePicture()">
+        <span class="material-symbols-outlined">image</span>Image
+      </button>
+    </div>
+    <button mat-button class="share-btn">Share</button>
+    <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
+  </div>
+</div>
