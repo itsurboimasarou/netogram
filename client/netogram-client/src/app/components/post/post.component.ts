@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatButton, MatIconButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import { NgClass, NgForOf } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-post',
@@ -14,60 +15,57 @@ import { NgClass, NgForOf } from "@angular/common";
     NgForOf
   ],
   templateUrl: './post.component.html',
-  styleUrl: './post.component.scss'
+  styleUrls: ['./post.component.scss']
 })
 
 export class PostComponent {
+  constructor(private router: Router) { }
+
   postUser = [
     {
       avatar: 'https://www.w3schools.com/howto/img_avatar.png',
       name: 'John Doe',
-      caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
+      caption: 'Lorem ipsum dolor sit amet...',
       postTime: '3 days ago',
       postImages: [
-        'https://material.angular.io/assets/img/examples/shiba2.jpg',
-        'https://material.angular.io/assets/img/examples/shiba1.jpg',
-        'https://material.angular.io/assets/img/examples/shiba2.jpg',
-        'https://material.angular.io/assets/img/examples/shiba1.jpg',
-        'https://material.angular.io/assets/img/examples/shiba2.jpg',
-        'https://material.angular.io/assets/img/examples/shiba1.jpg',
+        'https://images.unsplash.com/photo-1460353581641-37baddab0fa2',
+        'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
+        'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
       ],
       likes: 856,
       comments: 23,
       shares: 12,
+      isLiked: false,
     },
     {
       avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-      name: 'John Doe',
-      caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      postTime: '3 days ago',
+      name: 'Jane Doe',
+      caption: 'Another post caption...',
+      postTime: '1 day ago',
       postImages: [
-        'https://material.angular.io/assets/img/examples/shiba2.jpg',
-        'https://material.angular.io/assets/img/examples/shiba1.jpg',
-        'https://material.angular.io/assets/img/examples/shiba2.jpg',
-        'https://material.angular.io/assets/img/examples/shiba1.jpg',
-        'https://material.angular.io/assets/img/examples/shiba2.jpg',
-        'https://material.angular.io/assets/img/examples/shiba1.jpg',
+        'https://images.unsplash.com/photo-1460353581641-37baddab0fa2',
+        'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
+        'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
       ],
-      likes: 856,
-      comments: 23,
-      shares: 12,
-    },
+      likes: 123,
+      comments: 5,
+      shares: 2,
+      isLiked: false,
+    }
   ];
 
   favoriteIcon = 'favorite_outlined';
   commentIcon = 'comment_outlined';
   shareIcon = 'ios_share_outlined';
   bookmarkIcon = 'bookmark_outlined';
-  likes = 856;
-  activeImageIndex = [0];
   isDragging = false;
   startX = 0;
   scrollLeft = 0;
 
-  toggleFavorite() {
-    this.favoriteIcon = this.favoriteIcon === 'favorite_outlined' ? 'favorite' : 'favorite_outlined';
-    this.likes += this.favoriteIcon === 'favorite' ? 1 : -1;
+  toggleFavorite(post: any) {
+    post.isLiked = !post.isLiked;
+    post.likes += post.isLiked ? 1 : -1;
+    this.favoriteIcon = post.isLiked ? 'favorite' : 'favorite_outlined';
   }
 
   toggleShare() {
@@ -80,16 +78,22 @@ export class PostComponent {
 
   prevImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
-    carousel.scrollLeft -= imageWidth + 10; // 10 is the gap between images
+    carousel.scrollBy({
+      left: -(imageWidth + 10), // Adjust gap between images
+      behavior: 'smooth'
+    });
   }
 
   nextImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
-    carousel.scrollLeft += imageWidth + 10; // 10 is the gap between images
+    carousel.scrollBy({
+      left: imageWidth + 10, // Adjust gap between images
+      behavior: 'smooth'
+    });
   }
 
   onMouseDown(event: MouseEvent, carousel: HTMLDivElement) {
-    event.preventDefault(); // Prevent default behavior to ensure smooth dragging
+    event.preventDefault();
     this.isDragging = true;
     this.startX = event.pageX - carousel.offsetLeft;
     this.scrollLeft = carousel.scrollLeft;
@@ -105,10 +109,13 @@ export class PostComponent {
 
   onMouseMove(event: MouseEvent, carousel: HTMLDivElement) {
     if (!this.isDragging) return;
-    event.preventDefault(); // Prevent default behavior
+    event.preventDefault();
     const x = event.pageX - carousel.offsetLeft;
-    const walk = (x - this.startX) * 2; // Adjust the multiplier to control the scroll speed
+    const walk = (x - this.startX) * 2;
     carousel.scrollLeft = this.scrollLeft - walk;
   }
 
+  navigateToDetail(postIndex: number) {
+    this.router.navigate(['/detail', postIndex]);
+  }
 }
