@@ -27,7 +27,7 @@ export const routes: Routes = [
     loadChildren: () => import('./page/loading/loading.routes').then(m => m.LOADING_ROUTES)
   },
   {
-    path: 'detail',
+    path: 'detail/:id',
     loadChildren: () => import('./page/detail/detail.routes').then(m => m.DETAIL_ROUTES)
   },
   {
