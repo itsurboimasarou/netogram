@@ -1,10 +1,13 @@
 <div class="create-post">
   <div class="on-create-post">
     <img src="{{profilePic}}" alt="Avatar" class="avatar">
-    <mat-card id="post-content" appearance="outlined">
-      <mat-card-content (click)="this.openDialog()">What's on your mind?</mat-card-content>
-    </mat-card>
-    <a mat-fab extended id="share-post-button">Share post</a>
+<!--    <mat-card id="post-content" appearance="outlined">-->
+<!--      <mat-card-content (click)="this.openDialog()">What's on your mind?</mat-card-content>-->
+<!--    </mat-card>-->
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" (click)="this.openDialog()">
+      <input matInput placeholder="Tell me your story" readonly />
+    </mat-form-field>
+<!--    <a mat-fab extended id="share-post-button">Share post</a>-->
   </div>
   <hr>
   <button id="add-image" mat-button><mat-icon appearancxe="outlined">add_photo_alternate</mat-icon>Image</button>

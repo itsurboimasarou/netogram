@@ -1,18 +1,21 @@
 .create-post {
-  width: calc(100% - 13rem);
-  padding: 20px;
+  width: calc(100% - 2rem);
+  padding: 16px;
   background-color: var(--surface);
   border-radius: 12px;
+
 }
+
 
 .on-create-post {
   display: flex;
   align-items: center;
+  height: 15%;
 }
 
 .avatar {
-  width: 50px;
-  height: 50px;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   margin-right: 15px;
 }
@@ -22,6 +25,7 @@ hr {
   margin-top: 0.9rem;
   width: 97%;
   align-items: center;
+  margin-bottom: 0px;
 }
 
 #post-content {
@@ -49,7 +53,34 @@ hr {
 #add-image {
   display: flex;
   align-items: center;
-  margin-top: 12px;
+  margin-top: 5px;
   font-size: 16px;
 }
 
+#add-image:hover{
+  border-radius: 8px;
+}
+
+
+mat-form-field {
+  width: 100%;
+  background-color: var(--surfaceContainer);
+  border-radius: 12px;
+  transition: background-color 0.3s;
+}
+
+//mat-form-field:hover {
+//  background-color: var(--base-03);
+//}
+
+mat-form-field ::ng-deep .mdc-notched-outline__leading {
+  border: none;
+}
+
+mat-form-field ::ng-deep .mdc-notched-outline__notch {
+  border: none;
+}
+
+mat-form-field ::ng-deep .mdc-notched-outline__trailing {
+  border: none;
+}
