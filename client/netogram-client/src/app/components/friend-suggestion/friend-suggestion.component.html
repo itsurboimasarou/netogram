@@ -1,0 +1,12 @@
+<div class="friend-suggestions">
+  <h3>Friend Suggestions</h3>
+  <div *ngFor="let suggestion of suggestions" class="suggestion">
+    <img [src]="suggestion.profilePic" alt="Avatar" class="avatar">
+    <div class="label">
+      <span class="name">{{ suggestion.name }}</span>
+      <span class="mutual-friends">{{ suggestion.mutual }} mutual friends</span>
+    </div>
+
+    <a mat-fab extended id="add-friend-button"><mat-icon>person_add_outlined</mat-icon>Add friend</a>
+  </div>
+</div>
