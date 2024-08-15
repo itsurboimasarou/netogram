@@ -51,7 +51,7 @@ export class AppComponent implements OnInit{
           uid: user.uid,
           userName: user.displayName || '',
           email: user.email || '',
-          photoUrl: user.photoURL || '../public/images/avatar.png',
+          photoUrl: user.photoURL || '',
         };
 
         this.store.dispatch(AuthActions.storeIdToken({ idToken: idToken }));
