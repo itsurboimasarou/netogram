@@ -1,4 +1,9 @@
-<nav mat-tab-nav-bar  [tabPanel]="tabPanel">
+<nav mat-tab-nav-bar
+     [tabPanel]="tabPanel"
+
+     fitInkBarToContent
+
+>
   <a mat-tab-link
      *ngFor="let link of navLinks"
      [routerLink]="link.link"
@@ -9,3 +14,6 @@
 </nav>
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 <router-outlet></router-outlet>
+
+<!--mat-stretch-tabs="false"-->
+<!--mat-align-tabs="start"-->

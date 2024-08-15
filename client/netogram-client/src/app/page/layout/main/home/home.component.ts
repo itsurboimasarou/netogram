@@ -27,7 +27,8 @@ export class HomeComponent {
 
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '70vw',
-      height:'80vh',
+      height:'75vh',
+      panelClass: 'custom-dialog-container',
       // data: {name: this.name(), port: this.port()},
     });
 
@@ -37,5 +38,6 @@ export class HomeComponent {
     //     this.port.set(result);
     //   }
     // });
+
   }
 }
