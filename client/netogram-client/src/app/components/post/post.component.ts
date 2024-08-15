@@ -110,4 +110,5 @@ export class PostComponent {
     const walk = (x - this.startX) * 2; // Adjust the multiplier to control the scroll speed
     carousel.scrollLeft = this.scrollLeft - walk;
   }
+
 }
