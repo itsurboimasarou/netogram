@@ -1,0 +1,80 @@
+
+
+<div class="profile-edit-overlay">
+  <div class="profile-edit-container">
+    <div class="profile-edit-header">
+      <h2>Edit Profile</h2>
+      <button mat-icon-button (click)="onClose()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <!--Input Name and Bio-->
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="small-input">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" placeholder="Input">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="small-input">
+        <mat-label>Bio</mat-label>
+        <input matInput formControlName="bio" placeholder="Input">
+      </mat-form-field>
+
+      <!--Profile Picture-->
+      <div class="photo-section">
+        <h3>Profile picture</h3>
+
+        <div class="profile-picture-container">
+          <img [src]="profilePictureUrl" alt="Profile Picture" class="profile-picture">
+
+          <button mat-icon-button [matMenuTriggerFor]="profilePictureMenu">
+            <mat-icon>more_vert</mat-icon>
+
+          </button>
+
+          <mat-menu #profilePictureMenu="matMenu">
+
+            <button mat-menu-item (click)="changeProfilePicture()">
+              <mat-icon>edit</mat-icon>
+              <span>Change picture</span>
+            </button>
+
+            <button mat-menu-item (click)="deleteProfilePicture()">
+              <mat-icon>delete</mat-icon>
+              <span>Delete picture</span>
+            </button>
+
+          </mat-menu>
+
+        </div>
+      </div>
+      <!--Cover image-->
+      <div class="photo-section">
+        <h3>Cover photo</h3>
+        <div class="cover-photo-container">
+          <img [src]="coverPhotoUrl" alt="Cover Photo" class="cover-photo">
+
+          <button mat-icon-button [matMenuTriggerFor]="coverPhotoMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+          <mat-menu #coverPhotoMenu="matMenu">
+
+            <button mat-menu-item (click)="changeCoverPhoto()">
+              <mat-icon>edit</mat-icon>
+              <span>Change photo</span>
+            </button>
+
+            <button mat-menu-item (click)="deleteCoverPhoto()">
+              <mat-icon>delete</mat-icon>
+              <span>Delete photo</span>
+            </button>
+
+          </mat-menu>
+        </div>
+      </div>
+      <!--Done button-->
+      <button mat-flat-button color="primary" type="submit" class="submit-button">Done</button>
+    </form>
+  </div>
+</div>

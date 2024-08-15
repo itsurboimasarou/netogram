@@ -4,6 +4,8 @@ import {SidebarComponent} from "../../../components/sidebar/sidebar.component";
 import {MaterialModule} from "../../../shared/material.module";
 import {Location} from "@angular/common";
 import {PostComponent} from "../../../components/post/post.component";
+import {MatDialog} from "@angular/material/dialog";
+import {ProfileEditComponent} from "./profile-edit/profile-edit.component";
 
 @Component({
   selector: 'app-profile',
@@ -19,8 +21,10 @@ import {PostComponent} from "../../../components/post/post.component";
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit{
-  constructor( private location :Location,private  activeRoute: ActivatedRoute) {
+  constructor( private location :Location,private  activeRoute: ActivatedRoute, private dialog: MatDialog
+  ) {
     this.activeRoute = activeRoute;
+
   }
 
   goBack(): void {
@@ -30,4 +34,9 @@ export class ProfileComponent implements OnInit{
     const {uid} = this.activeRoute.snapshot.params;
     console.log(uid);
     }
+
+    profileEdit() : void {
+      const dialogRef = this.dialog.open(ProfileEditComponent, {width: '100px'});
+    }
+
 }
