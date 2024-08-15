@@ -6,6 +6,8 @@ import {ProfileState} from "../../ngrx/profile/profile.state";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {PostModel} from "../../models/post.model";
 import {transition} from "@angular/animations";
+import {PostState} from "../../ngrx/post/post.state";
+import * as postActions from "../../ngrx/post/post.actions";
 
 @Component({
   selector: 'app-dialog',
@@ -40,6 +42,7 @@ export class DialogComponent {
   constructor(
     private store: Store<{
       profile: ProfileState
+      post:PostState
     }>
   ) {
 
@@ -170,6 +173,7 @@ export class DialogComponent {
     this.postData.imageUrl = [];
     this.postData.imageUrl = this.selectedFiles;
     console.log('Post Data', this.postData);
+    this.store.dispatch(postActions.CreatePost({post: this.postData}));
     this.dialogRef.close();
   }
 

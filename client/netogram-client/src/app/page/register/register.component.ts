@@ -77,6 +77,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
     uid: '',
     bio: '',
     avatarUrl: '',
+    coverUrl: '',
   };
 
   ngOnDestroy(): void {
@@ -90,6 +91,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
       uid: this.regisForm.value.uid ?? '',
       bio: '',
       avatarUrl: this.regisForm.value.avatarUrl ?? '',
+      coverUrl: '',
     };
 
     console.log(this.regisData);

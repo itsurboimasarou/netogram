@@ -21,6 +21,9 @@ export class Profile {
   avatarUrl: string;
 
   @Column()
+  coverUrl: string;
+
+  @Column()
   bio: string;
 
 }
