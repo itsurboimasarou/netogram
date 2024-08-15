@@ -27,7 +27,7 @@ export class HomeComponent {
 
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '70vw',
-      height:'75vh',
+      height:'78vh',
       panelClass: 'custom-dialog-container',
       // data: {name: this.name(), port: this.port()},
     });
