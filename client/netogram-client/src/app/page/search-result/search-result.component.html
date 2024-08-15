@@ -1,0 +1,9 @@
+<mat-nav-list>
+  <h3 mat-subheader>Search Result</h3>
+  <mat-list-item *ngFor="let result of searchResult">
+    <mat-icon matListItemIcon>{{ result.type === 'user' ? 'person' : 'description' }}</mat-icon>
+    <div matListItemTitle>{{ result.name }}</div>
+    <div matListItemLine *ngIf="result.type === 'post'">{{ result.content }}</div>
+    <button mat-button color="primary" *ngIf="result.type === 'user'">Add friend</button>
+  </mat-list-item>
+</mat-nav-list>
