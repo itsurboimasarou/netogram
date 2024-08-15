@@ -1,8 +1,9 @@
 .create-post {
-  width: calc(100% - 2rem);
+  width: calc(100% - 32px);
   padding: 16px;
   background-color: var(--surface);
   border-radius: 12px;
+
 
 }
 
@@ -25,7 +26,7 @@ hr {
   margin-top: 0.9rem;
   width: 97%;
   align-items: center;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 #post-content {
@@ -85,5 +86,16 @@ mat-form-field ::ng-deep .mdc-notched-outline__trailing {
   border: none;
 }
 
+.post{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-
+.container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

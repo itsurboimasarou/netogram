@@ -9,7 +9,7 @@
 
 }
 .friendcontainer {
-  width: 45%;
+  width: 46%;
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -27,10 +27,16 @@
   font-weight: bold;
   width: 100%;
   row-gap: 10px;
+  font-size: 16px;
+  color: var(--onSurface);
+
+
 }
 .nameMutual p{
-  font-size: 14px;
   margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--outline);
 }
 #more{
   color: var(--onBackground);
@@ -41,8 +47,8 @@
   display: flex;
 }
 .friendcontainer img {
-  width: 50px;
-  height: 50px;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   margin-right: 10px;
 }
