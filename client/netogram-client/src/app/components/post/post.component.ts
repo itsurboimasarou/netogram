@@ -19,7 +19,7 @@ import { Router } from "@angular/router";
 })
 
 export class PostComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   postUser = [
     {

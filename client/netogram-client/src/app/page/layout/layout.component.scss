@@ -1,14 +1,17 @@
 .container{
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    background-color: var(--surfaceContainerLowest);
+    height: 100%;
 }
 .top{
-   height: 8%;
+  height: 10%;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  width: 100%;
 }
 
 .main{
-  height: 92%;
+  height: 90%;
 
 }

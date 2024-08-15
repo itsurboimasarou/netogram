@@ -1,7 +1,5 @@
 <div class="container">
   <div class="all-side-bar">
-    <div class=""></div>
-
     @for (link of navLinks; track $index) {
       <div class="navigation" (click)="setActive(link)" [ngClass]="{'active': activeLink === link}">
         <span class="material-symbols-outlined">{{ link.icon }}</span>

@@ -5,6 +5,7 @@ import {Store} from "@ngrx/store";
 import {ProfileState} from "../../ngrx/profile/profile.state";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {PostModel} from "../../models/post.model";
+import {transition} from "@angular/animations";
 
 @Component({
   selector: 'app-dialog',
@@ -14,6 +15,9 @@ import {PostModel} from "../../models/post.model";
   styleUrl: './dialog.component.scss'
 })
 export class DialogComponent {
+  startX = 0;
+  scrollLeft = 0;
+
   postForm = new FormGroup(
     {
       uid: new FormControl(''),
@@ -29,6 +33,8 @@ export class DialogComponent {
     content: '',
     id: BigInt(0),
   }
+
+  selectedFiles: File[] = [];
 
 
   constructor(
@@ -100,6 +106,7 @@ export class DialogComponent {
         alert('You can only upload 5 images at a time');
         return;
       }
+      this.selectedFiles = Array.from(files);
       this.processFiles(files);
     };
     input.click();
@@ -138,6 +145,22 @@ export class DialogComponent {
   onFileSelected(event: any) {
   }
 
+  prevImage(carousel: HTMLDivElement) {
+    const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
+    carousel.scrollTo({
+      left: carousel.scrollLeft + imageWidth - 100, // 50 is the gap between images
+      behavior: 'smooth'
+    });   // 10 is the gap between images
+  }
+
+  nextImage(carousel: HTMLDivElement) {
+    const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
+    carousel.scrollTo({
+      left: carousel.scrollLeft + imageWidth + 100, // 50 is the gap between images
+      behavior: 'smooth'
+    });
+    // carousel.scrollLeft += imageWidth + 50; // 10 is the gap between images
+  }
 
   onPost() {
     this.profileMine$.subscribe((profile) => {
@@ -145,11 +168,16 @@ export class DialogComponent {
     });
     this.postData.content = <string>this.postForm.value.content;
     this.postData.imageUrl = [];
-    const images = this.imageContainer.nativeElement.getElementsByTagName('img');
-    for (let i = 0; i < images.length; i++) {
-      this.postData.imageUrl.push(images[i].src);
-    }
+    this.postData.imageUrl = this.selectedFiles;
     console.log('Post Data', this.postData);
     this.dialogRef.close();
   }
+
+  onMouseDown (event: MouseEvent, carousel: HTMLDivElement){
+    event.preventDefault();
+    this.startX = event.pageX - carousel.offsetLeft;
+    this.scrollLeft = carousel.scrollLeft;
+  }
+
+
 }

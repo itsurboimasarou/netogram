@@ -1,5 +1,5 @@
 .card-container {
-  width: calc(100% - 13rem);
+  width: 100%;
   padding: 20px;
   background-color: var(--surface);
   border-radius: 12px;
@@ -14,8 +14,30 @@
 }
 
 #profile-pic {
-  width: 50px;
-  height: 50px;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.post-info {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+#post-caption {
+  margin-top: 10px;
+}
+
+.post-user-container {
+  display: flex;
+  align-items: center;
+}
+
+#profile-pic {
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   margin-right: 15px;
 }
@@ -31,54 +53,54 @@
 }
 
 .carousel-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 1;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
 
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.7);
-    }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
 }
 
 .carousel-button.prev {
-    left: 10px;
+  left: 10px;
 }
 
 .carousel-button.next {
-    right: 10px;
+  right: 10px;
 }
 
 .carousel-container {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
 .carousel-images {
-    display: flex;
-    gap: 10px;
-    transform: translateX(0px);
-    cursor: grab;
-    flex-direction: row;
-    overflow-x: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  display: flex;
+  gap: 10px;
+  transform: translateX(0px);
+  cursor: grab;
+  flex-direction: row;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .carousel-images:active {
-    cursor: grabbing;
+  cursor: grabbing;
 }
 
 .carousel-images::-webkit-scrollbar {
-    display: none;
-    height: 0;
-    width: 0;
+  display: none;
+  height: 0;
+  width: 0;
 }
 
 .post-image {
@@ -129,7 +151,7 @@ hr {
   width: auto;
   font-size: 16px;
   cursor: pointer;
-  color: var(--neutra
+  color: var(--neutral);
 }
 
 .on-post-actions {
@@ -138,4 +160,13 @@ hr {
 
 .favorite {
   color: red;
+}
+
+mat-icon {
+  margin: 0;
+}
+
+.post-time {
+  color: var(--outline);
+  font-size: 13px;
 }
