@@ -55,26 +55,41 @@
 
 #comment{
   position: absolute;
-  top: 57%;
+  top: 62%;
+  right: 50%;
+  transform: translate(50%, -50%);
 }
 
 #deletBtn{
   position: absolute;
   top: 30%;
   right: 6%;
+  z-index: 1;
 }
 
-.image-container {
+.carousel-button {
+  position: absolute;
+  top: 55%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.carousel-button.prev {
+  left: 5%;
+}
+
+.carousel-button.next {
+  right: 5%;
+}
+
+.carousel-container {
   display: flex;
-  justify-content: center;
   align-items: center;
   height: 40vh;
-  gap: 10px;
-
-  overflow-x: auto;
-  cursor: grab;
+  overflow-x: hidden;
   border: 2px dashed #ccc;
   border-radius: 12px;
+  cursor: pointer;
   background-color: #f9f9f9;
   transition: background-color 0.3s, border-color 0.3s;
 
@@ -83,20 +98,34 @@
     border-color: #aaa;
   }
 
+
+
   &.dragover {
     background-color: #e0e0e0;
     border-color: #aaa;
   }
+
+
+
 }
 
-.image-container:active{
-  cursor: grabbing;
-}
-
-
-.image-container span {
+#imageIcon {
   font-size: 48px;
-  color: #888;
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.carousel-images{
+  display: flex;
+  gap: 10px;
+  transform: translateX(0px);
+  cursor: pointer;
+  flex-direction: row;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 
@@ -162,5 +191,13 @@
   display: flex;
   height: 40vh;
   gap: 10px;
+}
+
+#closeIcon {
+  cursor: pointer;
+  &:hover {
+    transform: scale(0.9);
+    color: var(--error);
+  }
 }
 

@@ -9,9 +9,7 @@
         <div class="username">Fried Dog</div>
       </div>
       <div>
-        <button id="closeBut" (click)="onNoClick()">
-          <span class="material-symbols-outlined">close</span>
-        </button>
+          <mat-icon id="closeIcon" (click)="onNoClick()">close</mat-icon>
       </div>
     </div>
 
@@ -24,13 +22,35 @@
         <button id="deletBtn" (click)="delelteAllImages()" mat-fab>
           <mat-icon >delete</mat-icon>
         </button>
+
+        <button mat-icon-button class="carousel-button prev" (click)="prevImage(imageContainer)"><mat-icon>arrow_back_ios</mat-icon></button>
+        <button mat-icon-button class="carousel-button next" (click)="nextImage(imageContainer)"><mat-icon>arrow_forward_ios</mat-icon></button>
       }
 
-      <div #imageContainer (click)="addProfilePicture()" class="image-container" (dragover)="handleDragOver($event)" (drop)="handleDrop($event)">
-        @if(this.imageCount == 0){
-          <span class="material-symbols-outlined">image</span>
-          <p id="comment">Add Photos By Click or Drag</p>
-        }
+      @if(this.imageCount == 0){
+        <span id="imageIcon" class="material-symbols-outlined">image</span>
+        <p id="comment">Add Photos By Click or Drag</p>
+      }
+
+
+      <div
+           (mousedown)="onMouseDown($event, imageContainer)"
+           (click)="addProfilePicture()"
+           class="carousel-container"
+           (dragover)="handleDragOver($event)"
+           (drop)="handleDrop($event)">
+        <div #imageContainer class="carousel-images">
+
+        </div>
+      </div>
+      <br>
+
+      <!-- The dots/circles -->
+      <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+
       </div>
     </div>
     <button (click)="onPost()" mat-button class="share-btn">Share</button>

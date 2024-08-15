@@ -2,8 +2,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  //width: 100%;
+  //height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: row;
@@ -16,17 +16,22 @@
   flex-direction: row;
   height: 100%;
   width: calc(100% - 4rem);
-  padding: 0 2rem;
+  padding: 2rem 2rem 0 2rem;
 }
 
 .left{
-  width: calc(26% - 2rem);
+  width: calc(24% - 2rem);
   height: 100%;
   padding-right: 2rem;
 }
 .main{
-  width: 48%;
+  width: 52.4%;
   height: 100%;
+}
+
+.btnProfile{
+  position: absolute;
+  right: 27%;
 }
 
 .profile-edit-container {
@@ -39,15 +44,15 @@
 }
 
 .mainContainer{
-  width: calc(100% + 8px);
-  height: 45%;
+  width: 100%;
+  height: 60%;
   border-radius: 12px;
   background-color: var(--surface);
 }
 
 .coverContainer{
   width: 100%;
-  height: 60%;
+  height: 65%;
 }
 .coverContainer img{
   width: 100%;
@@ -61,7 +66,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 40%;
+  height: 35%;
   //background-color: var(--surfaceContainerLowest);
   border-radius: 0 0 12px 12px;
 }

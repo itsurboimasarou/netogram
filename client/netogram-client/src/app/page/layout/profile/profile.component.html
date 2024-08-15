@@ -21,7 +21,7 @@
           <p>150 Mutual Friends</p>
         </div>
         <div class="addfrButtonContainer">
-          <button style="display: none" mat-stroked-button>
+          <button class="btnProfile" style="display: none" mat-stroked-button>
             <div class="box">
             <span class="material-symbols-outlined">
               person_add
@@ -30,7 +30,7 @@
             </div>
           </button>
 
-          <button  (click)="profileEdit()" mat-raised-button>
+          <button class="btnProfile" (click)="profileEdit()" mat-stroked-button>
             <div class="box">
             <span class="material-symbols-outlined">
               edit
@@ -39,7 +39,7 @@
             </div>
           </button>
 
-          <button style="display: none;" mat-stroked-button>
+          <button class="btnProfile"  style="display: none;" mat-stroked-button>
             <div class="box">
               <span class="material-symbols-outlined">
                 person_check
@@ -65,6 +65,5 @@
 
   </div>
   <div class="right">
-    <span> right</span>
   </div>
 </div>
