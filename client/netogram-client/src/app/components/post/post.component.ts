@@ -36,6 +36,23 @@ export class PostComponent {
       comments: 23,
       shares: 12,
     },
+    {
+      avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+      name: 'John Doe',
+      caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
+      postTime: '3 days ago',
+      postImages: [
+        'https://material.angular.io/assets/img/examples/shiba2.jpg',
+        'https://material.angular.io/assets/img/examples/shiba1.jpg',
+        'https://material.angular.io/assets/img/examples/shiba2.jpg',
+        'https://material.angular.io/assets/img/examples/shiba1.jpg',
+        'https://material.angular.io/assets/img/examples/shiba2.jpg',
+        'https://material.angular.io/assets/img/examples/shiba1.jpg',
+      ],
+      likes: 856,
+      comments: 23,
+      shares: 12,
+    },
   ];
 
   favoriteIcon = 'favorite_outlined';

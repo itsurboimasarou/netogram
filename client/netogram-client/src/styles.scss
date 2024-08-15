@@ -218,6 +218,8 @@ $light-theme: mat.define-theme((
 html, body {
   height: 100%;
   width: 100%;
+  background-color: var(--surfaceContainer);
+
 
 }
 body { margin: 0;  }
