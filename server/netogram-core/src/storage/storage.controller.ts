@@ -9,7 +9,7 @@ export class StorageController {
     constructor(private readonly storageService: StorageService) {
     }
     @Post("upload")
-    @UseInterceptors(FilesInterceptor('files') )
+    @UseInterceptors(FilesInterceptor('imageUrl') )
     async uploadFiles(
         @UploadedFiles() files: Express.Multer.File[],
         @Body("folderName") folderName: string,

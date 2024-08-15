@@ -17,6 +17,8 @@ import {provideHttpClient} from "@angular/common/http";
 import {HttpClientAuth} from "./util/http-client-auth";
 import {PostReducer} from "./ngrx/post/post.reducer";
 import {PostEffects} from "./ngrx/post/post.effects";
+import {StorageEffects} from "./ngrx/storage/storage.effects";
+import {StorageReducer} from "./ngrx/storage/storage.reducer";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,10 +28,11 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()), provideStorage(() => getStorage()),
-    provideEffects(AuthEffects, ProfileEffects, PostEffects),
+    provideEffects(AuthEffects, ProfileEffects, PostEffects, StorageEffects),
     provideState({ name: 'auth', reducer: authReducer }),
     provideState({ name: 'profile', reducer: profileReducer }),
     provideState({ name: 'post', reducer: PostReducer }),
+    provideState({ name: 'storage', reducer: StorageReducer }),
     HttpClientAuth,
     provideHttpClient(),
     provideAnimationsAsync(),
