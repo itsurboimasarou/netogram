@@ -13,7 +13,7 @@ import {SlicePipe} from "@angular/common";
 export class FriendListComponent {
 
   start = 0;
-  end = 12;
+  end = 10;
 
   user1 = {
     name: 'Jack',
@@ -35,6 +35,6 @@ export class FriendListComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  friendsList: any[] = [this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2];
+  friendsList: any[] = [this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user2, this.user1, this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2];
 
 }

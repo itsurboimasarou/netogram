@@ -13,7 +13,7 @@ import {NgForOf, SlicePipe} from "@angular/common";
 export class FriendRequestComponent {
 
   start = 0;
-  end = 6;
+  end = 5;
 
 
   user1 = {

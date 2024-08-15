@@ -31,9 +31,10 @@ h3{
   display: flex;
   width: 100%;
   align-items: center;
-  margin-bottom: 10px;
+  margin-top: 18px;
   padding: 10px;
-  border: 1px solid #ccc;
+  background-color: var(--surface);
+  //border: 1px solid #ccc;
   border-radius: 12px;
 }
 
@@ -81,6 +82,10 @@ p{
 }
 .container{
   width: 96%;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+    justify-content: start;
 }
 
 .friendcontainer {
@@ -122,4 +127,8 @@ p{
 
 .container button{
   border-radius: 12px;
+}
+
+#confirmButton{
+  background-color: var(--primary);
 }

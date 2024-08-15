@@ -1,3 +1,4 @@
+<form [formGroup]="postForm" class="form-post">
 <div class="container">
   <div class="post">
     <div class="post-header">
@@ -13,16 +14,109 @@
         </button>
       </div>
     </div>
+
     <div class="post-content">
-      <textarea #postTextarea placeholder="What's on your mind?"></textarea>
-      <div #imageContainer class="image-container"></div>
+
+
+      <textarea formControlName="content" #postTextarea placeholder="What's on your mind?"></textarea>
+
+      @if (this.imageCount != 0){
+        <button id="deletBtn" (click)="delelteAllImages()" mat-fab>
+          <mat-icon >delete</mat-icon>
+        </button>
+      }
+
+      <div #imageContainer (click)="addProfilePicture()" class="image-container" (dragover)="handleDragOver($event)" (drop)="handleDrop($event)">
+        @if(this.imageCount == 0){
+          <span class="material-symbols-outlined">image</span>
+          <p id="comment">Add Photos By Click or Drag</p>
+        }
+      </div>
     </div>
-    <div class="post-actions">
-      <button (click)="addProfilePicture()">
-        <span class="material-symbols-outlined">image</span>Image
-      </button>
-    </div>
-    <button mat-button class="share-btn">Share</button>
-    <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
+    <button (click)="onPost()" mat-button class="share-btn">Share</button>
+    <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;" />
   </div>
 </div>
+</form>
+
+<!--regisForm = new FormGroup({-->
+<!--email: new FormControl(''),-->
+<!--userName: new FormControl('', Validators.required),-->
+<!--avatarUrl: new FormControl(''),-->
+<!--uid: new FormControl(''),-->
+<!--});-->
+
+<!--regisData: ProfileModel = {-->
+<!--email: '',-->
+<!--userName: '',-->
+<!--uid: '',-->
+<!--bio: '',-->
+<!--avatarUrl: '',-->
+<!--};-->
+
+<!--ngOnDestroy(): void {-->
+<!--this.subscription.forEach((sub) => sub.unsubscribe());-->
+<!--}-->
+
+<!--register() {-->
+<!--this.regisData = {-->
+<!--email: this.regisForm.value.email ?? '',-->
+<!--userName: this.regisForm.value.userName ?? '',-->
+<!--uid: this.regisForm.value.uid ?? '',-->
+<!--bio: '',-->
+<!--avatarUrl: this.regisForm.value.avatarUrl ?? '',-->
+<!--};-->
+
+<!--console.log(this.regisData);-->
+
+<!--this.store.dispatch(profileActions.createMine({ mine: this.regisData }));-->
+<!--}-->
+
+
+<!--<form [formGroup]="regisForm" class="form-register">-->
+<!--  <mat-form-field-->
+<!--    style="width: 400px"-->
+<!--    class="example-full-width"-->
+<!--    appearance="outline"-->
+<!--  >-->
+<!--    <mat-label style="color: #845317; font-weight: bold"-->
+<!--    >Email</mat-label-->
+<!--    >-->
+<!--    <input-->
+<!--      matInput-->
+<!--      formControlName="email"-->
+<!--      placeholder="..."-->
+<!--      value="abc@gmail.com"-->
+<!--    />-->
+<!--  </mat-form-field>-->
+<!--  <mat-form-field-->
+<!--    style="width: auto"-->
+<!--    class="example-full-width"-->
+<!--    appearance="outline"-->
+<!--  >-->
+<!--    <mat-label style="color: #845317; font-weight: bold"-->
+<!--    >User name</mat-label-->
+<!--    >-->
+<!--    <input-->
+<!--      matInput-->
+<!--      formControlName="userName"-->
+<!--      placeholder="..."-->
+<!--      value="Alan Fatter"-->
+<!--    />-->
+<!--  </mat-form-field>-->
+<!--  &lt;!&ndash;-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;INPUT_FORM_END&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--  <div class="check-with-box">-->
+<!--    <mat-checkbox style="margin-left: -12px" class="example-margin"-->
+<!--    >Nhấn đồng ý với tất cả các điều khoản<br />và điều kiện của chúng-->
+<!--      tôi.</mat-checkbox-->
+<!--    >-->
+<!--  </div>-->
+<!--  <button-->
+<!--    style="background: #845317"-->
+<!--    class="register-text"-->
+<!--    mat-flat-button-->
+<!--    (click)="register()"-->
+<!--  >-->
+<!--    Register-->
+<!--  </button>-->
+<!--</form>-->

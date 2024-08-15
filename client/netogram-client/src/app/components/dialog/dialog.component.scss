@@ -53,15 +53,52 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.image-container {
-  width: 100%;
-  margin-top: 10px; /* Add some space between the textarea and the image */
+#comment{
+  position: absolute;
+  top: 57%;
 }
 
-.image-container img {
-  width: 100%;
-  object-fit: scale-down;
+#deletBtn{
+  position: absolute;
+  top: 30%;
+  right: 6%;
 }
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+  gap: 10px;
+
+  overflow-x: auto;
+  cursor: grab;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s, border-color 0.3s;
+
+  &:hover {
+    background-color: #e0e0e0;
+    border-color: #aaa;
+  }
+
+  &.dragover {
+    background-color: #e0e0e0;
+    border-color: #aaa;
+  }
+}
+
+.image-container:active{
+  cursor: grabbing;
+}
+
+
+.image-container span {
+  font-size: 48px;
+  color: #888;
+}
+
 
 #imageposted {
   width: 100%;
@@ -121,8 +158,9 @@
   }
 }
 
-#closeBut {
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
+.image-container {
+  display: flex;
+  height: 40vh;
+  gap: 10px;
 }
+

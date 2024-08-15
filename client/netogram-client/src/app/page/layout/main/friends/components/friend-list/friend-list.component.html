@@ -12,10 +12,9 @@
         </div>
       </div>
       <div id="icon">
-        <button id="menuButton" mat-button [matMenuTriggerFor]="menu">
-        <span id="more" class="material-symbols-outlined">
-          more_horiz
-        </span>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_horizon</mat-icon>
+
         </button>
         <mat-menu id="optionMenu" style="display: flex; flex-direction: row" #menu="matMenu">
           <button mat-menu-item>
@@ -30,7 +29,7 @@
   }
 </div>
 
-<mat-paginator [length]="friendsList.length" [hidePageSize]="true" [pageSizeOptions]="[12]" (page)="handlePageEvent($event)" aria-label="Select page">
+<mat-paginator [length]="friendsList.length" [hidePageSize]="true" [pageSizeOptions]="[10]" (page)="handlePageEvent($event)" aria-label="Select page">
 </mat-paginator>
 
 

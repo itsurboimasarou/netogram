@@ -4,11 +4,11 @@
   background-color: white;
   height: 100%;
   width: 100%;
+
 }
 .container{
   display: flex;
   justify-content: center;
-  background-color: var(--surface);
   height: 100%;
   width: calc(100% - 4rem);
 }
@@ -99,10 +99,15 @@ img{
   border-radius: 12px;
 }
 
-#logoutIcon{
-  margin: 0 15px 0 0;
-}
 
 .logoutBox{
   display: flex; align-items: center
+}
+.name{
+  margin-right: 10px;
+}
+
+.logoutBox span {
+  font-size: 28px;
+  margin: 0 10px 0 0;
 }
