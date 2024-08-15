@@ -5,13 +5,13 @@
       <h2>Personal Information</h2>
     </div>
     <form [formGroup]="regisForm">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
-        <input matInput formControlName="userName">
+        <input matInput formControlName="UserName">
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <!--    <mat-label>Email Address</mat-label>-->
+      <mat-form-field appearance="outline">
+            <mat-label>Email Address</mat-label>
         <input  value="tn212079@gmail.com"
                matInput color="primary"
                formControlName="email"

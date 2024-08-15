@@ -1,4 +1,4 @@
-.outercon{
+.outercon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,39 +6,48 @@
   width: 100vw;
   background-color: var(--surfaceContainer);
 }
-.container{
+
+.container {
   display: flex;
   flex-direction: column;
-  background-color: white;
   justify-content: space-around;
-  padding: 70px 60px 70px 60px;
+  align-items: center;
   width: 20%;
+  padding: 70px 60px;
   border-radius: 12px;
-  align-content: space-between;
-}
-#text{
-  width: 100%;
-  display: flex;
-  align-items: end;
-  height: fit-content;
-  margin: 2% auto 0 auto;
-}
-#nextBox{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-img{
-  width: 180px;
-  margin: 0 auto;
-}
-#hinh{
-  display: flex;
-  justify-content: center;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-h2{
+#hinh {
+  width: 180px;
+  margin-bottom: 20px;
+}
+
+#text {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+h2 {
   font-size: 24px;
   font-weight: 700;
+}
 
+mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+#nextBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  width: 35%;
+  height: 40px;
 }

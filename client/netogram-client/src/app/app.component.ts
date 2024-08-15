@@ -93,6 +93,6 @@ export class AppComponent implements OnInit{
     this.loginWithGoogleSuccess$ = this.store.pipe(
       select((state) => state.auth.loginWithGoogleSuccess),
     );
-
   }
+
 }
