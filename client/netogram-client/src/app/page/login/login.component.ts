@@ -33,13 +33,6 @@ export class LoginComponent implements OnInit{
   isLoadingSignIn = false;
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.store.select('auth').subscribe((auth: AuthState) => {
-        if (auth.loginWithGoogleSuccess) {
-          this.router.navigate(['/register']).then();
-        }
-      }),
-    );
   }
   loginWithGoogle() {
     this.store.dispatch(AuthActions.signInWithGoogle());

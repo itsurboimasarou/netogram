@@ -13,22 +13,28 @@
   </div>
   <p id="post-caption">{{ user.caption }}</p>
   <div class="carousel-container">
-    <button mat-icon-button class="carousel-button prev" (click)="prevImage(carousel)"><mat-icon>chevron_left</mat-icon></button>
+    <div class="carousel-button-prev" (click)="prevImage(carousel)">
+      <mat-icon>chevron_left</mat-icon>
+    </div>
     <div class="carousel-images"
          (mousedown)="onMouseDown($event, carousel)"
          (mouseleave)="onMouseLeave()"
          (mouseup)="onMouseUp()"
          (mousemove)="onMouseMove($event, carousel)"
          #carousel>
-      <img *ngFor="let image of user.postImages" [src]="image" class="post-image" draggable="false" (mousedown)="$event.preventDefault()">
+      <img *ngFor="let image of user.postImages" [src]="image" class="post-image" draggable="false"
+           (mousedown)="$event.preventDefault()">
     </div>
-    <button mat-icon-button class="carousel-button next" (click)="nextImage(carousel)"><mat-icon>chevron_right</mat-icon></button>
+    <div class="carousel-button-next" (click)="nextImage(carousel)">
+      <mat-icon>chevron_right</mat-icon>
+    </div>
   </div>
   <hr>
   <div class="post-actions">
     <div class="on-post-actions">
       <button mat-button (click)="toggleFavorite(user)">
-        <mat-icon [ngClass]="{'favorite': user.isLiked}">{{ user.isLiked ? 'favorite' : 'favorite_outlined' }}</mat-icon>
+        <mat-icon [ngClass]="{'favorite': user.isLiked}">{{ user.isLiked ? 'favorite' : 'favorite_outlined' }}
+        </mat-icon>
         {{ user.likes }} likes
       </button>
       <button mat-button>

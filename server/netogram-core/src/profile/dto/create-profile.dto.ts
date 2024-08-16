@@ -15,4 +15,7 @@ export class CreateProfileDto {
   @IsString()
   uid: string;
 
+  @IsString()
+  coverUrl: string;
+
 }
