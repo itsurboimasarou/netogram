@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, ViewChild, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ElementRef, inject, ViewChild, ChangeDetectionStrategy, OnInit, OnDestroy} from '@angular/core';
 import {MaterialModule} from "../../shared/material.module";
 import {MatDialogRef} from "@angular/material/dialog";
 import {Store} from "@ngrx/store";
@@ -6,6 +6,11 @@ import {ProfileState} from "../../ngrx/profile/profile.state";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {PostModel} from "../../models/post.model";
 import {transition} from "@angular/animations";
+import {PostState} from "../../ngrx/post/post.state";
+import * as postActions from "../../ngrx/post/post.actions";
+import {Subscription} from "rxjs";
+import {StorageState} from "../../ngrx/storage/storage.state";
+import * as storageActions from "../../ngrx/storage/storage.actions";
 
 @Component({
   selector: 'app-dialog',
@@ -14,9 +19,23 @@ import {transition} from "@angular/animations";
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.scss'
 })
-export class DialogComponent {
+export class DialogComponent implements  OnDestroy {
   startX = 0;
   scrollLeft = 0;
+
+  subscription: Subscription[] = [];
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('postTextarea') postTextarea!: ElementRef;
+  @ViewChild('imageContainer') imageContainer!: ElementRef;
+
+  selectedFiles: File[] = [];
+  public imageCount: number = 0;
+
+
+
+  profileMine$ = this.store.select('profile', 'mine');
+  readonly dialogRef = inject(MatDialogRef<DialogComponent>);
 
   postForm = new FormGroup(
     {
@@ -34,35 +53,39 @@ export class DialogComponent {
     id: BigInt(0),
   }
 
-  selectedFiles: File[] = [];
-
 
   constructor(
     private store: Store<{
       profile: ProfileState
+      post:PostState
+      storage: StorageState
     }>
   ) {
 
-    this.profileMine$.subscribe((profile) => {
-      if (profile) {
-        console.log('profile', profile);
-      }
-    });
+    this.subscription.push(
+      this.profileMine$.subscribe((profile) => {
+        if (profile) {
+          console.log('profile', profile);
+        }
+      }),
+    );
+
+
+
   }
 
-  profileMine$ = this.store.select('profile', 'mine');
-  readonly dialogRef = inject(MatDialogRef<DialogComponent>);
+  ngOnDestroy(): void {
+    this.subscription.forEach((sub) => sub.unsubscribe());
+    }
 
 
-  @ViewChild('fileInput') fileInput!: ElementRef;
-  @ViewChild('postTextarea') postTextarea!: ElementRef;
-  @ViewChild('imageContainer') imageContainer!: ElementRef;
+
+
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  public imageCount: number = 0;
 
   ngAfterViewInit() {
 
@@ -118,6 +141,7 @@ export class DialogComponent {
     for (let i = 0; i < filesToProcess; i++) {
       const file = files[i];
       if (file) {
+        // this.store.dispatch(storageActions.uploadFile({file: file, fileName: 'posts'}));
         const reader = new FileReader();
         reader.onload = (e: any) => {
           const imageSrc = e.target.result;
@@ -170,6 +194,7 @@ export class DialogComponent {
     this.postData.imageUrl = [];
     this.postData.imageUrl = this.selectedFiles;
     console.log('Post Data', this.postData);
+    this.store.dispatch(postActions.CreatePost({post: this.postData}));
     this.dialogRef.close();
   }
 

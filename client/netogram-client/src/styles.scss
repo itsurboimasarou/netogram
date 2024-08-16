@@ -216,6 +216,8 @@ $light-theme: mat.define-theme((
 
 
 html, body {
+  padding: 0;
+  margin: 0;
   height: 100%;
   width: 100%;
   background-color: var(--surfaceContainer);
@@ -224,6 +226,8 @@ html, body {
 }
 body { margin: 0;  }
 
+
+
 .custom-dialog-container .mat-mdc-dialog-surface.mdc-dialog__surface {
-  --mdc-dialog-container-shape: 12px;
+ --mdc-dialog-container-shape: 12px;
 }

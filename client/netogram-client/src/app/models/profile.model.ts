@@ -4,4 +4,5 @@ export interface ProfileModel {
   email: string;
   avatarUrl: string;
   bio: string;
+  coverUrl: string;
 }
