@@ -83,6 +83,7 @@
   right: 5%;
 }
 
+
 .carousel-container {
   display: flex;
   align-items: center;
@@ -120,6 +121,7 @@
 }
 
 .carousel-images{
+  width: 100%;
   display: flex;
   gap: 10px;
   transform: translateX(0px);

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, RouterOutlet} from "@angular/router";
+import {ActivatedRoute, RouterOutlet, Scroll} from "@angular/router";
 import {SidebarComponent} from "../../../components/sidebar/sidebar.component";
 import {MaterialModule} from "../../../shared/material.module";
 import {Location} from "@angular/common";
@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit{
   ) {
     this.activeRoute = activeRoute;
 
+    window.scrollTo({ top: window.innerHeight * 0.3, behavior: 'instant'});
   }
 
   goBack(): void {
