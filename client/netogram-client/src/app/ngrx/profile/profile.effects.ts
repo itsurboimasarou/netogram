@@ -51,7 +51,6 @@ export class ProfileEffects {
       switchMap((action) => {
         return this.profileService.getById(action.uid).pipe(
           map((mine: ProfileModel) => {
-            console.log(mine);
             return profileActions.getMineSuccess({ mine });
           }),
           catchError((error) => {
