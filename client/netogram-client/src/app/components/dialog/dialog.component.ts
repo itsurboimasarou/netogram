@@ -19,6 +19,7 @@ import * as postActions from '../../ngrx/post/post.actions';
 import { Subscription } from 'rxjs';
 import { StorageState } from '../../ngrx/storage/storage.state';
 import * as storageActions from '../../ngrx/storage/storage.actions';
+import * as profileActions from '../../ngrx/profile/profile.actions';
 
 @Component({
   selector: 'app-dialog',
@@ -62,14 +63,14 @@ export class DialogComponent implements OnDestroy {
       profile: ProfileState;
       post: PostState;
       storage: StorageState;
-    }>,
+    }>
   ) {
     this.subscription.push(
       this.profileMine$.subscribe((profile) => {
         if (profile) {
           console.log('profile', profile);
         }
-      }),
+      })
     );
   }
 
@@ -122,7 +123,7 @@ export class DialogComponent implements OnDestroy {
         alert('You can only upload 5 images at a time');
         return;
       }
-      this.selectedFiles = Array.from(files);
+      this.selectedFiles = this.selectedFiles.concat(Array.from(files));
       this.processFiles(files);
     };
     input.click();
@@ -148,8 +149,9 @@ export class DialogComponent implements OnDestroy {
 
   insertImageIntoContainer(imageSrc: string): void {
     const container = this.imageContainer.nativeElement;
+    const containerWidth = container.clientWidth;
     const imgElement = document.createElement('div');
-    imgElement.innerHTML = `<img style="height: 36vh; object-fit: scale-down" src="${imageSrc}" alt="Selected Image" />`;
+    imgElement.innerHTML = `<img style="height: 36vh; width: ${containerWidth}px; object-fit: scale-down" src="${imageSrc}" class="post-image" alt="Selected Image" />`;
     container.appendChild(imgElement);
   }
 
@@ -163,19 +165,18 @@ export class DialogComponent implements OnDestroy {
 
   prevImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
-    carousel.scrollTo({
-      left: carousel.scrollLeft + imageWidth - 100, // 50 is the gap between images
+    carousel.scrollBy({
+      left: -(imageWidth + 10), // Adjust gap between images
       behavior: 'smooth',
-    }); // 10 is the gap between images
+    });
   }
 
   nextImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
-    carousel.scrollTo({
-      left: carousel.scrollLeft + imageWidth + 100, // 50 is the gap between images
+    carousel.scrollBy({
+      left: imageWidth + 10, // Adjust gap between images
       behavior: 'smooth',
     });
-    // carousel.scrollLeft += imageWidth + 50; // 10 is the gap between images
   }
 
   onPost() {

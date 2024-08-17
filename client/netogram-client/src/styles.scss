@@ -254,4 +254,9 @@ body::-webkit-scrollbar-thumb {
 /* set button(top and bottom of the scrollbar) */
 body::-webkit-scrollbar-button {
   display:none;
+
+}
+
+.custom-dialog-container .mat-mdc-dialog-surface.mdc-dialog__surface {
+  --mdc-dialog-container-shape: 12px;
 }
