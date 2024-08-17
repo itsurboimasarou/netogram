@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit{
   ) {
     this.activeRoute = activeRoute;
 
-    window.scrollTo({ top: window.innerHeight * 0.3, behavior: 'instant'});
+    // window.scrollTo({ top: window.innerHeight * 0.3, behavior: 'auto'});
   }
 
   goBack(): void {
