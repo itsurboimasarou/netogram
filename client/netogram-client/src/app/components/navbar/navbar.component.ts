@@ -7,6 +7,9 @@ import {Store} from "@ngrx/store";
 import {ProfileState} from "../../ngrx/profile/profile.state";
 import * as AuthActions from "../../ngrx/auth/auth.actions";
 import * as ProfileActions from "../../ngrx/profile/profile.actions";
+import {Subscription} from "rxjs";
+import {ProfileModel} from "../../models/profile.model";
+import {AuthState} from "../../ngrx/auth/auth.state";
 
 @Component({
   selector: 'app-navbar',
@@ -18,9 +21,13 @@ import * as ProfileActions from "../../ngrx/profile/profile.actions";
 export class NavbarComponent implements OnInit{
   constructor(
     private route: Router,
-    private store: Store<{profile: ProfileState}>,
+    private store: Store<{
+      profile: ProfileState,
+      auth: AuthState
+    }>,
   ) {
   }
+
 
   ngOnInit(): void {
     this.route.events.pipe(
@@ -30,13 +37,29 @@ export class NavbarComponent implements OnInit{
     });
 
     this.setActiveLinkBasedOnUrl();
+
+    this.subcription.push(
+     this.logout$.subscribe((logout) => {
+        if (logout) {
+          this.route.navigate(['/login']).then();
+        }
+     })
+
+    );
   }
+
+  subcription: Subscription[] = [];
+
+  logout$ = this.store.select('auth', 'logOutSuccess');
 
   profileMine$ = this.store.select('profile', 'mine');
   user = {
     uid: '12',
     userName: 'John Doe',
-    profilePic: 'https://www.w3schools.com/howto/img_avatar.png',
+    avatarUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+    coverUrl: 'https://www.w3schools.com/howto/img_snow.jpg',
+    bio: 'I am a web developer',
+    email: ''
   }
 
   link = { label: 'Notifications', route: 'notifications', icon: 'home_app_logo' }
@@ -59,7 +82,6 @@ export class NavbarComponent implements OnInit{
   logout() {
     this.store.dispatch(AuthActions.signOut());
     this.store.dispatch(ProfileActions.clearGetState());
-    this.route.navigate(['/login']).then();
   }
 
 }

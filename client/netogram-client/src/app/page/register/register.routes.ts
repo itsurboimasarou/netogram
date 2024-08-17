@@ -6,6 +6,7 @@ export const REGISTER_ROUTES: Routes = [
   {
     path: '',
     component: RegisterComponent,
+
   },
 ];
 export const routes: Routes = [];

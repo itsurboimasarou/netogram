@@ -29,10 +29,15 @@ export class LoginComponent implements OnInit{
     }>,
   ) {}
 
-  subscriptions: Subscription[] = [];
-  isLoadingSignIn = false;
+
 
   ngOnInit(): void {
+    this.store.select('auth', 'loginWithGoogleSuccess').subscribe((auth) => {
+      if (auth) {
+        this.router.navigate(['/loading']).then();
+      }
+    });
+
   }
   loginWithGoogle() {
     this.store.dispatch(AuthActions.signInWithGoogle());

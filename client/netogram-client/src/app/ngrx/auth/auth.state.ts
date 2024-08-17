@@ -5,6 +5,7 @@ export interface AuthState {
   authCredential: AuthCredentialModel;
 
   loginWithGoogleSuccess: boolean;
+  logOutSuccess: boolean;
   loading: boolean;
   error: any;
 }

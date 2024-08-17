@@ -53,15 +53,13 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
     this.createMineSuccess$.subscribe((isSuccess) => {
       if (isSuccess) {
+        this.store.dispatch(profileActions.getMine({ uid: this.uid }));
         this.router.navigate(['/home']).then();
+
       }
     });
 
-    this.isGetMineSuccess$.subscribe((profile) => {
-      if (profile) {
-        this.router.navigate(['/home']).then();
-      }
-    });
+
   }
   subscription: Subscription[] = [];
   regisForm = new FormGroup({

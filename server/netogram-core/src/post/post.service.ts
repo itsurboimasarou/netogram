@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { Profile } from '../profile/entities/profile.entity';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import {Post} from './entities/post.entity';
+import { SearchService } from '../search/search.service';
 
 @Injectable()
 export class PostService {
@@ -15,6 +16,7 @@ export class PostService {
     private postRepository: Repository<Post>,
     @InjectRepository(Profile)
     private profileRepository: Repository<Profile>,
+    private readonly searchService: SearchService
 
   ) {
   }
@@ -39,6 +41,8 @@ export class PostService {
     // Save the post
     const savedPost = await this.postRepository.save(newPost);
     // Index the post
+    await this.searchService.indexPost(newPost);
+
 
 
 
@@ -116,6 +120,14 @@ export class PostService {
     }
 
     await this.postRepository.delete({ id });
+
+  }
+
+  //search post by content
+  async searchPosts(query: string) {
+
+
+    return this.searchService.searchPosts(query);
 
   }
 }

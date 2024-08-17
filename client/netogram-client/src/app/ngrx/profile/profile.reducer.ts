@@ -171,12 +171,14 @@ export const profileReducer = createReducer(
 
   on(ProfileActions.clearGetState, (state, { type }) => {
     console.log(type);
+
     return {
       ...state,
       isGetting: false,
       isGetMineSuccess: false,
       isGetMineFailure: false,
       getErrorMessage: <HttpErrorResponseModel>{},
+      mine: <ProfileModel>{},
     };
   }),
 

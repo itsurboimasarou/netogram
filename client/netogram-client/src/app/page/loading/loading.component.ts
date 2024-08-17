@@ -5,7 +5,7 @@ import {Store} from "@ngrx/store";
 import {ProfileState} from "../../ngrx/profile/profile.state";
 import {AuthState} from "../../ngrx/auth/auth.state";
 import * as ProfileActions from "../../ngrx/profile/profile.actions";
-import {Subscription} from "rxjs";
+import {combineLatest, Subscription} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 
 @Component({
@@ -24,24 +24,6 @@ export class LoadingComponent implements OnInit {
     }>,
   ) {
 
-      this.subscriptions.push(
-        this.authCredential$.subscribe((auth) => {
-          if (auth) {
-            this.store.dispatch(ProfileActions.getMine({uid: auth.uid}));
-          }
-        }),
-        this.isGetMineSuccess$.subscribe((mine) => {
-          if (mine) {
-            console.log('mine', mine);
-            this.router.navigate(['/home']);
-          } else {
-            this.router.navigate(['/register']);
-          }
-        }),
-
-      );
-
-
   }
 
   subscriptions: Subscription[] = [];
@@ -49,10 +31,23 @@ export class LoadingComponent implements OnInit {
   isGetMineSuccess$ = this.store.select('profile', 'isGetMineSuccess');
 
   ngOnInit(): void {
+    this.subscriptions.push(
+      this.authCredential$.subscribe((auth) => {
+        if (auth) {
+          this.store.dispatch(ProfileActions.getMine({ uid: auth.uid }));
+        }
+      }),
+      this.isGetMineSuccess$.subscribe((isSuccess) => {
+        if (isSuccess) {
+          this.router.navigate(['/home']).then();
+        }else {
+          this.router.navigate(['/register']).then();
+        }
+      })
 
 
 
-
+    );
   }
 }
 
