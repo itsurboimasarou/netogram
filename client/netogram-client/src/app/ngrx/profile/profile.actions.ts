@@ -32,7 +32,6 @@ export const getMineSuccess = createAction(
   '[Profile] Get Mine Success',
   props<{ mine: ProfileModel }>(),
 );
-
 export const getMineFailure = createAction(
   '[Profile] Get Mine Failure',
   props<{ getErrorMessage: HttpErrorResponseModel }>(),

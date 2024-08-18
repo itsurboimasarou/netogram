@@ -1,9 +1,14 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { Profile } from "./entities/profile.entity";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Profile } from './entities/profile.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Auth } from 'src/auth/entities/auth.entity';
 
 @Injectable()
@@ -15,9 +20,14 @@ export class ProfileService {
     private authRepository: Repository<Auth>,
   ) {}
 
-  async createProfile(createProfileDto: CreateProfileDto, uid: string): Promise<Profile> {
+  async createProfile(
+    createProfileDto: CreateProfileDto,
+    uid: string,
+  ): Promise<Profile> {
     // Kiểm tra xem profile đã tồn tại chưa
-    const existingProfile = await this.profileRepository.findOne({ where: { uid } });
+    const existingProfile = await this.profileRepository.findOne({
+      where: { uid },
+    });
     if (existingProfile) {
       console.log('existingProfile:', existingProfile);
       throw new ConflictException('Profile already exists');
@@ -32,8 +42,6 @@ export class ProfileService {
     profile.uid = uid;
     // Lưu profile
     return this.profileRepository.save(profile);
-
-
   }
 
   async getProfile(uid: string): Promise<Profile> {
@@ -41,10 +49,13 @@ export class ProfileService {
     if (!profile) {
       throw new NotFoundException('Profile not found');
     }
-    return profile
+    return profile;
   }
 
-  async updateProfile(uid: string, updateProfileDto: Partial<CreateProfileDto>): Promise<Profile> {
+  async updateProfile(
+    uid: string,
+    updateProfileDto: Partial<CreateProfileDto>,
+  ): Promise<Profile> {
     console.log('updateProfileDto:', updateProfileDto);
     const user = await this.profileRepository.findOne({ where: { uid } });
     if (!user) {
@@ -68,10 +79,5 @@ export class ProfileService {
     // Cập nhật profile
     await this.profileRepository.update({ uid }, updateProfileDto);
     return this.profileRepository.findOne({ where: { uid } });
-
   }
-
-
-
-
 }

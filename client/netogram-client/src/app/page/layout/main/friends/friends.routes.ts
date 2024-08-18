@@ -1,5 +1,6 @@
 import {Routes} from "@angular/router";
 import {FriendsComponent} from "./friends.component";
+import {canActivate} from "@angular/fire/auth-guard";
 
 export const FRIENDS_ROUTES: Routes = [
   {
@@ -17,6 +18,7 @@ export const FRIENDS_ROUTES: Routes = [
           import('./components/friend-request/friend-request.component').then(
             (m) => m.FriendRequestComponent,
           ),
+
       },
       {
         path: 'friend list',
@@ -24,6 +26,7 @@ export const FRIENDS_ROUTES: Routes = [
           import('./components/friend-list/friend-list.component').then(
             (m) => m.FriendListComponent,
           ),
+
       }
     ]
   }

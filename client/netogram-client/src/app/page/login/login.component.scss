@@ -12,7 +12,7 @@
   justify-content: space-evenly;
   align-items: center;
   width: 17%;
-  height: 50%;
+  height: 45%;
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   padding: 30px 60px 30px 60px;
@@ -33,12 +33,104 @@
   font-size:16px; margin:20px 5px;
 }
 
-.button-login{
+.button-login {
   border-radius: 12px;
-  //background-color: #;
   width: 100%;
   font-size: 18px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
+  color: var(--onPrimary);
+  border: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  i {
+    margin-right: 10px;
+  }
+
+  &:hover {
+    background-color: var(--onPrimaryContainer);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    background-color: var(--primary);
+    transform: scale(1);
+  }
 }
 #bot{
   width: 100%;
 }
+/* iPad Pro */
+@media (max-width: 1366px) {
+  .container {
+    width: 35%;
+    height: 45%;
+    padding: 30px 60px;
+  }
+
+  #top > div {
+    font-size: 28px;
+  }
+
+  .button-login {
+    font-size: 20px;
+    background-color: var(--primary);
+    color: var(--onPrimary);
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    i {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      background-color: var(--onPrimaryContainer);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background-color: var(--primary);
+      transform: scale(1);
+    }
+  }
+}
+
+
+/* iPad Air */
+@media (max-width: 1024px) {
+  .container {
+    width: 35%;
+    height: 45%;
+    padding: 30px 60px;
+  }
+
+  #top > div {
+    font-size: 28px;
+  }
+
+  .button-login {
+    font-size: 20px;
+    background-color: var(--primary);
+    color: var(--onPrimary);
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    i {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      background-color: var(--onPrimaryContainer);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background-color: var(--primary);
+      transform: scale(1);
+    }
+  }
+}
+

@@ -5,22 +5,21 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Profile } from '../profile/entities/profile.entity';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import {Post} from './entities/post.entity';
+import { Post } from './entities/post.entity';
+import { SearchService } from '../search/search.service';
 
 @Injectable()
 export class PostService {
-
   constructor(
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
     @InjectRepository(Profile)
     private profileRepository: Repository<Profile>,
-
-  ) {
-  }
-  async create(createPostDto: CreatePostDto, uid: string,urls: string[]) {
+    private readonly searchService: SearchService,
+  ) {}
+  async create(createPostDto: CreatePostDto, uid: string, urls: string[]) {
     if (!createPostDto.uid) {
-      throw new NotFoundException('uid cannot be empty');
+      throw new BadRequestException('uid cannot be empty');
     }
     const profile = await this.profileRepository.findOne({ where: { uid } });
 
@@ -31,24 +30,24 @@ export class PostService {
 
     // Create the post
     createPostDto.imageUrls = [...urls];
-    console.log("url",createPostDto.imageUrls);
+    console.log('url', createPostDto.imageUrls);
     const newPost = this.postRepository.create({ ...createPostDto, uid });
     newPost.createdAt = new Date().toISOString();
-
 
     // Save the post
     const savedPost = await this.postRepository.save(newPost);
     // Index the post
-
-
+    await this.searchService.indexPost(newPost);
 
     return savedPost;
   }
 
-  async findAll(pageNumber: number , limitNumber: number ) {
+  async findAll(pageNumber: number, limitNumber: number) {
     const skip = (pageNumber - 1) * limitNumber;
     if (isNaN(skip)) {
-      throw new BadRequestException('Calculated skip value must be a valid number');
+      throw new BadRequestException(
+        'Calculated skip value must be a valid number',
+      );
     }
     const [result, total] = await this.postRepository.findAndCount({
       skip,
@@ -62,7 +61,6 @@ export class PostService {
       limitNumber,
     };
   }
-
 
   //get post by uid in profile
   async findPostByUid(uid: string) {
@@ -98,7 +96,6 @@ export class PostService {
       ...updatePostDto,
     });
 
-
     return updatedPost;
   }
 
@@ -116,6 +113,10 @@ export class PostService {
     }
 
     await this.postRepository.delete({ id });
+  }
 
+  //search post by content
+  async searchPosts(query: string) {
+    return this.searchService.searchPosts(query);
   }
 }

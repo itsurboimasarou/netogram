@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Put } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+  Put,
+} from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -12,10 +22,9 @@ export class ProfileController {
     try {
       const { uid } = req.user;
       return this.profileService.createProfile(createProfileDto, uid);
-    }catch (e) {
+    } catch (e) {
       return e;
     }
-
   }
 
   @Get()
@@ -26,7 +35,10 @@ export class ProfileController {
   }
 
   @Put(':uid')
-  async updateProfile(@Req() req, @Body() updateProfileDto: Partial<CreateProfileDto>) {
+  async updateProfile(
+    @Req() req,
+    @Body() updateProfileDto: Partial<CreateProfileDto>,
+  ) {
     const { uid } = req.user;
     return this.profileService.updateProfile(uid, updateProfileDto);
   }

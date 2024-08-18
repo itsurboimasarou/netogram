@@ -2,8 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
   width: 100vw;
+  margin-top: 3rem;
   background-color: var(--surfaceContainer);
 }
 
@@ -15,6 +16,7 @@
   width: 20%;
   padding: 70px 60px;
   border-radius: 12px;
+  margin: auto;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
