@@ -91,7 +91,12 @@ export class SearchService {
   async searchPosts(query: string) {
     const response = await this.esClient.search({
       index: 'posts',
-      q: query,
+      query: {
+        multi_match: {
+          query: query,
+          fields: ['*'],
+        }
+      }
     });
     return response.hits.hits;
   }
@@ -102,7 +107,7 @@ export class SearchService {
       query: {
         multi_match: {
           query: query,
-          fields: ['userName'],
+          fields: ['*'],
         },
       },
     });
@@ -151,6 +156,19 @@ export class SearchService {
       index: 'posts',
       id: postId.toString(),
     });
+  }
+
+  async searchAny( indexName: string, query: string) {
+    const response = await this.esClient.search({
+      index: [indexName],
+      query: {
+        multi_match: {
+          query: query,
+          fields: ['*'],
+        },
+      },
+    });
+    return response.hits.hits.map((hit)=>hit['_source']);
   }
 
 }

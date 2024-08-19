@@ -11,4 +11,19 @@ export class SearchController {
   async searchPosts(@Body() request: any) {
     return this.searchService.searchPosts(request.query);
   }
+
+  @Get('person')
+  async searchProfiles(@Body() request: any) {
+    return this.searchService.searchProfiles(request.query);
+  }
+
+  @Get('any')
+  async searchTags(@Query('q') q: string) {
+    let profiles = await this.searchService.searchAny('profiles',q);
+    let posts = await this.searchService.searchAny('posts',q);
+    return {
+      profiles: profiles,
+      posts: posts
+    };
+  }
 }
