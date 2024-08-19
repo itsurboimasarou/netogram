@@ -55,17 +55,33 @@ mat-form-field {
   }
 }
 
-.profile-picture-container {
+.avatar-picture-container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 100%;
   position: relative;
 }
 
-.profile-picture {
+.avatar-wrapper {
   width: 120px;
   height: 120px;
+  position: relative;
+}
+
+.avatar-picture {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.avatar-menu-button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--surface);
 }
 
 .cover-photo-container {

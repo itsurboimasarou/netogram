@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { MatButton, MatIconButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import { NgClass, NgForOf } from "@angular/common";
 import { Router } from "@angular/router";
+
+class PostResult {
+}
 
 @Component({
   selector: 'app-post',
