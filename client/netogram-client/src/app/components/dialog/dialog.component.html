@@ -28,8 +28,8 @@
       }
 
       @if(this.imageCount == 0){
-        <span id="imageIcon" class="material-symbols-outlined">image</span>
-        <p id="comment">Add Photos By Click or Drag</p>
+        <span id="imageIcon" (click)="addProfilePicture()" class="material-symbols-outlined">image</span>
+        <p id="comment" (click)="addProfilePicture()">Add Photos By Click or Drag</p>
       }
 
 

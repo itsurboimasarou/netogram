@@ -51,6 +51,21 @@ export class PostComponent {
       comments: 5,
       shares: 2,
       isLiked: false,
+    },
+    {
+      avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+      name: 'Jane Doe',
+      caption: 'Another post caption...',
+      postTime: '1 day ago',
+      postImages: [
+        'https://images.unsplash.com/photo-1460353581641-37baddab0fa2',
+        'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
+        'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+      ],
+      likes: 123,
+      comments: 5,
+      shares: 2,
+      isLiked: false,
     }
   ];
 

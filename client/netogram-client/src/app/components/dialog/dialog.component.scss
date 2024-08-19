@@ -58,11 +58,12 @@
   top: 62%;
   right: 50%;
   transform: translate(50%, -50%);
+  cursor: pointer;
 }
 
 #deletBtn{
   position: absolute;
-  top: 30%;
+  top: 34%;
   right: 6%;
   z-index: 1;
 }
@@ -81,6 +82,7 @@
 .carousel-button.next {
   right: 5%;
 }
+
 
 .carousel-container {
   display: flex;
@@ -115,9 +117,11 @@
   top: 56%;
   left: 50%;
   transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 
 .carousel-images{
+  width: 100%;
   display: flex;
   gap: 10px;
   transform: translateX(0px);

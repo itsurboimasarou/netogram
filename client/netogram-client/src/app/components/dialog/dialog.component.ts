@@ -1,71 +1,88 @@
-import {Component, ElementRef, inject, ViewChild, ChangeDetectionStrategy} from '@angular/core';
-import {MaterialModule} from "../../shared/material.module";
-import {MatDialogRef} from "@angular/material/dialog";
-import {Store} from "@ngrx/store";
-import {ProfileState} from "../../ngrx/profile/profile.state";
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {PostModel} from "../../models/post.model";
-import {transition} from "@angular/animations";
+import {
+  Component,
+  ElementRef,
+  inject,
+  ViewChild,
+  ChangeDetectionStrategy,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
+import { MaterialModule } from '../../shared/material.module';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { ProfileState } from '../../ngrx/profile/profile.state';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { PostModel } from '../../models/post.model';
+import { transition } from '@angular/animations';
+import { PostState } from '../../ngrx/post/post.state';
+import * as postActions from '../../ngrx/post/post.actions';
+import { Subscription } from 'rxjs';
+import { StorageState } from '../../ngrx/storage/storage.state';
+import * as storageActions from '../../ngrx/storage/storage.actions';
+import * as profileActions from '../../ngrx/profile/profile.actions';
 
 @Component({
   selector: 'app-dialog',
   standalone: true,
   imports: [MaterialModule, ReactiveFormsModule],
   templateUrl: './dialog.component.html',
-  styleUrl: './dialog.component.scss'
+  styleUrl: './dialog.component.scss',
 })
-export class DialogComponent {
+export class DialogComponent implements OnDestroy {
   startX = 0;
   scrollLeft = 0;
 
-  postForm = new FormGroup(
-    {
-      uid: new FormControl(''),
-      imageUrl: new FormControl(''),
-      content: new FormControl(''),
-      id: new FormControl('')
-    }
-  )
+  subscription: Subscription[] = [];
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('postTextarea') postTextarea!: ElementRef;
+  @ViewChild('imageContainer') imageContainer!: ElementRef;
+
+  selectedFiles: File[] = [];
+  public imageCount: number = 0;
+
+  profileMine$ = this.store.select('profile', 'mine');
+  readonly dialogRef = inject(MatDialogRef<DialogComponent>);
+
+  postForm = new FormGroup({
+    uid: new FormControl(''),
+    imageUrl: new FormControl(''),
+    content: new FormControl(''),
+    id: new FormControl(''),
+  });
 
   postData: PostModel = {
     uid: '',
     imageUrl: [],
     content: '',
     id: BigInt(0),
-  }
-
-  selectedFiles: File[] = [];
-
+  };
 
   constructor(
     private store: Store<{
-      profile: ProfileState
+      profile: ProfileState;
+      post: PostState;
+      storage: StorageState;
     }>
   ) {
-
-    this.profileMine$.subscribe((profile) => {
-      if (profile) {
-        console.log('profile', profile);
-      }
-    });
+    this.subscription.push(
+      this.profileMine$.subscribe((profile) => {
+        if (profile) {
+          console.log('profile', profile);
+        }
+      })
+    );
   }
 
-  profileMine$ = this.store.select('profile', 'mine');
-  readonly dialogRef = inject(MatDialogRef<DialogComponent>);
-
-
-  @ViewChild('fileInput') fileInput!: ElementRef;
-  @ViewChild('postTextarea') postTextarea!: ElementRef;
-  @ViewChild('imageContainer') imageContainer!: ElementRef;
+  ngOnDestroy(): void {
+    this.subscription.forEach((sub) => sub.unsubscribe());
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  public imageCount: number = 0;
-
   ngAfterViewInit() {
-
     const container = this.imageContainer.nativeElement;
     container.addEventListener('dragover', this.handleDragOver.bind(this));
     container.addEventListener('drop', this.handleDrop.bind(this));
@@ -102,11 +119,11 @@ export class DialogComponent {
     }
     input.onchange = (event: any) => {
       const files = event.target.files;
-      if(this.imageCount + files.length > 5) {
+      if (this.imageCount + files.length > 5) {
         alert('You can only upload 5 images at a time');
         return;
       }
-      this.selectedFiles = Array.from(files);
+      this.selectedFiles = this.selectedFiles.concat(Array.from(files));
       this.processFiles(files);
     };
     input.click();
@@ -118,6 +135,7 @@ export class DialogComponent {
     for (let i = 0; i < filesToProcess; i++) {
       const file = files[i];
       if (file) {
+        // this.store.dispatch(storageActions.uploadFile({file: file, fileName: 'posts'}));
         const reader = new FileReader();
         reader.onload = (e: any) => {
           const imageSrc = e.target.result;
@@ -131,53 +149,53 @@ export class DialogComponent {
 
   insertImageIntoContainer(imageSrc: string): void {
     const container = this.imageContainer.nativeElement;
+    const containerWidth = container.clientWidth;
     const imgElement = document.createElement('div');
-    imgElement.innerHTML = `<img style="height: 36vh; object-fit: scale-down" src="${imageSrc}" alt="Selected Image" />`;
+    imgElement.innerHTML = `<img style="height: 36vh; width: ${containerWidth}px; object-fit: scale-down" src="${imageSrc}" class="post-image" alt="Selected Image" />`;
     container.appendChild(imgElement);
   }
 
   delelteAllImages(): void {
     const container = this.imageContainer.nativeElement;
     container.innerHTML = '';
-    this.imageCount = 0
+    this.imageCount = 0;
   }
 
-  onFileSelected(event: any) {
-  }
+  onFileSelected(event: any) {}
 
   prevImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
-    carousel.scrollTo({
-      left: carousel.scrollLeft + imageWidth - 100, // 50 is the gap between images
-      behavior: 'smooth'
-    });   // 10 is the gap between images
+    carousel.scrollBy({
+      left: -(imageWidth + 10), // Adjust gap between images
+      behavior: 'smooth',
+    });
   }
 
   nextImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
-    carousel.scrollTo({
-      left: carousel.scrollLeft + imageWidth + 100, // 50 is the gap between images
-      behavior: 'smooth'
+    carousel.scrollBy({
+      left: imageWidth + 10, // Adjust gap between images
+      behavior: 'smooth',
     });
-    // carousel.scrollLeft += imageWidth + 50; // 10 is the gap between images
   }
 
   onPost() {
     this.profileMine$.subscribe((profile) => {
-      this.postData.uid = profile.uid;
+      if (profile?.uid) {
+        this.postData.uid = profile.uid;
+      }
     });
     this.postData.content = <string>this.postForm.value.content;
     this.postData.imageUrl = [];
     this.postData.imageUrl = this.selectedFiles;
     console.log('Post Data', this.postData);
+    this.store.dispatch(postActions.CreatePost({ post: this.postData }));
     this.dialogRef.close();
   }
 
-  onMouseDown (event: MouseEvent, carousel: HTMLDivElement){
+  onMouseDown(event: MouseEvent, carousel: HTMLDivElement) {
     event.preventDefault();
     this.startX = event.pageX - carousel.offsetLeft;
     this.scrollLeft = carousel.scrollLeft;
   }
-
-
 }

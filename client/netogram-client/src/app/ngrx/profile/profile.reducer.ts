@@ -3,6 +3,7 @@ import { ProfileModel } from '../../models/profile.model';
 import { HttpErrorResponseModel } from '../../models/http-error-response.model';
 import { createReducer, on } from '@ngrx/store';
 import * as ProfileActions from './profile.actions';
+
 export const initialState: ProfileState = {
   mine: <ProfileModel>{},
   profile: <ProfileModel>{},
@@ -17,8 +18,8 @@ export const initialState: ProfileState = {
   updateErrorMessage: <HttpErrorResponseModel>{},
 
   isGettingMine: false,
-  isGetMineFailure: false,
   isGetMineSuccess: false,
+  isGetMineFailure: false,
   getErrorMessage: <HttpErrorResponseModel>{},
 
   isGettingById: false,
@@ -27,6 +28,19 @@ export const initialState: ProfileState = {
 };
 export const profileReducer = createReducer(
   initialState,
+  on(ProfileActions.clearMessages, (state) => {
+    return {
+      ...state,
+
+      createErrorMessage: <HttpErrorResponseModel>{},
+
+      updateErrorMessage: <HttpErrorResponseModel>{},
+
+      getErrorMessage: <HttpErrorResponseModel>{},
+
+      getErrorMessageById: <HttpErrorResponseModel>{},
+    };
+  }),
 
   // createMine
   on(ProfileActions.createMine, (state, { type }) => {
@@ -38,7 +52,7 @@ export const profileReducer = createReducer(
   }),
 
   on(ProfileActions.createMineSuccess, (state, { type }) => {
-    console.log(type)
+    console.log(type);
     return {
       ...state,
       isCreating: false,
@@ -90,30 +104,26 @@ export const profileReducer = createReducer(
     console.log(type);
     return {
       ...state,
-      isGetting: true,
-      isGetMineFailure: false,
+      isGettingMine: true,
     };
   }),
-
   on(ProfileActions.getMineSuccess, (state, { mine, type }) => {
     console.log(type);
     return {
       ...state,
-      isGetting: false,
+      isGettingMine: false,
       isGetMineSuccess: true,
-      isGetMineFailure: false,
       mine: mine,
     };
   }),
-
   on(ProfileActions.getMineFailure, (state, { getErrorMessage, type }) => {
     console.log(type);
     return {
       ...state,
-      isGetting: false,
+      isGettingMine: false,
       isGetMineSuccess: false,
       isGetMineFailure: true,
-      getErrorMessage,
+      getErrorMessage: getErrorMessage,
     };
   }),
 
@@ -177,6 +187,7 @@ export const profileReducer = createReducer(
       isGetMineSuccess: false,
       isGetMineFailure: false,
       getErrorMessage: <HttpErrorResponseModel>{},
+      mine: null,
     };
   }),
 

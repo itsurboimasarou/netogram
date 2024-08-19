@@ -12,6 +12,9 @@ h3 {
   margin-top: 10px;
   border-bottom: 1px solid var(--border);
   color: var(--onSurface);
+  @media only screen and (max-width: 1366px) {
+    font-size: 20px;
+  }
 }
 
 .suggestion {
@@ -20,6 +23,9 @@ h3 {
   justify-content: space-around;
   margin: 1px 0;
   padding: 12px;
+  @media only screen and (max-width: 1366px) {
+    padding: 10px;
+  }
 }
 
 .avatar {
@@ -27,12 +33,19 @@ h3 {
   height: 2.5rem;
   border-radius: 100%;
   margin-right: 10px;
+  @media only screen and (max-width: 1366px) {
+    width: 2rem;
+    height: 2rem;
+  }
 }
 
 .label {
   margin-right: auto;
   display: flex;
   flex-direction: column;
+  @media only screen and (max-width: 1366px) {
+    font-size: 14px;
+  }
 }
 
 .name {
@@ -43,23 +56,24 @@ h3 {
   font-size: 13px;
   color: var(--outline);
   font-weight: 500;
+  @media only screen and (max-width: 1366px) {
+    font-size: 14px;
+  }
 }
-//
-//#add-friend-button {
-//  background-color: var(--primary);
-//  color: var(--onPrimary);
-//  border-radius: 12px;
-//  cursor: pointer;
-//  font-size: 15px;
-//  padding: 10px 20px;
-//  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-//  height: 2.9rem;
-//}
 
-
-.add-friend-button{
-  background-color: var(--primary)!important;
+.add-friend-button {
+  background-color: var(--primary) !important;
   border-radius: 12px;
   color: var(--onPrimary);
+  text-transform: none;
 
+  @media only screen and (max-width: 1366px) {
+    padding: 0;
+    min-width: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

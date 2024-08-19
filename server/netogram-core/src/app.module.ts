@@ -10,6 +10,8 @@ import { StorageModule } from './storage/storage.module';
 import {IdgenService} from "./utils/idgen/idgen.service";
 import {IdgenModule} from "./utils/idgen/idgen.module";
 import { ProfileModule } from './profile/profile.module';
+import { PostModule } from './post/post.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { ProfileModule } from './profile/profile.module';
       StorageModule,
       IdgenModule,
       ProfileModule,
+      PostModule,
+      SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService, IdgenService],

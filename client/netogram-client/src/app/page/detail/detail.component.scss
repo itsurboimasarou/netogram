@@ -5,10 +5,15 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
-  height: 100vh; /* Full window height */
-  width: 100vw;  /* Full window width */
-  box-sizing: border-box ;
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
   position: relative;
+
+  @media only screen and (max-width: 1366px) {
+    flex-direction: column;
+    height: auto;
+  }
 }
 
 .close-button {
@@ -24,8 +29,11 @@
   overflow: hidden;
   width: 65%;
   position: relative;
-  //display: flex;
-  //align-items: center;
+
+  @media only screen and (max-width: 1366px) {
+    width: 100%;
+    height: 60vh;
+  }
 }
 
 #post-image{
@@ -40,6 +48,7 @@
   height: 100%;
   filter: blur(10px);
 }
+
 .blur-background {
   filter: blur(10px);
   background-size: 100%;
@@ -56,12 +65,21 @@
   flex-direction: column;
   padding: 20px;
   width: 35%;
+
+  @media only screen and (max-width: 1366px) {
+    width: 90%;
+    padding-left: 50px;
+  }
 }
 
 .post-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media only screen and (max-width: 1366px) {
+    flex-direction: row;
+  }
 }
 
 .profile-pic img{
@@ -75,6 +93,10 @@
 .post-info {
   flex: 1;
   margin-left: 10px;
+
+  @media only screen and (max-width: 1366px) {
+    margin-left: 5px;
+  }
 }
 
 .username {
@@ -94,6 +116,10 @@
 
 .post-content {
   margin: 20px 0;
+
+  @media only screen and (max-width: 1366px) {
+    margin: 15px 0;
+  }
 }
 
 .likes {
@@ -106,6 +132,10 @@
 .post-actions {
   display: flex;
   align-items: center;
+
+  @media only screen and (max-width: 1366px) {
+    justify-content: space-between;
+  }
 }
 
 .spacer {
@@ -124,6 +154,11 @@
   max-height: 100vh;
   overflow-y: auto;
   scrollbar-width: none;
+  padding-bottom: 30px;
+
+  @media only screen and (max-width: 1366px) {
+    max-height: 60vh;
+  }
 }
 
 .comment {
@@ -167,6 +202,8 @@ mat-form-field {
 }
 
 #text-button {
+  display: block;
+  margin: 10px auto;
   background: none;
   border: none;
   color: #3f51b5;
@@ -195,6 +232,10 @@ mat-form-field {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    @media only screen and (max-width: 1366px) {
+      filter: blur(10px);
+    }
   }
 
   .bg-text {
@@ -206,6 +247,12 @@ mat-form-field {
     z-index: 2;
     width: 100%;
     height: 100%;
+
+    @media only screen and (max-width: 1366px) {
+      top: 32%;
+      width: 100%;
+      height: 60%;
+    }
   }
 }
 
@@ -220,7 +267,6 @@ mat-form-field {
   width: 100%;
   height: 95%;
   border-radius: 12px;
-
   object-fit: contain;
 }
 
@@ -231,14 +277,18 @@ mat-form-field {
   z-index: 3;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 50%;
+
+  @media only screen and (max-width: 1366px) {
+    top: 50%;
+  }
 }
 
 .prev-button {
-  left: 10px;
+  left: 20px;
 }
 
 .next-button {
-  right: 10px;
+  right: 20px;
 }
 
 .favorite {

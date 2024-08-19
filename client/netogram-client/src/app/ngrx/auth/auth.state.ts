@@ -4,7 +4,10 @@ export interface AuthState {
   idToken: string;
   authCredential: AuthCredentialModel;
 
-  loginWithGoogleSuccess: boolean;
-  loading: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+
+  logOutSuccess: boolean;
+
   error: any;
 }

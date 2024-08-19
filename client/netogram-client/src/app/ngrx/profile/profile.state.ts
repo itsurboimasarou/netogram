@@ -4,7 +4,7 @@ import { HttpErrorResponseModel } from '../../models/http-error-response.model';
 export interface ProfileState {
   profiles: ProfileModel[];
   profile: ProfileModel;
-  mine: ProfileModel;
+  mine: ProfileModel | null;
 
   isCreating: boolean;
   isCreateSuccess: boolean;
