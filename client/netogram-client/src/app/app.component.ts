@@ -62,6 +62,7 @@ export class AppComponent implements OnInit {
         this.store.dispatch(ProfileActions.getMine({ uid: user.uid }));
       } else {
         this.router.navigate(['/login']).then(() => {
+          console.log('User is not logged in');
           this.isShowSpinner = false;
         });
       }

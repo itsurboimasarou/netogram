@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -20,5 +21,10 @@ export const routes: Routes = [
     path: 'detail/:id',
     loadChildren: () =>
       import('./page/detail/detail.routes').then((m) => m.DETAIL_ROUTES),
+  },
+  {
+    path: 'search-result',
+    loadChildren: () =>
+      import('./page/search-result/search-result.route').then((m) => m.SEARCH_RESULT_ROUTES),
   },
 ];

@@ -10,6 +10,7 @@ import { Profile } from './entities/profile.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Auth } from 'src/auth/entities/auth.entity';
+import { SearchService } from '../search/search.service';
 
 @Injectable()
 export class ProfileService {
@@ -18,6 +19,7 @@ export class ProfileService {
     private profileRepository: Repository<Profile>,
     @InjectRepository(Auth)
     private authRepository: Repository<Auth>,
+    private readonly searchService: SearchService,
   ) {}
 
   async createProfile(
@@ -40,6 +42,10 @@ export class ProfileService {
     // Tạo profile mới
     const profile = this.profileRepository.create(createProfileDto);
     profile.uid = uid;
+
+    await this.searchService.indexProfile(profile);
+
+
     // Lưu profile
     return this.profileRepository.save(profile);
   }
