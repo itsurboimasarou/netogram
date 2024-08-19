@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-import {Component, OnInit} from '@angular/core';
-import {Router, RouterOutlet} from '@angular/router';
-import {Auth, idToken, onAuthStateChanged, user} from "@angular/fire/auth";
-import {select, Store} from "@ngrx/store";
-import {ProfileState} from "./ngrx/profile/profile.state";
-import {AuthState} from "./ngrx/auth/auth.state";
-import {Observable, Subscription} from "rxjs";
-import {ProfileModel} from "./models/profile.model";
-import {AuthCredentialModel} from "./models/auth.model";
-import * as AuthActions from "./ngrx/auth/auth.actions";
-import * as ProfileActions from "./ngrx/profile/profile.actions";
-=======
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
@@ -22,7 +9,6 @@ import { AuthCredentialModel } from './models/auth.model';
 import * as AuthActions from './ngrx/auth/auth.actions';
 import * as ProfileActions from './ngrx/profile/profile.actions';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
->>>>>>> 58c79f2d3ef7d6cb7c08673057c92f925b4602b1
 
 @Component({
   selector: 'app-root',
@@ -37,14 +23,6 @@ export class AppComponent implements OnInit {
   storeIdToken$!: Observable<string>;
   storeAuthCredential$!: Observable<AuthCredentialModel>;
 
-<<<<<<< HEAD
-  loginWithGoogleSuccess$!: Observable<boolean>;
-
-  profileMine$!: Observable<ProfileModel>;
-  getProfileMineSuccess$!: Observable<boolean>;
-
-  profileMineFailure$!: Observable<boolean>;
-=======
   authCredential$ = this.store.select((state) => state.auth.authCredential);
   mine$ = this.store.select((state) => state.profile.mine);
   getMineError$ = this.store.select((state) => state.profile.getErrorMessage);
@@ -54,11 +32,10 @@ export class AppComponent implements OnInit {
   isGetMineFailure$ = this.store.select(
     (state) => state.profile.isGetMineFailure,
   );
->>>>>>> 58c79f2d3ef7d6cb7c08673057c92f925b4602b1
 
   title = 'netogram-client';
 
-  isShowSpinner = true;
+  isShowSpinner = false;
 
   constructor(
     private router: Router,
@@ -71,11 +48,6 @@ export class AppComponent implements OnInit {
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         let idToken = await user.getIdToken(true);
-<<<<<<< HEAD
-        // this.router.navigate(['/loading']).then();
-=======
-
->>>>>>> 58c79f2d3ef7d6cb7c08673057c92f925b4602b1
         this.uid = user.uid;
 
         let auth: AuthCredentialModel = {
@@ -89,13 +61,9 @@ export class AppComponent implements OnInit {
         this.store.dispatch(AuthActions.storeAuthCredential({ auth: auth }));
         this.store.dispatch(ProfileActions.getMine({ uid: user.uid }));
       } else {
-<<<<<<< HEAD
-        // this.router.navigate(['/login']).then();
-=======
         this.router.navigate(['/login']).then(() => {
           this.isShowSpinner = false;
         });
->>>>>>> 58c79f2d3ef7d6cb7c08673057c92f925b4602b1
       }
     });
   }
@@ -111,27 +79,6 @@ export class AppComponent implements OnInit {
       console.log('idToken', idToken);
     });
 
-<<<<<<< HEAD
-    this.storeAuthCredential$.subscribe((auth) => {
-      if (auth) {
-        console.log('auth', auth.uid);
-        this.store.dispatch(ProfileActions.getMine({ uid: auth.uid }));
-      }
-    });
-
-    this.profileMine$ = this.store.pipe(
-      select((state) => state.profile.profile),
-    );
-    this.getProfileMineSuccess$ = this.store.pipe(
-      select((state) => state.profile.isGetMineSuccess),
-    );
-    this.profileMineFailure$ = this.store.pipe(
-      select((state) => state.profile.isGetMineFailure),
-    );
-
-    this.loginWithGoogleSuccess$ = this.store.pipe(
-      select((state) => state.auth.loginWithGoogleSuccess),
-=======
     combineLatest([
       this.authCredential$,
       this.isGetMineSuccess$,
@@ -160,7 +107,6 @@ export class AppComponent implements OnInit {
           }
         }
       },
->>>>>>> 58c79f2d3ef7d6cb7c08673057c92f925b4602b1
     );
   }
 
