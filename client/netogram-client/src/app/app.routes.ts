@@ -22,4 +22,9 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./page/detail/detail.routes').then((m) => m.DETAIL_ROUTES),
   },
+  {
+    path: 'search-result',
+    loadChildren: () =>
+      import('./page/search-result/search-result.route').then((m) => m.SEARCH_RESULT_ROUTES),
+  },
 ];
