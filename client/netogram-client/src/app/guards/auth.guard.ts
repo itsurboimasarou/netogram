@@ -9,10 +9,10 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   return store.select('profile', 'mine').pipe(
     map((profile) => {
-      if (profile && profile.uid) {
+      if (profile.uid) {
         return true;
       } else {
-        router.navigate(['/login']);
+        router.navigate(['/register']);
         return false;
       }
     }),

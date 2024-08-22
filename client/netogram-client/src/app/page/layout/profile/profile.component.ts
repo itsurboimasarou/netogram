@@ -1,27 +1,31 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, RouterOutlet, Scroll} from "@angular/router";
-import {SidebarComponent} from "../../../components/sidebar/sidebar.component";
-import {MaterialModule} from "../../../shared/material.module";
-import {Location} from "@angular/common";
-import {PostComponent} from "../../../components/post/post.component";
-import {MatDialog} from "@angular/material/dialog";
-import {ProfileEditComponent} from "./profile-edit/profile-edit.component";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterOutlet, Scroll } from '@angular/router';
+import { SidebarComponent } from '../../../components/sidebar/sidebar.component';
+import { MaterialModule } from '../../../shared/material.module';
+import { Location } from '@angular/common';
+import { PostComponent } from '../../../components/post/post.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import { Store } from '@ngrx/store';
+import { PostState } from '../../../ngrx/post/post.state';
+import { ProfileState } from '../../../ngrx/profile/profile.state';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    SidebarComponent,
-    MaterialModule,
-    PostComponent,
-
-  ],
+  imports: [RouterOutlet, SidebarComponent, MaterialModule, PostComponent],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements OnInit{
-  constructor( private location :Location,private  activeRoute: ActivatedRoute, private dialog: MatDialog
+export class ProfileComponent implements OnInit {
+  constructor(
+    private location: Location,
+    private activeRoute: ActivatedRoute,
+    private dialog: MatDialog,
+    private store: Store<{
+      post: PostState;
+      profile: ProfileState;
+    }>,
   ) {
     this.activeRoute = activeRoute;
 
@@ -31,13 +35,15 @@ export class ProfileComponent implements OnInit{
   goBack(): void {
     this.location.back();
   }
+
   ngOnInit(): void {
-    const {uid} = this.activeRoute.snapshot.params;
+    const { uid } = this.activeRoute.snapshot.params;
     console.log(uid);
-    }
+  }
 
-    profileEdit() : void {
-      const dialogRef = this.dialog.open(ProfileEditComponent, {width: '100px'});
-    }
-
+  profileEdit(): void {
+    const dialogRef = this.dialog.open(ProfileEditComponent, {
+      width: '100px',
+    });
+  }
 }

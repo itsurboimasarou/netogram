@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
             this.router.navigate(['/home']).then(() => {
               this.isShowSpinner = false;
             });
-          } else if (isGetMineFailure && getMineError.status) {
+          } else if (isGetMineFailure || getMineError.status) {
             console.log(getMineError);
             this.router.navigate(['/register']).then(() => {
               this.isShowSpinner = false;
