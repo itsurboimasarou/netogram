@@ -11,19 +11,21 @@
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  width: 17%;
-  height: 50%;
+  width: 20%;
+  height: 45%;
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   padding: 30px 60px 30px 60px;
-  background-color: white;
+  background-color: var(--onPrimary);
 }
+
 
 #top>div{
   font-size: 24px;
   font-weight: bold;
   width: 100%;
   row-gap: 10px;
+  line-height: 1;
 }
 #top>div>span{
   color: var(--primary);
@@ -32,13 +34,118 @@
 .fa-2x{
   font-size:16px; margin:20px 5px;
 }
-
-.button-login{
-  border-radius: 12px;
-  //background-color: #;
-  width: 100%;
-  font-size: 18px;
+.mat-mdc-unelevated-button:not(:disabled){
+  background-color: var(--onPrimary);
+  color: var(--primary);
 }
+.button-login img {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 15px;
+}
+.button-login {
+  border-radius: 12px;
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary); /* Change to transparent for outline button */
+  color: var(--primary); /* Change text color to primary */
+  border: 2px solid var(--primary); /* Add border for outline */
+  transition: filter 0.3s ease, transform 0.3s ease;
+
+  i {
+    margin-right: 10px;
+  }
+
+  &:hover {
+    filter: brightness(1);
+    transform: scale(1.05);
+    background-color: var(--onPrimary); /* Add background color on hover */
+    color: var(--primary); /* Change text color on hover */
+  }
+
+  &:active {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+}
+
 #bot{
   width: 100%;
 }
+/* iPad Pro Portrait*/
+@media (max-width: 1024px) and (orientation: portrait) {
+  .container {
+    width: 50%;
+    height: auto;
+    padding: 30px 60px;
+  }
+  #top{
+    column-gap: 30px;
+  }
+
+  #top > div {
+    font-size: 28px;
+  }
+
+  .button-login {
+    font-size: 20px;
+  }
+}
+/* iPad Pro Landscape */
+@media (max-width: 1366px) and (orientation: landscape) {
+  .container {
+    width: 25%;
+    height: 60%;
+    padding: 30px 60px;
+  }
+  #top{
+    column-gap: 30px;
+  }
+  #top > div {
+    font-size: 28px;
+  }
+
+  .button-login {
+    font-size: 20px;
+  }
+}
+
+/* iPad Air Portrait*/
+@media (max-width: 1180px) and (orientation: portrait){
+  .container {
+    width: 35%;
+    height: 45%;
+    padding: 30px 60px;
+  }
+
+  #top > div {
+    font-size: 28px;
+    row-gap: 20px;
+  }
+
+  .button-login {
+    font-size: 20px;
+  }
+}
+/*Ipad Air Landscape*/
+@media (max-width: 820px) and (orientation: landscape) {
+  .container {
+    width: 35%;
+    height: 45%;
+    padding: 30px 60px;
+  }
+
+  #top > div {
+    font-size: 28px;
+  }
+
+  .button-login {
+    font-size: 20px;
+  }
+}
+
