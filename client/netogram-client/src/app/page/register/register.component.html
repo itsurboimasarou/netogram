@@ -5,24 +5,25 @@
       <h2>Personal Information</h2>
     </div>
     <form [formGroup]="regisForm">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
-        <input matInput formControlName="userName">
+        <input
+          matInput
+          [formControl]="userName"
+          (blur)="updateErrorMessage()"
+          required
+        />
+        @if (userName.invalid) {
+          <mat-error>{{errorMessage()}}</mat-error>
+        }
       </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <!--    <mat-label>Email Address</mat-label>-->
-        <input  value="tn212079@gmail.com"
-               matInput color="primary"
-               formControlName="email"
-                readonly
-        >
+      <mat-form-field appearance="outline">
+        <mat-label>Email Address</mat-label>
+        <input matInput formControlName="email" readonly>
       </mat-form-field>
+      <div id="nextBox">
+        <button mat-flat-button (click)="register()">Next</button>
+      </div>
     </form>
-
-    <div id="nextBox">
-      <button style="width: 35%;height: 40px" mat-flat-button color="primary" (click)="register()">Next</button>
-    </div>
   </div>
-
 </div>

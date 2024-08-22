@@ -48,7 +48,6 @@ export class AppComponent implements OnInit {
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         let idToken = await user.getIdToken(true);
-
         this.uid = user.uid;
 
         let auth: AuthCredentialModel = {
@@ -111,4 +110,5 @@ export class AppComponent implements OnInit {
       },
     );
   }
+
 }
