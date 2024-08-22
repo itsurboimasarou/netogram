@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, RouterOutlet} from '@angular/router';
 import { MatCard, MatCardContent } from "@angular/material/card";
 import { MatList, MatListItem } from "@angular/material/list";
-import { MatButton } from "@angular/material/button";
-import { NgForOf } from "@angular/common";
+import {MatButton, MatFabButton} from "@angular/material/button";
+import {Location, NgForOf} from "@angular/common";
 import { PostComponent } from "../../components/post/post.component";
 import {NavbarComponent} from "../../components/navbar/navbar.component";
+import {MatIcon} from "@angular/material/icon";
 
 
 interface UserResult {
@@ -41,7 +42,9 @@ interface PostResult {
     NgForOf,
     PostComponent,
     NavbarComponent,
-    RouterOutlet
+    RouterOutlet,
+    MatIcon,
+    MatFabButton
   ],
   styleUrls: ['./search-result.component.scss']
 })
@@ -50,7 +53,7 @@ export class SearchResultComponent implements OnInit {
   userResults: UserResult[] = [];
   postResults: PostResult[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -66,9 +69,9 @@ export class SearchResultComponent implements OnInit {
 
   private getMockUserResults(): UserResult[] {
     return [
-      { uid: '1', name: 'Shiba', avatarUrl: 'https://example.com/avatar1.jpg', mutualFriends: 230 },
-      { uid: '2', name: 'Akita', avatarUrl: 'https://example.com/avatar2.jpg', mutualFriends: 180 },
-      { uid: '3', name: 'Husky', avatarUrl: 'https://example.com/avatar3.jpg', mutualFriends: 150 },
+      { uid: '1', name: 'Shiba', avatarUrl: 'https://scontent.fsgn5-10.fna.fbcdn.net/v/t39.30808-1/434664048_1193158432056966_2412826848119332551_n.jpg?stp=dst-jpg_s200x200&_nc_cat=107&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeF7EOYQkcVsowEJxQD-XQH1XvPZcTrcxCNe89lxOtzEI-w1wgKBva9mchUgPV7FLE4Dq6Chb3joUjhOZy_RHRGk&_nc_ohc=Cvri7sjY7yIQ7kNvgFVOk9X&_nc_ht=scontent.fsgn5-10.fna&oh=00_AYCC0YvRxagL3_czneE_pOFXdj7q1QMeSb_1VC-iJPufUA&oe=66CC95F4', mutualFriends: 230 },
+      { uid: '2', name: 'Akita', avatarUrl: 'https://scontent.fsgn5-10.fna.fbcdn.net/v/t39.30808-1/434664048_1193158432056966_2412826848119332551_n.jpg?stp=dst-jpg_s200x200&_nc_cat=107&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeF7EOYQkcVsowEJxQD-XQH1XvPZcTrcxCNe89lxOtzEI-w1wgKBva9mchUgPV7FLE4Dq6Chb3joUjhOZy_RHRGk&_nc_ohc=Cvri7sjY7yIQ7kNvgFVOk9X&_nc_ht=scontent.fsgn5-10.fna&oh=00_AYCC0YvRxagL3_czneE_pOFXdj7q1QMeSb_1VC-iJPufUA&oe=66CC95F4', mutualFriends: 180 },
+      { uid: '3', name: 'Husky', avatarUrl: 'https://scontent.fsgn5-10.fna.fbcdn.net/v/t39.30808-1/434664048_1193158432056966_2412826848119332551_n.jpg?stp=dst-jpg_s200x200&_nc_cat=107&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeF7EOYQkcVsowEJxQD-XQH1XvPZcTrcxCNe89lxOtzEI-w1wgKBva9mchUgPV7FLE4Dq6Chb3joUjhOZy_RHRGk&_nc_ohc=Cvri7sjY7yIQ7kNvgFVOk9X&_nc_ht=scontent.fsgn5-10.fna&oh=00_AYCC0YvRxagL3_czneE_pOFXdj7q1QMeSb_1VC-iJPufUA&oe=66CC95F4', mutualFriends: 150 },
     ];
   }
 
@@ -99,5 +102,8 @@ export class SearchResultComponent implements OnInit {
         isLiked: false
       },
     ];
+  }
+  goBack(): void {
+    this.location.back();
   }
 }

@@ -1,16 +1,21 @@
+<app-navbar></app-navbar>
+
+<!--<div class = "navbar-container">-->
+<!--  <app-navbar></app-navbar>-->
+<!--</div>-->
+
 <div class="container">
-  <div class="top">
-    <app-navbar></app-navbar>
-  </div>
-  <div class="main">
-    <router-outlet></router-outlet>
-  </div>
-</div>
-
+  <router-outlet></router-outlet>
 <div class="body">
-  <div class="search-results">
-    <h3>{{ searchTerm ? 'Results for "' + searchTerm + '"' : 'Mọi Người' }}</h3>
-
+  <div class="search-result">
+    <div>
+      <button id="backButton" (click)="goBack()" mat-fab>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <div class="everyone">
+        <h4>Everyone</h4>
+    </div>
     <mat-card class="user-suggestions">
       <mat-card-content>
         <div *ngFor="let user of userResults" class="user-item">
@@ -21,11 +26,17 @@
               <div class="mutual-friends">{{ user.mutualFriends }} mutual friends</div>
             </div>
           </div>
-          <button mat-button color="primary" class="add-friend-btn">Add friend</button>
+          <button mat-flat-button class="add-friend-button">
+            <mat-icon>person_add_outlined</mat-icon>
+            Add friend</button>
         </div>
       </mat-card-content>
     </mat-card>
-
+    <div class="post">
+      <h4>Related post</h4>
+    </div>
     <app-post> </app-post>
   </div>
 </div>
+</div>
+
