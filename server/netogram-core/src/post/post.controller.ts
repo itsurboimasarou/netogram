@@ -56,7 +56,7 @@ export class PostController {
     }
   }
 
-  @Get()
+  @Get("all")
   async findAll(@Query('page') page: string, @Query('limit') limit: string) {
     const pageNumber = parseInt(page, 10);
     const limitNumber = parseInt(limit, 10);
@@ -73,9 +73,20 @@ export class PostController {
     return this.postService.findPostById(+id);
   }
 
-  @Get(':uid')
-  async findPostByUid(@Query('uid') uid: string) {
-    return this.postService.findPostByUid(uid);
+  @Get()
+  async findPostByUid(
+    @Query('uid') uid: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
+    console.log('uid', uid);
+    const pageNumber = parseInt(page, 10);
+    const limitNumber = parseInt(limit, 10);
+
+    if (isNaN(pageNumber) || isNaN(limitNumber)) {
+      throw new BadRequestException('Page and limit must be valid numbers');
+    }
+    return this.postService.findPostByUid(uid, pageNumber, limitNumber);
   }
 
   @Put(':id')
