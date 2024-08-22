@@ -15,7 +15,7 @@ export class StorageEffects {
           .uploadFile(action.file, action.fileName)
           .pipe(
             map((url) => {
-              return StorageActions.uploadFileSuccess({ url });
+              return StorageActions.uploadFileSuccess({ url: url.urls });
             }),
             catchError((error) => {
               return of(

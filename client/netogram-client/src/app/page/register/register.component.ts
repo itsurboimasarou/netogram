@@ -1,27 +1,29 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MaterialModule } from '../../shared/material.module';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ShareModule } from '../../shared/share.module';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { merge, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ProfileState } from '../../ngrx/profile/profile.state';
 import { AuthState } from '../../ngrx/auth/auth.state';
-import { Subscription } from 'rxjs';
 import * as ProfileActions from '../../ngrx/profile/profile.actions';
 import { ProfileModel } from '../../models/profile.model';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [MaterialModule, ShareModule],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   subscription: Subscription[] = [];
   regisForm = new FormGroup({
-    email: new FormControl(''),
-    userName: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    userName: new FormControl('', [Validators.required, Validators.minLength(5)]),
     avatarUrl: new FormControl(''),
     uid: new FormControl(''),
   });
@@ -36,8 +38,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
   };
 
   uid = '';
-
   createMineSuccess$ = this.store.select('profile', 'isCreateSuccess');
+  readonly userName = new FormControl('', [Validators.required, Validators.minLength(5)]);
+
+  errorMessage = signal('');
+
 
   constructor(
     private router: Router,
@@ -58,6 +63,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }
       }),
     );
+
+    merge(this.regisForm.get('userName')!.statusChanges, this.regisForm.get('userName')!.valueChanges)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.updateErrorMessage());
   }
 
   ngOnInit(): void {
@@ -72,6 +81,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.forEach((sub) => sub.unsubscribe());
+  }
+
+  updateErrorMessage() {
+    const userName = this.regisForm.get('userName');
+    if (userName?.hasError('required')) {
+      this.errorMessage.set('Name must be at least 5 characters long');
+    } else {
+      this.errorMessage.set('');
+    }
   }
 
   register() {

@@ -6,15 +6,20 @@
       <!--      <mat-card-content (click)="this.openDialog()">What's on your mind?</mat-card-content>-->
       <!--    </mat-card>-->
       <mat-form-field appearance="outline" subscriptSizing="dynamic" (click)="this.openDialog()">
-        <input matInput placeholder="Tell me your story" readonly />
+        <input matInput placeholder="Tell me your story" readonly/>
       </mat-form-field>
       <!--    <a mat-fab extended id="share-post-button">Share post</a>-->
     </div>
     <hr>
-    <button id="add-image" mat-button><mat-icon appearancxe="outlined">add_photo_alternate</mat-icon>Image</button>
+    <button id="add-image" mat-button>
+      <mat-icon appearancxe="outlined">add_photo_alternate</mat-icon>
+      Image
+    </button>
   </div>
   <br>
   <div class="post">
-    <app-post class="post"></app-post>
+    @for (post of allPosts.data; track $index) {
+      <app-post class="post" [postUser]="post"></app-post>
+    }
   </div>
 </div>

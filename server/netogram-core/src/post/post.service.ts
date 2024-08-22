@@ -63,13 +63,25 @@ export class PostService {
   }
 
   //get post by uid in profile
-  async findPostByUid(uid: string) {
-    const profile = await this.profileRepository.findOne({ where: { uid } });
-    console.log(profile.uid);
-    if (!profile) {
-      throw new NotFoundException('Profile not found');
+  async findPostByUid(uid: string, pageNumber: number, limitNumber: number) {
+    const skip = (pageNumber - 1) * limitNumber;
+    if (isNaN(skip)) {
+      throw new BadRequestException(
+        'Calculated skip value must be a valid number',
+      );
     }
-    return await this.postRepository.find({ where: { uid } });
+    const [result, total] = await this.postRepository.findAndCount({
+      where: { uid },
+      skip,
+      take: limitNumber,
+    });
+
+    return {
+      data: result,
+      count: total,
+      pageNumber,
+      limitNumber,
+    };
   }
 
   //get post by id

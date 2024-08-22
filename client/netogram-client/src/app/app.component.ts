@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
 
   title = 'netogram-client';
 
-  isShowSpinner = false;
+  isShowSpinner = true;
 
   constructor(
     private router: Router,

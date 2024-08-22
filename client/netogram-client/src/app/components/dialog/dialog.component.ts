@@ -53,7 +53,7 @@ export class DialogComponent implements OnDestroy {
 
   postData: PostModel = {
     uid: '',
-    imageUrl: [],
+    imageUrls: [],
     content: '',
     id: BigInt(0),
   };
@@ -63,14 +63,14 @@ export class DialogComponent implements OnDestroy {
       profile: ProfileState;
       post: PostState;
       storage: StorageState;
-    }>
+    }>,
   ) {
     this.subscription.push(
       this.profileMine$.subscribe((profile) => {
         if (profile) {
           console.log('profile', profile);
         }
-      })
+      }),
     );
   }
 
@@ -186,8 +186,8 @@ export class DialogComponent implements OnDestroy {
       }
     });
     this.postData.content = <string>this.postForm.value.content;
-    this.postData.imageUrl = [];
-    this.postData.imageUrl = this.selectedFiles;
+    this.postData.imageUrls = [];
+    this.postData.imageUrls = this.selectedFiles;
     console.log('Post Data', this.postData);
     this.store.dispatch(postActions.CreatePost({ post: this.postData }));
     this.dialogRef.close();
