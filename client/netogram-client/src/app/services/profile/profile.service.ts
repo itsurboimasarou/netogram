@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClientAuth} from "../../util/http-client-auth";
-import {ProfileModel} from "../../models/profile.model";
-import {Observable} from "rxjs";
+import { HttpClientAuth } from '../../util/http-client-auth';
+import { ProfileModel } from '../../models/profile.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileService {
-
   constructor(private httpClient: HttpClientAuth) {}
 
   createProfile(profile: ProfileModel) {
@@ -19,5 +18,9 @@ export class ProfileService {
     return this.httpClient.get(
       `profile?uid=${uid}`,
     ) as Observable<ProfileModel>;
+  }
+
+  updateProfile(profile: ProfileModel) {
+    return this.httpClient.put(`profile/${profile.uid}`, profile);
   }
 }

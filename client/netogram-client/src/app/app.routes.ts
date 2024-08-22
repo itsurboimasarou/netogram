@@ -25,6 +25,8 @@ export const routes: Routes = [
   {
     path: 'search-result',
     loadChildren: () =>
-      import('./page/search-result/search-result.route').then((m) => m.SEARCH_RESULT_ROUTES),
+      import('./page/search-result/search-result.route').then(
+        (m) => m.SEARCH_RESULT_ROUTES,
+      ),
   },
 ];

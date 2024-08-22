@@ -1,6 +1,6 @@
-export interface PostModel{
+export interface PostModel {
   uid: string;
-  imageUrl: string[] | File[];
+  imageUrls: string[] | File[];
   content: string;
   id: BigInt;
 }

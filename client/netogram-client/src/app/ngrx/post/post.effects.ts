@@ -9,7 +9,7 @@ import { HttpErrorResponseModel } from '../../models/http-error-response.model';
 @Injectable()
 export class PostEffects {
   createPost$ = createEffect(() => {
-    return this.action$.pipe(
+    return this.actions$.pipe(
       ofType(PostActions.CreatePost),
       switchMap((action) => {
         return this.postService.createPost(action.post).pipe(
@@ -26,8 +26,72 @@ export class PostEffects {
     );
   });
 
+  getAllPost$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PostActions.GetAllPost),
+      switchMap((action) => {
+        return this.postService
+          .getAllPost(action.pageNumber, action.limitNumber)
+          .pipe(
+            map((posts) => {
+              return PostActions.GetAllPostSuccess({ posts });
+            }),
+            catchError((error: HttpErrorResponseModel) => {
+              return of(
+                PostActions.GetAllPostFailure({
+                  getAllPostErrorMessage: error,
+                }),
+              );
+            }),
+          );
+      }),
+    );
+  });
+
+  getMinePost$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PostActions.GetMinePost),
+      switchMap((action) => {
+        return this.postService
+          .getMinePost(action.uid, action.pageNumber, action.limitNumber)
+          .pipe(
+            map((posts) => {
+              return PostActions.GetMinePostSuccess({ minePosts: posts });
+            }),
+            catchError((error: HttpErrorResponseModel) => {
+              return of(
+                PostActions.GetMinePostFailure({
+                  getMinePostErrorMessage: error,
+                }),
+              );
+            }),
+          );
+      }),
+    );
+  });
+
+  getPostById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PostActions.GetPostById),
+      switchMap((action) => {
+        return this.postService.getById(action.id).pipe(
+          map((postDetail) => {
+            return PostActions.GetPostByIdSuccess({ postDetail });
+          }),
+          catchError((error: HttpErrorResponseModel) => {
+            return of(
+              PostActions.GetPostByIdFailure({
+                getPostByIdErrorMessage: error,
+              }),
+            );
+          }),
+        );
+      }),
+    );
+  });
+
   constructor(
-    private action$: Actions,
+    private actions$: Actions,
     private postService: PostService,
   ) {}
 }
