@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { CanActivateFn, Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -25,6 +25,8 @@ export const routes: Routes = [
   {
     path: 'search-result',
     loadChildren: () =>
-      import('./page/search-result/search-result.route').then((m) => m.SEARCH_RESULT_ROUTES),
+      import('./page/search-result/search-result.route').then(
+        (m) => m.SEARCH_RESULT_ROUTES,
+      ),
   },
 ];

@@ -1,20 +1,22 @@
 import { Routes } from '@angular/router';
-import {LayoutComponent} from "./layout.component";
+import { LayoutComponent } from './layout.component';
+import { authGuard } from '../../guards/auth.guard';
 
 export const LAYOUT_ROUTES: Routes = [
-    {
+  {
     path: '',
     component: LayoutComponent,
     children: [
       {
         path: 'profile/:uid',
-        loadChildren: () => import('./profile/profile.routes').then(m => m.PROFILE_ROUTES)
+        loadChildren: () =>
+          import('./profile/profile.routes').then((m) => m.PROFILE_ROUTES),
       },
       {
         path: '',
-        loadChildren: () => import('./main/main.routes').then(m => m.MAIN_ROUTES)
-      }
-
-      ]
-  }
-  ];
+        loadChildren: () =>
+          import('./main/main.routes').then((m) => m.MAIN_ROUTES),
+      },
+    ],
+  },
+];
