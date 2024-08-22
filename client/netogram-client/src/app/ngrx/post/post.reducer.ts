@@ -4,6 +4,7 @@ import { PostModel, PostResponse } from '../../models/post.model';
 import { createReducer } from '@ngrx/store';
 import { on } from '@ngrx/store';
 import * as postActions from './post.actions';
+import { ClearMinePost } from './post.actions';
 
 export const initialState: PostState = {
   posts: <PostResponse>{},
@@ -139,6 +140,53 @@ export const PostReducer = createReducer(
       isGettingAllPosts: false,
       isGetAllPostsSuccess: true,
       posts: posts,
+    };
+  }),
+
+  on(postActions.GetAllPostFailure, (state, { getAllPostErrorMessage }) => {
+    console.log(getAllPostErrorMessage);
+    return {
+      ...state,
+      isGettingAllPosts: false,
+      isGetAllPostsSuccess: false,
+      getErrorMessage: getAllPostErrorMessage,
+    };
+  }),
+
+  //get mine post
+  on(postActions.GetMinePost, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isGettingMinePost: true,
+    };
+  }),
+
+  on(postActions.GetMinePostSuccess, (state, { minePosts, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isGettingMinePost: false,
+      isGetMinePostSuccess: true,
+      minePosts: minePosts,
+    };
+  }),
+
+  on(postActions.GetMinePostFailure, (state, { getMinePostErrorMessage }) => {
+    console.log(getMinePostErrorMessage);
+    return {
+      ...state,
+      isGettingMinePost: false,
+      isGetMinePostSuccess: false,
+      getErrorMessage: getMinePostErrorMessage,
+    };
+  }),
+
+  on(postActions.ClearMinePost, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      minePosts: <PostResponse>{},
     };
   }),
 );

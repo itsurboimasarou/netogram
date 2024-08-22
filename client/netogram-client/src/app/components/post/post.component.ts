@@ -6,6 +6,11 @@ import { Router } from '@angular/router';
 import { PostModel } from '../../models/post.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
 import { IdToNamePipe } from '../../shared/pipes/id-to-name.pipe';
+import { MaterialModule } from '../../shared/material.module';
+import { ProfileState } from '../../ngrx/profile/profile.state';
+import { Store } from '@ngrx/store';
+import * as ProfileActions from '../../ngrx/profile/profile.actions';
+import * as PostActions from '../../ngrx/post/post.actions';
 
 class PostResult {}
 
@@ -13,10 +18,9 @@ class PostResult {}
   selector: 'app-post',
   standalone: true,
   imports: [
-    MatIconButton,
-    MatIcon,
+    MaterialModule,
     NgClass,
-    MatButton,
+
     NgForOf,
     IdToAvatarPipe,
     AsyncPipe,
@@ -25,14 +29,15 @@ class PostResult {}
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
 })
-export class PostComponent implements AfterViewInit {
-  constructor(private router: Router) {}
+export class PostComponent {
+  constructor(
+    private router: Router,
+    private store: Store<{
+      profile: ProfileState;
+    }>,
+  ) {}
 
-  ngAfterViewInit(): void {
-    console.log(this.postUser);
-  }
-
-  @Input() postUser!: PostModel;
+  @Input() postUser: PostModel = <PostModel>{};
 
   // postUser = [
   //   {
@@ -151,5 +156,11 @@ export class PostComponent implements AfterViewInit {
 
   navigateToDetail(postIndex: number) {
     this.router.navigate(['/detail', postIndex]);
+  }
+
+  navigateToProfile() {
+    this.router.navigateByUrl(`/profile/${this.postUser.uid}`).then();
+    this.store.dispatch(PostActions.ClearMinePost());
+    this.store.dispatch(ProfileActions.getById({ uid: this.postUser.uid }));
   }
 }

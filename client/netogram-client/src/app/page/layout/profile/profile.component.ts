@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet, Scroll } from '@angular/router';
 import { SidebarComponent } from '../../../components/sidebar/sidebar.component';
 import { MaterialModule } from '../../../shared/material.module';
-import { Location } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { PostComponent } from '../../../components/post/post.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
@@ -10,15 +10,25 @@ import { Store } from '@ngrx/store';
 import { PostState } from '../../../ngrx/post/post.state';
 import { ProfileState } from '../../../ngrx/profile/profile.state';
 import * as ProfileActions from '../../../ngrx/profile/profile.actions';
+import * as PostActions from '../../../ngrx/post/post.actions';
+import { Subscription } from 'rxjs';
+import { PostResponse } from '../../../models/post.model';
+import { ProfileModel } from '../../../models/profile.model';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [RouterOutlet, SidebarComponent, MaterialModule, PostComponent],
+  imports: [
+    RouterOutlet,
+    SidebarComponent,
+    MaterialModule,
+    PostComponent,
+    AsyncPipe,
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private location: Location,
     private activeRoute: ActivatedRoute,
@@ -28,9 +38,27 @@ export class ProfileComponent implements OnInit {
       profile: ProfileState;
     }>,
   ) {
-    this.activeRoute = activeRoute;
+    const { uid } = this.activeRoute.snapshot.params;
+    this.store.dispatch(ProfileActions.getById({ uid }));
+    this.store.dispatch(
+      PostActions.GetMinePost({ uid, pageNumber: 1, limitNumber: 5 }),
+    );
 
     // window.scrollTo({ top: window.innerHeight * 0.3, behavior: 'auto'});
+  }
+
+  subscriptions: Subscription[] = [];
+
+  profileByUid$ = this.store.select('profile', 'profile');
+  minePosts$ = this.store.select('post', 'minePosts');
+  isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
+  isGettingMine$ = this.store.select('profile', 'isGettingById');
+  minePosts: PostResponse = <PostResponse>{};
+  mineProfile: ProfileModel = <ProfileModel>{};
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.store.dispatch(PostActions.ClearMinePost());
   }
 
   goBack(): void {
@@ -38,8 +66,22 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const { uid } = this.activeRoute.snapshot.params;
-    console.log(uid);
+    this.subscriptions.push(
+      this.profileByUid$.subscribe((profile) => {
+        if (profile) {
+          this.mineProfile = profile;
+        }
+      }),
+
+      this.minePosts$.subscribe((posts) => {
+        console.log(posts);
+        this.minePosts = posts;
+      }),
+
+      this.isGettingMine$.subscribe((isGettingMine) => {
+        console.log(isGettingMine);
+      }),
+    );
   }
 
   profileEdit(): void {
