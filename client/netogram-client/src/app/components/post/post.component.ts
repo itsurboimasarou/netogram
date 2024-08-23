@@ -108,12 +108,12 @@ export class PostComponent {
         : 'ios_share_outlined';
   }
 
-  toggleBookmark() {
-    this.bookmarkIcon =
-      this.bookmarkIcon === 'bookmark_outlined'
-        ? 'bookmark'
-        : 'bookmark_outlined';
-  }
+  // toggleBookmark() {
+  //   this.bookmarkIcon =
+  //     this.bookmarkIcon === 'bookmark_outlined'
+  //       ? 'bookmark'
+  //       : 'bookmark_outlined';
+  // }
 
   prevImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
