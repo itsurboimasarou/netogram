@@ -11,6 +11,7 @@ import { ProfileState } from '../../ngrx/profile/profile.state';
 import { Store } from '@ngrx/store';
 import * as ProfileActions from '../../ngrx/profile/profile.actions';
 import * as PostActions from '../../ngrx/post/post.actions';
+import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
 
 class PostResult {}
 
@@ -25,6 +26,7 @@ class PostResult {}
     IdToAvatarPipe,
     AsyncPipe,
     IdToNamePipe,
+    DateTranformPipe,
   ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
@@ -154,8 +156,9 @@ export class PostComponent {
     carousel.scrollLeft = this.scrollLeft - walk;
   }
 
-  navigateToDetail(postIndex: number) {
-    this.router.navigate(['/detail', postIndex]);
+  navigateToDetail() {
+    this.router.navigateByUrl(`/detail/${this.postUser.id}`).then();
+    this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
   }
 
   navigateToProfile() {

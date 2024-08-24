@@ -1,15 +1,17 @@
-.fullwcontainer{
+.fullwcontainer {
   display: flex;
   justify-content: center;
   background-color: var(--surface);
 }
-.container{
+
+.container {
   display: flex;
   justify-content: center;
   //height: 100%;
   width: calc(100% - 4rem);
 }
-.left{
+
+.left {
   width: calc(26% - 2rem);
   display: flex;
   justify-content: center;
@@ -17,7 +19,8 @@
 
   padding: 1rem;
 }
-.main{
+
+.main {
   width: 48%;
   height: 100%;
   display: flex;
@@ -25,20 +28,22 @@
 
   //background-color: #E22;
 }
-.right{
+
+.right {
   width: 26%;
   height: 100%;
   display: flex;
   justify-content: end;
   align-items: center;
 }
-img{
+
+img {
   width: 180px;
   margin: 0;
 }
 
-.search{
-  display:flex;
+.search {
+  display: flex;
   align-items: center;
   width: 70%;
   background-color: var(--surfaceContainer);
@@ -46,13 +51,14 @@ img{
   margin-left: 10%;
 }
 
-.material-symbols-outlined{
+.material-symbols-outlined {
 
   color: var(--onSurface);
   margin: 10px;
   cursor: pointer;
 }
-#searchInput{
+
+#searchInput {
   width: calc(100% - 30px);
   height: 90%;
   border: none;
@@ -63,31 +69,32 @@ img{
   background-color: var(--surfaceContainer);
 }
 
-.avatar{
+.avatar {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 100%;
   margin: 10px;
 }
 
-#notiIcon{
+#notiIcon {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 45px;
   height: 45px;
   border-radius: 12px;
-  margin: 20px;
-  background-color: var(--surface); ;
+
+  background-color: var(--surface);;
 }
-#notiIcon:hover{
+
+#notiIcon:hover {
   background-color: var(--surfaceContainerHighest);
   color: var(--onSecondaryContainer);
   border-radius: 12px;
   cursor: pointer;
 }
 
-#notiIconsym{
+#notiIconsym {
   //background-color: var(--inverseOnSurface);
 }
 
@@ -98,10 +105,12 @@ img{
 }
 
 
-.logoutBox{
-  display: flex; align-items: center
+.logoutBox {
+  display: flex;
+  align-items: center
 }
-.name{
+
+.name {
   margin-right: 10px;
 }
 

@@ -49,6 +49,7 @@ export class DialogComponent implements OnDestroy {
     imageUrl: new FormControl(''),
     content: new FormControl(''),
     id: new FormControl(''),
+    createdAt: new FormControl(''),
   });
 
   postData: PostModel = {
@@ -56,6 +57,7 @@ export class DialogComponent implements OnDestroy {
     imageUrls: [],
     content: '',
     id: BigInt(0),
+    createdAt: '',
   };
 
   constructor(

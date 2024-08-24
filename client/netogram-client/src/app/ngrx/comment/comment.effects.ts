@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {CommentService} from "../../services/comment/comment.service";
 import * as CommentActions from "./comment.actions";
-import {mergeMap, of, switchMap} from "rxjs";
+import {exhaustAll, exhaustMap, mergeMap, of, switchMap} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import {CommentModel} from "../../models/comment.model";
 
@@ -17,7 +17,7 @@ export class CommentEffects {
 
   getAllComments$ = createEffect(() => this.actions$.pipe(
     ofType(CommentActions.getComments),
-    mergeMap((action) => this.commentService.getComments(action.postId)
+    exhaustMap((action) => this.commentService.getComments(action.postId)
       .pipe(
         map(comments => {
           console.log(comments);
@@ -37,4 +37,16 @@ export class CommentEffects {
         })
       ))
   ));
+
+    createComment$ = createEffect(() => this.actions$.pipe(
+    ofType(CommentActions.createComment),
+    switchMap((action) => this.commentService.createComment(action.comment).pipe(
+        map((comment: CommentModel) => {
+          return CommentActions.createCommentSuccess();
+        }),
+        catchError(() => {
+          return of(CommentActions.createCommentFailure());
+        })
+    ))
+      ))
 }

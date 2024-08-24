@@ -18,6 +18,7 @@ export const commentReducer = createReducer(
         }
     }),
     on(CommentActions.getCommentsSuccess, (state, action) => {
+
         return <CommentState>{
             ...state,
             loading: false,
@@ -32,6 +33,26 @@ export const commentReducer = createReducer(
             error: 'Error loading comments'
         }
     }),
+
+    on(CommentActions.createComment, (state, action) => {
+        return <CommentState>{
+            ...state,
+            loading: true
+        }
+    }),
+    on(CommentActions.createCommentSuccess, (state, action) => {
+        return <CommentState>{
+            ...state,
+            loading: false
+        }
+    }),
+    on(CommentActions.createCommentFailure, (state, action) => {
+        return <CommentState>{
+            ...state,
+            loading: false,
+            error: 'Error creating comment'
+        }
+    })
 
 
 )
