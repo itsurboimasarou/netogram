@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MaterialModule } from '../../shared/material.module';
 import {
   AsyncPipe,
@@ -17,6 +17,7 @@ import { ProfileModel } from '../../models/profile.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
 import { IdToNamePipe } from '../../shared/pipes/id-to-name.pipe';
 import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
+import * as PostActions from '../../ngrx/post/post.actions';
 
 @Component({
   selector: 'app-detail',
@@ -34,7 +35,7 @@ import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy {
   constructor(
     private location: Location,
     private activeRoute: ActivatedRoute,
@@ -51,6 +52,7 @@ export class DetailComponent implements OnInit {
   profileMine$ = this.store.select('profile', 'mine');
 
   postDetail$ = this.store.select('post', 'postDetail');
+  isGettingPostDetail$ = this.store.select('post', 'isGettingPostDetail');
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -63,6 +65,12 @@ export class DetailComponent implements OnInit {
         this.postDetail = post;
       }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.store.dispatch(PostActions.ClearPostDetail());
+    this.store.dispatch(PostActions.ClearAllPosts());
   }
 
   postDetail: PostModel = <PostModel>{};
@@ -164,11 +172,6 @@ export class DetailComponent implements OnInit {
   ];
   displayedComments = 10;
 
-  imageUrl = [
-    'https://images.unsplash.com/photo-1460353581641-37baddab0fa2',
-    'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
-  ];
-
   loadMoreComments() {
     this.displayedComments += 10;
   }
@@ -204,16 +207,21 @@ export class DetailComponent implements OnInit {
   prevImage() {
     console.log(this.currentIndex);
     this.currentIndex =
-      this.currentIndex > 0 ? this.currentIndex - 1 : this.imageUrl.length - 1;
+      this.currentIndex > 0
+        ? this.currentIndex - 1
+        : this.postDetail.imageUrls.length - 1;
   }
 
   nextImage() {
     console.log(this.currentIndex);
     this.currentIndex =
-      this.currentIndex < this.imageUrl.length - 1 ? this.currentIndex + 1 : 0;
+      this.currentIndex < this.postDetail.imageUrls.length - 1
+        ? this.currentIndex + 1
+        : 0;
   }
 
   goBack(): void {
     this.location.back();
+    this.store.dispatch(PostActions.ClearPostDetail());
   }
 }
