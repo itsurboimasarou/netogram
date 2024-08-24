@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MaterialModule } from '../../shared/material.module';
 import {
   AsyncPipe,
@@ -23,6 +23,7 @@ import {CommentModel} from "../../models/comment.model";
 import * as ProfileActions from "../../ngrx/profile/profile.actions";
 import {map} from "rxjs/operators";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import * as PostActions from '../../ngrx/post/post.actions';
 
 @Component({
   selector: 'app-detail',
@@ -41,7 +42,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy {
 
   commentForm = new FormGroup({
     text: new FormControl(''),
@@ -79,6 +80,7 @@ export class DetailComponent implements OnInit {
   profileMine$ = this.store.select('profile', 'mine');
 
   postDetail$ = this.store.select('post', 'postDetail');
+  isGettingPostDetail$ = this.store.select('post', 'isGettingPostDetail');
 
   profile$ = this.store.select('profile', 'profile');
 
@@ -96,8 +98,12 @@ export class DetailComponent implements OnInit {
 
   }
 
+ 
+
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.store.dispatch(PostActions.ClearPostDetail());
+    this.store.dispatch(PostActions.ClearAllPosts());
   }
 
   postDetail: PostModel = <PostModel>{};
@@ -172,16 +178,21 @@ export class DetailComponent implements OnInit {
   prevImage() {
     console.log(this.currentIndex);
     this.currentIndex =
-      this.currentIndex > 0 ? this.currentIndex - 1 : this.imageUrl.length - 1;
+      this.currentIndex > 0
+        ? this.currentIndex - 1
+        : this.postDetail.imageUrls.length - 1;
   }
 
   nextImage() {
     console.log(this.currentIndex);
     this.currentIndex =
-      this.currentIndex < this.imageUrl.length - 1 ? this.currentIndex + 1 : 0;
+      this.currentIndex < this.postDetail.imageUrls.length - 1
+        ? this.currentIndex + 1
+        : 0;
   }
 
   goBack(): void {
     this.location.back();
+    this.store.dispatch(PostActions.ClearPostDetail());
   }
 }
