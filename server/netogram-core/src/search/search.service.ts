@@ -10,12 +10,12 @@ export class SearchService {
 
   constructor(private idgenService: IdgenService) {
     this.esClient = new Client({
-      node: 'https://97d9a40970c4401dabfc0653ce2d526a.asia-southeast1.gcp.elastic-cloud.com:443',
-      auth: {
-        apiKey: "N2dBT1hKRUJKQnlacDY0UXNIeDQ6cnhBN25RY1BSRy1zV2ppNFJxc3I2UQ==",
-        username: "elastic",
-        password: "NIYdXqHVOSaOry0THa9eFrBZ"
-      }
+      node: 'https://es.ext.akademy.dev/',
+      // auth: {
+      //   apiKey: "N2dBT1hKRUJKQnlacDY0UXNIeDQ6cnhBN25RY1BSRy1zV2ppNFJxc3I2UQ==",
+      //   username: "elastic",
+      //   password: "NIYdXqHVOSaOry0THa9eFrBZ"
+      // }
     });
 
     console.log("esClient",this.esClient);
@@ -23,7 +23,7 @@ export class SearchService {
 
   async indexProfile(profile: Profile) {
     await this.esClient.index({
-      index: 'profiles',
+      index: 'netogram_profiles',
       id: profile.uid,
       document: {
         uid: profile.uid,
@@ -36,7 +36,7 @@ export class SearchService {
   async searchProfiles(query: string) {
     // search for profiles by username or email or uid
     const response = await this.esClient.search({
-      index: 'profiles',
+      index: 'netogram_profiles',
       query: {
         multi_match: {
           query: query,
@@ -58,7 +58,7 @@ export class SearchService {
     // index
     for(let tag of uniqueHashtags) {
       await this.esClient.index({
-        index: 'hashtags',
+        index: 'netogram_hashtags',
         id: this.idgenService.generateId(),
         document: {
           id: post.id,
@@ -71,12 +71,13 @@ export class SearchService {
     }
 
     await this.esClient.index({
-      index: 'posts',
+      index: 'netogram_posts',
       id: post.id.toString(),
       document: {
         uid: post.uid,
         content: post.content,
         createdAt: post.createdAt,
+        imageUrls:post.imageUrls
       },
     });
   }
@@ -90,7 +91,7 @@ export class SearchService {
 
   async searchPosts(query: string) {
     const response = await this.esClient.search({
-      index: 'posts',
+      index: 'netogram_posts',
       query: {
         multi_match: {
           query: query,
@@ -103,7 +104,7 @@ export class SearchService {
 
   async searchUserPosts(query: string) {
     const response = await this.esClient.search({
-      index: 'profiles',
+      index: 'netogram_profiles',
       query: {
         multi_match: {
           query: query,
@@ -116,7 +117,7 @@ export class SearchService {
 
   async searchHashtags(query: string) {
     const response = await this.esClient.search({
-      index: 'hashtags',
+      index: 'netogram_hashtags',
       query: {
         match: {
           hashtag: query,
@@ -130,7 +131,7 @@ export class SearchService {
     // delete post from hashtags index
     // get post first
     const post = await this.esClient.get({
-      index: 'posts',
+      index: 'netogram_posts',
       id: postId.toString(),
     });
     // get all hashtags in the post's content
@@ -142,7 +143,7 @@ export class SearchService {
 
     for(let tag of uniqueHashtags) {
       await this.esClient.deleteByQuery({
-        index: 'hashtags',
+        index: 'netogram_hashtags',
         query: {
           match: {
             id: postId,
@@ -153,22 +154,26 @@ export class SearchService {
     }
 
     await this.esClient.delete({
-      index: 'posts',
+      index: 'netogram_posts',
       id: postId.toString(),
     });
   }
 
   async searchAny( indexName: string, query: string) {
-    const response = await this.esClient.search({
-      index: [indexName],
-      query: {
-        multi_match: {
-          query: query,
-          fields: ['*'],
+    try{
+      const response = await this.esClient.search({
+        index: [indexName],
+        query: {
+          multi_match: {
+            query: query,
+            fields: ['*'],
+          },
         },
-      },
-    });
-    return response.hits.hits.map((hit)=>hit['_source']);
+      });
+      return response.hits.hits.map((hit)=>hit['_source']);
+    }catch (e){
+      return [];
+    }
   }
 
 }
