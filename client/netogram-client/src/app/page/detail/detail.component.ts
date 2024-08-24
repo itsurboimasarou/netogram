@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MaterialModule } from '../../shared/material.module';
 import {
   AsyncPipe,
@@ -11,12 +11,19 @@ import { ActivatedRoute } from '@angular/router';
 import { PostState } from '../../ngrx/post/post.state';
 import { ProfileState } from '../../ngrx/profile/profile.state';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import {delay, Observable, Subscription} from 'rxjs';
 import { PostModel } from '../../models/post.model';
 import { ProfileModel } from '../../models/profile.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
 import { IdToNamePipe } from '../../shared/pipes/id-to-name.pipe';
 import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
+import {CommentState} from "../../ngrx/comment/comment.state";
+import * as CommentActions from "../../ngrx/comment/comment.actions";
+import {CommentModel} from "../../models/comment.model";
+import * as ProfileActions from "../../ngrx/profile/profile.actions";
+import {map} from "rxjs/operators";
+import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import * as PostActions from '../../ngrx/post/post.actions';
 
 @Component({
   selector: 'app-detail',
@@ -30,27 +37,52 @@ import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
     IdToAvatarPipe,
     IdToNamePipe,
     DateTranformPipe,
+    ReactiveFormsModule,
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy {
+
+  commentForm = new FormGroup({
+    text: new FormControl(''),
+  });
+
+  commentData: CommentModel = {
+    commentId: 1,
+    uid: 'asdfasdfsadf',
+    postId: 8909711579549696,
+    text: '',
+    createdAt: 'asdfasd'
+  }
   constructor(
     private location: Location,
     private activeRoute: ActivatedRoute,
     private store: Store<{
       profile: ProfileState;
       post: PostState;
+      comment: CommentState;
     }>,
+
   ) {
+    this.postDetail$.subscribe((post) => {
+      if (post && post.id) {
+        this.store.dispatch(CommentActions.getComments({ postId: Number(post.id) }));
+      }
+    });
     this.activeRoute = activeRoute;
   }
 
   subscriptions: Subscription[] = [];
 
+  commentList$ = this.store.select('comment', 'comments');
+
   profileMine$ = this.store.select('profile', 'mine');
 
   postDetail$ = this.store.select('post', 'postDetail');
+  isGettingPostDetail$ = this.store.select('post', 'isGettingPostDetail');
+
+  profile$ = this.store.select('profile', 'profile');
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -63,111 +95,53 @@ export class DetailComponent implements OnInit {
         this.postDetail = post;
       }),
     );
+
+  }
+
+ 
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.store.dispatch(PostActions.ClearPostDetail());
+    this.store.dispatch(PostActions.ClearAllPosts());
   }
 
   postDetail: PostModel = <PostModel>{};
   profileMine: ProfileModel = <ProfileModel>{};
 
   title = 'detail';
-  commentUser = [
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'John Doe',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Doe',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'John Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-    {
-      avatar: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-      name: 'Jane Smith',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget odio sit amet nunc sollicitudin porta. Sed ac purus auctor, ultrices libero nec, luctus libero. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia. Donec nec enim auctor, lacinia purus nec, fermentum turpis. Sed nec libero sit amet libero ultricies lacinia.',
-      date: '2021-Jan-01',
-    },
-  ];
+
   displayedComments = 10;
 
   imageUrl = [
     'https://images.unsplash.com/photo-1460353581641-37baddab0fa2',
     'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
   ];
+
+  createComment() {
+    console.log(this.commentForm.value.text);
+    this.postDetail$.subscribe((post) => {
+      if (post && post.id) {
+        // this.commentData = {...this.commentData, postId: Number(post.id)}
+        this.commentData.postId = Number(post.id);
+        console.log(this.commentData.postId);
+      }
+    });
+    // this.commentData = {...this.commentData, text: this.commentForm.value.text as string}
+    this.commentData.text = this.commentForm.value.text as string;
+    console.log(this.commentData);
+
+    this.store.dispatch(CommentActions.createComment({comment: this.commentData}));
+    this.store.dispatch(CommentActions.getComments({postId: this.commentData.postId}));
+
+    this.commentList$.subscribe((comments) => {
+      console.log(comments); // đừng xóa không comment không hiện lên :((
+    })
+    this.commentForm.reset();
+    // this.commentList$.subscribe((comments) => {
+    //   console.log(comments);
+    // })
+  }
 
   loadMoreComments() {
     this.displayedComments += 10;
@@ -204,16 +178,21 @@ export class DetailComponent implements OnInit {
   prevImage() {
     console.log(this.currentIndex);
     this.currentIndex =
-      this.currentIndex > 0 ? this.currentIndex - 1 : this.imageUrl.length - 1;
+      this.currentIndex > 0
+        ? this.currentIndex - 1
+        : this.postDetail.imageUrls.length - 1;
   }
 
   nextImage() {
     console.log(this.currentIndex);
     this.currentIndex =
-      this.currentIndex < this.imageUrl.length - 1 ? this.currentIndex + 1 : 0;
+      this.currentIndex < this.postDetail.imageUrls.length - 1
+        ? this.currentIndex + 1
+        : 0;
   }
 
   goBack(): void {
     this.location.back();
+    this.store.dispatch(PostActions.ClearPostDetail());
   }
 }

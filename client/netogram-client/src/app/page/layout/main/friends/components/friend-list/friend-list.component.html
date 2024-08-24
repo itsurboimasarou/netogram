@@ -1,7 +1,7 @@
 <div class="friends">
   @for(friend of friendsList | slice:start:end; track $index ){
 
-    <div class="friendcontainer">
+    <mat-card class="friendcontainer">
       <div class="friendavaname">
         <img src="{{friend.avatar}}"/>
         <div class="nameMutual">
@@ -25,11 +25,11 @@
             </button>
         </mat-menu>
       </div>
-    </div>
+    </mat-card>
   }
 </div>
 
-<mat-paginator [length]="friendsList.length" [hidePageSize]="true" [pageSizeOptions]="[10]" (page)="handlePageEvent($event)" aria-label="Select page">
+<mat-paginator [length]="friendsList.length" [hidePageSize]="true" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)" aria-label="Select page">
 </mat-paginator>
 
 

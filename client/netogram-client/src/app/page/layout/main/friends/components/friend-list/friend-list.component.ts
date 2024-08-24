@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {MaterialModule} from "../../../../../../shared/material.module";
 import {PageEvent} from "@angular/material/paginator";
 import {SlicePipe} from "@angular/common";
@@ -11,6 +11,10 @@ import {SlicePipe} from "@angular/common";
   styleUrl: './friend-list.component.scss'
 })
 export class FriendListComponent {
+
+  ngOnInit() {
+    this.onResize({ target: window });
+  }
 
   start = 0;
   end = 10;
@@ -29,9 +33,28 @@ export class FriendListComponent {
     id: 6,
   }
 
+  pageSizeOptions = [10];
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    if (event.target.innerWidth <= 1180) {
+      console.log('1180')
+      this.pageSizeOptions = [8];
+      this.start = 0;
+      this.end = 8;
+    } else {
+      console.log('else')
+      this.pageSizeOptions = [10];
+      this.start = 0;
+      this.end = 10;
+    }
+  }
+
+
   handlePageEvent(event: PageEvent) {
     this.start = event.pageIndex * event.pageSize;
     this.end = this.start + event.pageSize;
+    console.log(event.pageSize)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 

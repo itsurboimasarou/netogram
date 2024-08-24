@@ -20,6 +20,6 @@ import { SearchService } from '../search/search.service';
   ],
   controllers: [PostController],
   providers: [PostService, SearchService ],
-  exports: [PostService],
+  exports: [PostService, TypeOrmModule],
 })
 export class PostModule {}
