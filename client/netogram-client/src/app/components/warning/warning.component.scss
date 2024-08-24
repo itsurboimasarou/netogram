@@ -1,0 +1,38 @@
+.warning-container {
+  width: 65vw;
+  text-align: center;
+  padding: 20px;
+  background-color: var(--surface);
+  //border: 1px solid #ff9800;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.warning-icon {
+  font-size: 48px;
+  color: #f44336;
+  display: flex;
+  justify-content: left;
+}
+
+.warning-title {
+  font-size: 24px;
+  margin: 10px 0;
+  color: #d32f2f;
+  display: flex;
+  justify-content: left;
+}
+
+.warning-message {
+  font-size: 16px;
+  margin: 10px 0;
+  color: #757575;
+}
+
+button[mat-raised-button] {
+  //margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
