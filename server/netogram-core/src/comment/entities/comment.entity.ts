@@ -2,10 +2,10 @@ import {Column, Entity, ManyToOne, PrimaryColumn, Unique} from "typeorm";
 import {Post} from "../../post/entities/post.entity";
 
 @Entity()
-@Unique(['commentId'])
+@Unique(['id'])
 export class Comment {
     @PrimaryColumn({type: 'bigint' })
-    commentId: number;
+    id: number;
 
     @ManyToOne(() => Post)
     @Column({type: "bigint"})

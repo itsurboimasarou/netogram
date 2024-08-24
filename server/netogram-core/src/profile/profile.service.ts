@@ -49,7 +49,6 @@ export class ProfileService {
     // Lưu profile
     return this.profileRepository.save(profile);
   }
-
   async getProfile(uid: string): Promise<Profile> {
     const profile = await this.profileRepository.findOne({ where: { uid } });
     if (!profile) {

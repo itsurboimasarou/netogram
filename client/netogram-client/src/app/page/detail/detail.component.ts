@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {MaterialModule} from "../../shared/material.module";
 import {Location, NgClass, NgForOf, NgStyle} from "@angular/common";
 import {ActivatedRoute} from "@angular/router";
+import {Store} from "@ngrx/store";
+import * as CommentActions from "../../ngrx/comment/comment.actions";
+import {CommentState} from "../../ngrx/comment/comment.state";
 
 @Component({
   selector: 'app-detail',
@@ -11,9 +14,14 @@ import {ActivatedRoute} from "@angular/router";
   styleUrl: './detail.component.scss'
 })
 export class DetailComponent {
-  constructor(private location :Location, private activeRoute: ActivatedRoute) {
+
+  comments$ = this.store.select('comment', 'comments');
+
+  constructor(private location :Location, private activeRoute: ActivatedRoute,
+              private store: Store< {comment: CommentState}>) {
+    console.log(this.comments$)
     this.activeRoute = activeRoute;
-  }
+    this.store.dispatch(CommentActions.getComments({ postId: 8909711579549696 }));  }
   title = 'detail';
   commentUser = [
     {

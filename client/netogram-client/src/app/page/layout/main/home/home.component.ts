@@ -16,6 +16,7 @@ import { PostState } from '../../../../ngrx/post/post.state';
 import { ProfileState } from '../../../../ngrx/profile/profile.state';
 import { Subscription } from 'rxjs';
 import { PostResponse } from '../../../../models/post.model';
+import {CommentService} from "../../../../services/comment/comment.service";
 
 @Component({
   selector: 'app-home',
@@ -26,6 +27,7 @@ import { PostResponse } from '../../../../models/post.model';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   constructor(
+    private commentService: CommentService,
     private store: Store<{
       post: PostState;
       profile: ProfileState;

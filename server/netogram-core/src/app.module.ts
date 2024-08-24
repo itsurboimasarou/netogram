@@ -15,20 +15,26 @@ import { SearchModule } from './search/search.module';
 import { CommentModule } from './comment/comment.module';
 import { LikepostModule } from './likepost/likepost.module';
 
+import * as process from 'node:process';
+import { ConfigModule } from '@nestjs/config';
+import * as dotenv from 'dotenv';
+dotenv.config();
 @Module({
   imports: [
     FirebaseModule.forRoot({
       googleApplicationCredential: "./configs/private-key.json" // Đường dẫn đến file firebase-admin-key.json
     }),
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'dpg-cqnkjfo8fa8c73ar4g90-a.singapore-postgres.render.com',
-      port: 5432,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      username: 'netogram',
-      password: 'TSmayzBYZeRxTwtIlW7HhTFchn99h65H',
-      database: 'public_3wnq',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT, 10),
+
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
       synchronize: true,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       ssl: { rejectUnauthorized: false },
 
     }),

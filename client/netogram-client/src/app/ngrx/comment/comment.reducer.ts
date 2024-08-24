@@ -1,5 +1,6 @@
 import {CommentState} from "./comment.state";
-import {createReducer} from "@ngrx/store";
+import {createReducer, on} from "@ngrx/store";
+import * as CommentActions from "./comment.actions";
 
 const initalState: CommentState = {
     comments: [],
@@ -8,6 +9,29 @@ const initalState: CommentState = {
     error: ''
 }
 
-const commentReducer = createReducer(
-    initalState
+export const commentReducer = createReducer(
+    initalState,
+    on(CommentActions.getComments, (state, action) => {
+        return <CommentState>{
+            ...state,
+            loading: true
+        }
+    }),
+    on(CommentActions.getCommentsSuccess, (state, action) => {
+        return <CommentState>{
+            ...state,
+            loading: false,
+            comments: action.comments,
+            commentsCount: action.comments.length
+        }
+    }),
+    on(CommentActions.getCommentsFailure, (state, action) => {
+        return <CommentState>{
+            ...state,
+            loading: false,
+            error: 'Error loading comments'
+        }
+    }),
+
+
 )

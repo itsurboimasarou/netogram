@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatDialog} from "@angular/material/dialog";
 import {ProfileModel} from "../../../../models/profile.model";
+import {StorageState} from "../../../../ngrx/storage/storage.state";
+import {Store} from "@ngrx/store";
 
 interface FileInfo {
   name: string;
@@ -33,6 +35,8 @@ interface FileInfo {
   styleUrls: ['./profile-edit.component.scss']
 })
 export class ProfileEditComponent {
+
+
   profileForm = new FormGroup({
     avatarPictureInfo: new FormControl<FileInfo | null>(null),
     coverPhotoInfo: new FormControl<FileInfo | null>(null),
@@ -49,11 +53,14 @@ export class ProfileEditComponent {
     coverUrl: '',
   };
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog,
+  private store: Store<{ storage: StorageState }>,
+  ) {}
 
   onSubmit() {
     if (this.profileForm.valid) {
       console.log(this.profileForm.value);
+      // this.dialog.closeAll();
     }
   }
 

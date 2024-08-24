@@ -1,23 +1,42 @@
+
 .body {
   display: flex;
   justify-content: center;
-  align-items: center;
   min-height: 100vh;
   background-color: var(--surfaceContainer);
   padding: 20px;
+  height: 80%;
+}
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: fit-content;
+  width: 100% ;
 }
 
-.search-results {
+.search-result{
   width: 100%;
-  max-width: 600px;
+  max-width: 680px;
+
+}
+
+.everyone,.post{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bolder;
+  padding-left: 1vh;
+  padding-top: 1vh;
 }
 
 .user-suggestions {
-  margin-bottom: 24px;
+  margin-bottom: 10px;
   background-color: var(--surface);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
 
   .mat-mdc-card-content {
     padding: 0;
@@ -30,10 +49,6 @@
     padding: 16px;
     transition: background-color 0.2s ease;
 
-    &:hover {
-      background-color: var(--surfaceContainerHigh);
-    }
-
     &:not(:last-child) {
       border-bottom: 1px solid var(--outlineVariant);
     }
@@ -45,8 +60,8 @@
   }
 
   .user-avatar {
-    width: 48px;
-    height: 48px;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
     margin-right: 16px;
     object-fit: cover;
@@ -69,93 +84,17 @@
     color: var(--onSurfaceVariant);
   }
 
-  .add-friend-btn {
-    background-color: var(--primary);
+  .add-friend-button {
+    background-color: var(--primary) !important;
+    border-radius: 12px;
     color: var(--onPrimary);
-    min-width: 100px;
-    border-radius: 20px;
-    font-weight: 600;
     text-transform: none;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: var(--primaryContainer);
-      color: var(--onPrimaryContainer);
-    }
   }
 }
 
-.post {
-  margin-bottom: 24px;
-  background-color: var(--surface);
+#backButton {
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-
-  .mat-mdc-card-header {
-    padding: 16px;
-    align-items: center;
-
-    .mat-mdc-card-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .mat-mdc-card-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--onSurface);
-    }
-
-    .mat-mdc-card-subtitle {
-      font-size: 13px;
-      color: var(--onSurfaceVariant);
-    }
-
-    .more-options {
-      margin-left: auto;
-      color: var(--onSurfaceVariant);
-    }
-  }
-
-  .mat-mdc-card-content {
-    padding: 0 16px 16px;
-
-    p {
-      margin-bottom: 16px;
-      font-size: 15px;
-      line-height: 1.5;
-      color: var(--onSurface);
-    }
-
-    .mat-mdc-card-image {
-      margin: 0 -16px 16px;
-      max-width: calc(100% + 32px);
-      object-fit: cover;
-    }
-  }
-
-  .mat-mdc-card-actions {
-    padding: 8px 16px;
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid var(--outlineVariant);
-
-    button {
-      color: var(--onSurfaceVariant);
-      font-weight: 600;
-      text-transform: none;
-      transition: background-color 0.2s ease;
-
-      &:hover {
-        background-color: var(--surfaceContainerHigh);
-      }
-
-      .mat-icon {
-        margin-right: 8px;
-      }
-    }
-  }
+  background-color: var(--surfaceContainerHigh);
+  position: fixed;
+  left: 20px;
 }

@@ -22,10 +22,7 @@ export class LikepostService {
   }
 
   async create(createLikepostDto: CreateLikepostDto, uid : string) {
-    let like = new Likepost();
-    like.likeId = this.idGenService.generateId();
 
-    like.postId = createLikepostDto.postId;
 
     const post = await this.postRepository.findOne({ where: { id: createLikepostDto.postId } });
 
@@ -38,6 +35,11 @@ export class LikepostService {
     if (!profile) {
       throw new NotFoundException('Profile not found');
     }
+
+    let like = new Likepost();
+    like.likeId = this.idGenService.generateId();
+
+    like.postId = createLikepostDto.postId;
     like.uid = uid;
 
     like.createdAt = new Date().toISOString();

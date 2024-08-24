@@ -1,44 +1,139 @@
-.outercon{
+.outercon {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 100vw;
+  //width: 100vw;
+  //margin-top: 3rem;
   background-color: var(--surfaceContainer);
 }
-.container{
+
+.container {
   display: flex;
   flex-direction: column;
-  background-color: white;
   justify-content: space-around;
-  padding: 70px 60px 70px 60px;
-  width: 20%;
+  align-items: center;
+  //width: 20%;
+  padding: 70px 60px;
   border-radius: 12px;
-  align-content: space-between;
-}
-#text{
-  width: 100%;
-  display: flex;
-  align-items: end;
-  height: fit-content;
-  margin: 2% auto 0 auto;
-}
-#nextBox{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-img{
-  width: 180px;
-  margin: 0 auto;
-}
-#hinh{
-  display: flex;
-  justify-content: center;
+  margin: auto;
+  background-color: var(--onPrimary);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-h2{
+#hinh {
+  width: 180px;
+  margin-bottom: 20px;
+}
+
+#text {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+h2 {
   font-size: 24px;
   font-weight: 700;
+}
 
+mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+#nextBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  border:none;
+
+  button {
+    background-color: var(--primary);
+    color: var(--onPrimary);
+    border: none;
+    width: 25%;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background-color: var(--primary);
+      transform: scale(1);
+    }
+  }
+}
+/* iPad Pro Portrait */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .container {
+    //width: 35%;
+    height: auto;
+    padding: 30px 60px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  button {
+    font-size: 20px;
+  }
+}
+/* iPad Pro Landscape */
+@media (max-width: 1366px) and (orientation: landscape) {
+  .container {
+    //width: 50%;
+    height: auto;
+    padding: 30px 60px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  button {
+    font-size: 20px;
+  }
+}
+
+/* iPad Air Portrait */
+@media (max-width: 820px) and (orientation: portrait) {
+  .container {
+    //width: 60%;
+    height: auto;
+    padding: 30px 60px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  button {
+    font-size: 20px;
+  }
+}
+
+/* iPad Air Landscape */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .container {
+    width: 45%;
+    height: auto;
+    padding: 30px 60px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  button {
+    font-size: 20px;
+  }
 }

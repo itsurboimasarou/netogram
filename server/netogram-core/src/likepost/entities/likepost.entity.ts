@@ -3,7 +3,7 @@ import {Post} from "../../post/entities/post.entity";
 
 
 @Entity()
-@Unique([ 'uid','likeId'])
+@Unique(['likeId'])
 export class Likepost {
     @PrimaryColumn({type: "bigint"})
     likeId: number;

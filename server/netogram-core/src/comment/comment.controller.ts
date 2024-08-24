@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Req, HttpStatus, HttpException} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Req, HttpStatus, HttpException, Query} from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -24,8 +24,14 @@ export class CommentController {
   }
 
   @Get()
-  async findAll(@Body() comment: CreateCommentDto) {
-    return await this.commentService.findAll(comment.postId);
+  async findAll(@Query('postId') postId: number) {
+    try {
+      return await this.commentService.findAll(postId);
+    } catch (e) {
+      if (e.status === HttpStatus.NOT_FOUND) {
+        throw new HttpException(e.message, HttpStatus.NOT_FOUND);
+      }
+    }
   }
 
   @Get('count')
