@@ -26,4 +26,6 @@ export class Profile {
   @Column()
   bio: string;
 
+
+
 }

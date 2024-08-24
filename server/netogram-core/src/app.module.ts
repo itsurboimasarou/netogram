@@ -12,6 +12,9 @@ import {IdgenModule} from "./utils/idgen/idgen.module";
 import { ProfileModule } from './profile/profile.module';
 import { PostModule } from './post/post.module';
 import { SearchModule } from './search/search.module';
+import { CommentModule } from './comment/comment.module';
+import { LikepostModule } from './likepost/likepost.module';
+
 import * as process from 'node:process';
 import { ConfigModule } from '@nestjs/config';
 import * as dotenv from 'dotenv';
@@ -41,6 +44,8 @@ dotenv.config();
       ProfileModule,
       PostModule,
       SearchModule,
+      CommentModule,
+      LikepostModule,
   ],
   controllers: [AppController],
   providers: [AppService, IdgenService],
