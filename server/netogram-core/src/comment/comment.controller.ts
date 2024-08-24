@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Req} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Req, HttpStatus, HttpException} from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -10,25 +10,29 @@ export class CommentController {
   @Post()
   create(@Body() createCommentDto: CreateCommentDto,
          @Req() req,) {
-    const { uid } = req.user;
-    return this.commentService.create(createCommentDto, uid);
+    try {
+      const { uid } = req.user;
+      console.log(uid);
+      return this.commentService.create(createCommentDto, uid);
+    }catch (e){
+      if (e.status === HttpStatus.BAD_REQUEST) {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      } else if (e.status === HttpStatus.NOT_FOUND) {
+        throw new HttpException(e.message, HttpStatus.NOT_FOUND);
+      }
+    }
   }
 
   @Get()
-  findAll(@Body() comment: CreateCommentDto) {
-    return this.commentService.findAll(comment.postId);
+  async findAll(@Body() comment: CreateCommentDto) {
+    return await this.commentService.findAll(comment.postId);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.commentService.findOne(+id);
-  // }
-  //
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-  //   return this.commentService.update(+id, updateCommentDto);
-  // }
-  //
+  @Get('count')
+  async countComments(@Body() comment: CreateCommentDto) {
+    return await this.commentService.countComments(comment.postId);
+  }
+
   @Delete()
   remove(@Body() deleteCommentDto: CreateCommentDto) {
     return this.commentService.delete(deleteCommentDto.commentId);

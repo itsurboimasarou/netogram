@@ -13,6 +13,7 @@ import { ProfileModule } from './profile/profile.module';
 import { PostModule } from './post/post.module';
 import { SearchModule } from './search/search.module';
 import { CommentModule } from './comment/comment.module';
+import { LikepostModule } from './likepost/likepost.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CommentModule } from './comment/comment.module';
       PostModule,
       SearchModule,
       CommentModule,
+      LikepostModule,
   ],
   controllers: [AppController],
   providers: [AppService, IdgenService],

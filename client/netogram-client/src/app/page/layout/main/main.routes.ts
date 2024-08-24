@@ -7,11 +7,6 @@ export const MAIN_ROUTES: Routes = [
     component: MainComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'home',
-        pathMatch: 'full',
-      },
-      {
         path: 'home',
         loadChildren: () =>
           import('./home/home.routes').then((m) => m.HOME_ROUTES),

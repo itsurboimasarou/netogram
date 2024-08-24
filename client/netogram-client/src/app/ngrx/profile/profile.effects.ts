@@ -63,6 +63,24 @@ export class ProfileEffects {
     );
   });
 
+  updateMine$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(profileActions.updateMine),
+      switchMap((action) => {
+        return this.profileService.updateProfile(action.mine).pipe(
+          map(() => {
+            return profileActions.updateMineSuccess();
+          }),
+          catchError((error) => {
+            return of(
+              profileActions.updateMineFailure({ updateErrorMessage: error }),
+            );
+          }),
+        );
+      }),
+    );
+  });
+
   constructor(
     private actions$: Actions,
     private profileService: ProfileService,

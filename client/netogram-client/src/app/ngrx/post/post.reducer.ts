@@ -1,9 +1,9 @@
-import {PostState} from "./post.state";
-import {HttpErrorResponseModel} from "../../models/http-error-response.model";
-import {PostModel, PostResponse} from "../../models/post.model";
-import {createReducer} from "@ngrx/store";
-import {on} from "@ngrx/store";
-import * as postActions from "./post.actions";
+import { PostState } from './post.state';
+import { HttpErrorResponseModel } from '../../models/http-error-response.model';
+import { PostModel, PostResponse } from '../../models/post.model';
+import { createReducer } from '@ngrx/store';
+import { on } from '@ngrx/store';
+import * as postActions from './post.actions';
 
 export const initialState: PostState = {
   posts: <PostResponse>{},
@@ -33,7 +33,7 @@ export const initialState: PostState = {
 };
 
 export const PostReducer = createReducer(
-initialState,
+  initialState,
 
   //create post
   on(postActions.CreatePost, (state, { type }) => {
@@ -138,8 +138,7 @@ initialState,
       ...state,
       isGettingAllPosts: false,
       isGetAllPostsSuccess: true,
-      posts,
+      posts: posts,
     };
   }),
-
-)
+);

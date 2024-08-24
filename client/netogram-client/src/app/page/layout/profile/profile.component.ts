@@ -9,6 +9,7 @@ import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 import { Store } from '@ngrx/store';
 import { PostState } from '../../../ngrx/post/post.state';
 import { ProfileState } from '../../../ngrx/profile/profile.state';
+import * as ProfileActions from '../../../ngrx/profile/profile.actions';
 
 @Component({
   selector: 'app-profile',

@@ -1,10 +1,13 @@
-import {Column, Entity, PrimaryColumn} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryColumn, Unique} from "typeorm";
+import {Post} from "../../post/entities/post.entity";
 
 @Entity()
+@Unique(['commentId'])
 export class Comment {
     @PrimaryColumn({type: 'bigint' })
     commentId: number;
 
+    @ManyToOne(() => Post)
     @Column({type: "bigint"})
     postId: number;
 

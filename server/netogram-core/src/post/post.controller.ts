@@ -58,6 +58,8 @@ export class PostController {
 
   @Get("all")
   async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    console.log('page', page);
+    console.log('limit', limit);
     const pageNumber = parseInt(page, 10);
     const limitNumber = parseInt(limit, 10);
 

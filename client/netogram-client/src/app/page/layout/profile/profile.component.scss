@@ -14,7 +14,6 @@
 .container{
   display: flex;
   flex-direction: row;
-  height: 100%;
   width: calc(100% - 4rem);
   padding: 2rem 2rem 0 2rem;
 }
@@ -26,13 +25,16 @@
 }
 .main{
   width: 60%;
-  height: 100%;
-  max-width: 851px;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .btnProfile{
   position: absolute;
-  right: 27%;
+  transform: translateY(-20%);
+
 }
 
 .profile-edit-container {
@@ -46,9 +48,10 @@
 
 .mainContainer{
   width: 100%;
-  height: 60%;
+  height: calc(315px + 20vh);
   border-radius: 12px;
-  background-color: var(--surface);
+  max-width: 851px;
+  //background-color: var(--surface);
 }
 
 .coverContainer{
@@ -69,10 +72,10 @@
 .profileContainer{
   display: flex;
   align-items: center;
-  justify-content: center;
+  //justify-content: center;
   width: 100%;
   height: 35%;
-  //background-color: var(--surfaceContainerLowest);
+  background-color: var(--surfaceContainerLowest);
   border-radius: 0 0 12px 12px;
 }
 
@@ -83,8 +86,8 @@
 }
 
 .avatarContainer img {
-  width: 100%;
-  height: 100%;
+  width: 164px;
+  height: 164px;
   object-fit: cover;
   position: relative;
   left: 15%;
@@ -92,8 +95,6 @@
   background-color: var(--surface);
   padding: 4px;
   border-radius: 50%;
-  max-width: 164px;
-  max-height: 164px;
 }
 
 .nameContainer{
@@ -102,6 +103,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transform: translateY(-5%);
 }
 
 .nameContainer span{
@@ -115,11 +117,10 @@
 }
 
 .addfrButtonContainer{
-  width: calc(30% - 1rem);
-  height: 100%;
+  width: calc(25% - 1rem);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
 }
 
 .addfrButtonContainer button{
@@ -138,6 +139,7 @@
 //
 .descriptionContainer{
   height: fit-content;
+  width: calc(851px - 40px);
   background-color: var(--surface);
   border-radius: 12px;
   padding: 20px;
@@ -155,4 +157,22 @@
   border-radius: 12px;
   background-color: var(--surfaceContainerHigh);
   position: fixed;
+}
+
+
+@media screen and (max-width: 1367px) {
+  .mainContainer{
+    max-width: 640px ;
+    max-height: 360px;
+  }
+  .coverContainer{
+    max-width: 640px ;
+  }
+  .coverContainer img{
+    max-width: 640px;
+
+  }
+  .descriptionContainer{
+    max-width: calc(640px - 40px) ;
+  }
 }
