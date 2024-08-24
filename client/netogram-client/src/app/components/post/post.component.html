@@ -9,7 +9,10 @@
 
     <mat-card-title (click)="navigateToProfile()" class="username">{{ postUser.uid | idToName | async }}
     </mat-card-title>
-    <mat-card-subtitle (click)="navigateToProfile()" class="post-time">Dog Breed</mat-card-subtitle>
+    <mat-card-subtitle (click)="navigateToProfile()" class="post-time">{{
+        postUser.createdAt | dateTranform
+      }}
+    </mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content class="content-post">
@@ -24,10 +27,7 @@
 
 
     <div class="carousel-images"
-         (mousedown)="onMouseDown($event, carousel)"
-         (mouseleave)="onMouseLeave()"
-         (mouseup)="onMouseUp()"
-         (mousemove)="onMouseMove($event, carousel)"
+         (click)="navigateToDetail()"
          #carousel>
       @for (image of postUser.imageUrls; track $index) {
         <img src="{{image}}"
@@ -54,5 +54,7 @@
 </mat-card>
 
 
-
-
+<!--(mousedown)="onMouseDown($event, carousel)"-->
+<!--(mouseleave)="onMouseLeave()"-->
+<!--(mouseup)="onMouseUp()"-->
+<!--(mousemove)="onMouseMove($event, carousel)"-->
