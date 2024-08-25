@@ -5,6 +5,7 @@
   border-radius: 12px;
   margin-bottom: 20px;
   max-width: 672px;
+  border: none;
 }
 
 .example-card-header {
@@ -109,7 +110,7 @@
 }
 
 .carousel-images:active {
-  cursor: grabbing;
+  cursor: pointer;
 }
 
 .carousel-images::-webkit-scrollbar {
@@ -144,7 +145,7 @@
 
 .username {
   font-weight: bold;
-  display: block;
+  //display: block;
   font-size: 16px;
 }
 
@@ -245,6 +246,7 @@ mat-icon {
   width: 100px;
   height: 90px;
 }
+
 .gravatar-title {
   width: 500px;
   padding: 10px;
@@ -312,3 +314,7 @@ mat-icon {
   font-size: 12px;
 }
 
+
+::ng-deep .mat-mdc-card-outlined {
+  box-shadow: none !important;
+}

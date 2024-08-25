@@ -1,7 +1,13 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { PostModel } from '../../models/post.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
@@ -13,6 +19,8 @@ import * as ProfileActions from '../../ngrx/profile/profile.actions';
 import * as PostActions from '../../ngrx/post/post.actions';
 import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { PostState } from '../../ngrx/post/post.state';
+import { combineLatest } from 'rxjs';
 
 class PostResult {}
 
@@ -38,8 +46,12 @@ export class PostComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<{
       profile: ProfileState;
+      post: PostState;
     }>,
   ) {}
+
+  isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
+  isGettingAllPosts$ = this.store.select('post', 'isGettingAllPosts');
 
   animation = 'pulse';
   contentLoaded = false;
@@ -49,16 +61,15 @@ export class PostComponent implements OnInit, OnDestroy {
   intervalId: number | null = null;
 
   ngOnInit() {
-    setTimeout(() => {
-      this.contentLoaded = true;
-    }, 1500);
-
     this.intervalId = window.setInterval(() => {
       this.animation = this.animation === 'pulse' ? 'progress-dark' : 'pulse';
       this.count = this.count === 2 ? 5 : 2;
       this.widthHeightSizeInPixels =
         this.widthHeightSizeInPixels === 50 ? 100 : 50;
-    }, 5000);
+    }, 1500);
+    setTimeout(() => {
+      this.contentLoaded = true;
+    }, 1500);
   }
 
   ngOnDestroy() {
