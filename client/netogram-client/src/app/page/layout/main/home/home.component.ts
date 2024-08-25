@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscription: Subscription[] = [];
 
   currentPage = 1;
-  size = 5;
+  size = 3;
   itemsCount = 0;
   tempArray: PostModel[] = [];
 

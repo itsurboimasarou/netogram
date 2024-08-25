@@ -3,14 +3,21 @@
     <mat-spinner></mat-spinner>
   </div>
 } @else {
-  <div class="container">
+  <div class="container"
+
+  >
     <div class="left">
       <button id="backButton" (click)="goBack()" mat-fab>
         <mat-icon>arrow_back</mat-icon>
       </button>
 
     </div>
-    <div class="main">
+    <div class="main"
+         infiniteScroll
+         [infiniteScrollDistance]="2"
+         [infiniteScrollThrottle]="50"
+         [fromRoot]="true"
+         (scrolled)="onScrollDown($event)">
       <div class="mainContainer">
         <div class="coverContainer">
           <img
@@ -71,9 +78,20 @@
           {{ mineProfile.bio }}
         </p>
       </div>
-      @for (post of minePosts.data; track $index) {
-        <app-post [postUser]="post"></app-post>
-      }
+      <div class="mine-posts">
+        <div class="posts">
+          @for (post of minePosts; track $index) {
+            <app-post [postUser]="post"></app-post>
+          }
+        </div>
+        @if (isGettingMine$| async) {
+          <div class="spinner">
+            <mat-spinner></mat-spinner>
+          </div>
+        }
+
+      </div>
+
 
     </div>
     <div class="right">

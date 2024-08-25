@@ -119,7 +119,7 @@
   margin-left: 20px;
 }
 
-.addfrButtonContainer{
+.addfrButtonContainer {
   width: calc(25% - 1rem);
   display: flex;
   align-items: center;
@@ -165,25 +165,34 @@
 
 
 @media screen and (max-width: 1367px) {
-  .mainContainer{
-    max-width: 640px ;
+  .mainContainer {
+    max-width: 640px;
     max-height: 360px;
   }
-  .coverContainer{
-    max-width: 640px ;
+  .coverContainer {
+    max-width: 640px;
   }
-  .coverContainer img{
+  .coverContainer img {
     max-width: 640px;
 
   }
-  .descriptionContainer{
-    max-width: calc(640px - 40px) ;
+  .descriptionContainer {
+    max-width: calc(640px - 40px);
   }
 }
+
 .spinner {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100%;
+}
+
+.mine-posts {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
