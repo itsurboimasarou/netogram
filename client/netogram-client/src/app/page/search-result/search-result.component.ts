@@ -1,13 +1,76 @@
+// import {Component, inject, model, OnInit, signal} from '@angular/core';
+// import { ActivatedRoute, Router } from '@angular/router';
+// import { Store } from '@ngrx/store';
+// import { Observable } from 'rxjs';
+// import { ProfileModel } from '../../models/profile.model';
+// import { PostModel } from '../../models/post.model';
+// import * as SearchActions from '../../ngrx/search/search.actions';
+// import { SearchState } from '../../ngrx/search/search.state';
+// import {AsyncPipe} from "@angular/common";
+// import {MatProgressSpinner} from "@angular/material/progress-spinner";
+// import {PostComponent} from "../../components/post/post.component";
+// import {MatCard, MatCardContent} from "@angular/material/card";
+// import {NavbarComponent} from "../../components/navbar/navbar.component";
+// import {MatIcon} from "@angular/material/icon";
+//
+// @Component({
+//   selector: 'app-search-result',
+//   templateUrl: './search-result.component.html',
+//   standalone: true,
+//   imports: [
+//     AsyncPipe,
+//     MatProgressSpinner,
+//     PostComponent,
+//     MatCard,
+//     MatCardContent,
+//     NavbarComponent,
+//     MatIcon
+//   ],
+//   styleUrls: ['./search-result.component.scss']
+// })
+// export class SearchResultComponent implements OnInit {
+//   searchTerm: string = '';
+//   profiles$: Observable<ProfileModel[]>;
+//   posts$: Observable<PostModel[]>;
+//   loading$: Observable<boolean>;
+//   error$: Observable<any>;
+//
+//   constructor(
+//     private route: ActivatedRoute,
+//     private router: Router,
+//     private store: Store<{ search: SearchState }>
+//   ) {
+//     console.log('SearchResultComponent');
+//     this.profiles$ = this.store.select(state => state.search.searchResult.profiles);
+//     this.posts$ = this.store.select(state => state.search.searchResult.posts);
+//     this.loading$ = this.store.select(state => state.search.searchResultLoading);
+//     this.error$ = this.store.select(state => state.search.searchResultFailure);
+//   }
+//
+//   ngOnInit() {
+//     this.route.queryParams.subscribe(params => {
+//       this.searchTerm = params['search'] || '';
+//       if (this.searchTerm) {
+//         this.store.dispatch(SearchActions.search({ query: this.searchTerm }));
+//       }
+//     });
+//   }
+//
+//   goBack(): void {
+//     this.router.navigate(['/']);
+//   }
+// }
+
+
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, RouterOutlet} from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { MatCard, MatCardContent } from "@angular/material/card";
 import { MatList, MatListItem } from "@angular/material/list";
-import {MatButton, MatFabButton} from "@angular/material/button";
-import {Location, NgForOf} from "@angular/common";
+import { MatButton, MatFabButton } from "@angular/material/button";
+import { Location, NgForOf, NgIf } from "@angular/common";
 import { PostComponent } from "../../components/post/post.component";
-import {NavbarComponent} from "../../components/navbar/navbar.component";
-import {MatIcon} from "@angular/material/icon";
-
+import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { MatIcon } from "@angular/material/icon";
 
 interface UserResult {
   uid: string;
@@ -40,6 +103,7 @@ interface PostResult {
     MatListItem,
     MatButton,
     NgForOf,
+    NgIf,
     PostComponent,
     NavbarComponent,
     RouterOutlet,
@@ -56,8 +120,8 @@ export class SearchResultComponent implements OnInit {
   constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.searchTerm = params['term'];
+    this.route.queryParams.subscribe(params => {
+      this.searchTerm = params['search'] || '';
       this.performSearch();
     });
   }
@@ -103,6 +167,7 @@ export class SearchResultComponent implements OnInit {
       },
     ];
   }
+
   goBack(): void {
     this.location.back();
   }
