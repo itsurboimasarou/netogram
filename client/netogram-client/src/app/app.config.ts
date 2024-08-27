@@ -29,6 +29,8 @@ import {CommentEffects} from "./ngrx/comment/comment.effects";
 import {commentReducer} from "./ngrx/comment/comment.reducer";
 import {likepostReducer} from "./ngrx/likepost/likepost.reducer";
 import {LikepostEffects} from "./ngrx/likepost/likepost.effects";
+import {FriendshipEffects} from "./ngrx/friend-ship/friend-ship.effects";
+import {friendshipReducer} from "./ngrx/friend-ship/friend-ship.reducer";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -46,7 +48,8 @@ export const appConfig: ApplicationConfig = {
       StorageEffects,
       searchEffects,
       CommentEffects,
-      LikepostEffects
+      LikepostEffects,
+      FriendshipEffects
     ),
     provideState({ name: 'auth', reducer: authReducer }),
     provideState({ name: 'profile', reducer: profileReducer }),
@@ -55,6 +58,7 @@ export const appConfig: ApplicationConfig = {
     provideState({ name: 'search', reducer: SearchReducer }),
     provideState({ name: 'comment', reducer: commentReducer }),
     provideState({ name: 'likePost', reducer: likepostReducer }),
+    provideState({ name: 'friendship', reducer: friendshipReducer }),
     HttpClientAuth,
     provideHttpClient(),
     provideAnimationsAsync(),

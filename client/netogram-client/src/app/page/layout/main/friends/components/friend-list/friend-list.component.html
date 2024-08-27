@@ -1,14 +1,14 @@
 <div class="friends">
-  @for(friend of friendsList | slice:start:end; track $index ){
+  @for(friend of (this.friendships$ | async) | slice:start:end; track $index ){
 
     <mat-card class="friendcontainer">
       <div class="friendavaname">
-        <img src="{{friend.avatar}}"/>
+        <img src="{{friend.friendUid | idToAvatar | async}}"/>
         <div class="nameMutual">
           <div class="nameUser">
-            <span>{{ friend.name }}</span><br>
+            <span>{{ friend.friendUid | idToName | async}}</span><br>
           </div>
-          <p>{{friend.mutualFriends}}</p>
+<!--          <p>{{friend.mutualFriends}}</p>-->
         </div>
       </div>
       <div id="icon">

@@ -1,19 +1,48 @@
 import {Component, HostListener} from '@angular/core';
 import {MaterialModule} from "../../../../../../shared/material.module";
 import {PageEvent} from "@angular/material/paginator";
-import {SlicePipe} from "@angular/common";
+import {AsyncPipe, SlicePipe} from "@angular/common";
+import {Store} from "@ngrx/store";
+import {FriendshipState} from "../../../../../../ngrx/friend-ship/friendship.state";
+import * as FriendshipActions from "../../../../../../ngrx/friend-ship/friendship.actions";
+import {async, Observable} from "rxjs";
+import {FriendshipModel} from "../../../../../../models/friendship.model";
+import * as ProfileActions from "../../../../../../ngrx/profile/profile.actions";
+import {ProfileModel} from "../../../../../../models/profile.model";
+import {ProfileState} from "../../../../../../ngrx/profile/profile.state";
+import {IdToAvatarPipe} from "../../../../../../shared/pipes/id-to-avatar.pipe";
+import {IdToNamePipe} from "../../../../../../shared/pipes/id-to-name.pipe";
 
 @Component({
   selector: 'app-friend-list',
   standalone: true,
-  imports: [MaterialModule, SlicePipe],
+  imports: [MaterialModule, SlicePipe, AsyncPipe, IdToAvatarPipe, IdToNamePipe],
   templateUrl: './friend-list.component.html',
   styleUrl: './friend-list.component.scss'
 })
 export class FriendListComponent {
 
+  friendships$: Observable<FriendshipModel[] | null> = this.store.select('friendship', 'friendships');
+  isGetFriendListSucces$ = this.store.select('friendship','friendshipSuccess');
+
+  constructor(private store: Store<{
+    friendship: FriendshipState;
+    profile: ProfileState;
+  }>) {
+    this.store.dispatch(FriendshipActions.getAllFriendships({uid: '5', page: 1, limit: 10}));
+    this.isGetFriendListSucces$.subscribe((isSuccess) => {
+      if (isSuccess) {
+        this.friendships$.subscribe((friendships) => {
+          console.log(friendships)
+        })
+      }
+    })
+  }
+
   ngOnInit() {
     this.onResize({ target: window });
+
+
   }
 
   start = 0;

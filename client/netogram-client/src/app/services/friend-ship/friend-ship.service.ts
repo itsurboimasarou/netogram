@@ -8,7 +8,7 @@ import { FriendshipModel } from '../../models/friendship.model';
 export class FriendShipService {
   constructor(private httpClient: HttpClientAuth) {}
 
-  getFriendRequests(uid: string, page: number, limit: number) {
+  getFriendList(uid: string, page: number, limit: number) {
     return this.httpClient.get(`friendship/${uid}?page=${page}&limit=${limit}`);
   }
 

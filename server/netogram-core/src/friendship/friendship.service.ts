@@ -16,7 +16,7 @@ export class FriendshipService {
     return await this.repository.findOne({ where: { uid, friendUid: friendId } });
   }
 
-  async create(createFriendshipDto: CreateFriendshipDto) {
+  async create(createFriendshipDto: CreateFriendshipDto,uid: string) {
 
     // check if friendship already exists
     const friendship = await this.checkFriendship(createFriendshipDto.uid, createFriendshipDto.friendUid);
@@ -26,7 +26,7 @@ export class FriendshipService {
     createFriendshipDto.status = 'pending';
     let newFriend = new Friendship();
     newFriend.id = this.idGen.generateId();
-    newFriend.uid = createFriendshipDto.uid;
+    newFriend.uid = uid;
     newFriend.friendUid = createFriendshipDto.friendUid;
     newFriend.status = createFriendshipDto.status;
     newFriend.createdAt = new Date().toISOString();
