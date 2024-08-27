@@ -4,7 +4,7 @@ import {
   AsyncPipe,
   Location,
   NgClass,
-  NgForOf,
+  NgForOf, NgIf,
   NgStyle,
 } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -38,6 +38,7 @@ import * as PostActions from '../../ngrx/post/post.actions';
     IdToNamePipe,
     DateTranformPipe,
     ReactiveFormsModule,
+    NgIf,
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
@@ -97,8 +98,6 @@ export class DetailComponent implements OnInit, OnDestroy {
     );
 
   }
-
- 
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
@@ -194,5 +193,19 @@ export class DetailComponent implements OnInit, OnDestroy {
   goBack(): void {
     this.location.back();
     this.store.dispatch(PostActions.ClearPostDetail());
+  }
+
+  isFirstImage(): boolean {
+    return this.currentIndex === 0;
+  }
+
+  // Method to check if the current image is the last one
+  isLastImage(): boolean {
+    return this.currentIndex === this.postDetail.imageUrls.length - 1;
+  }
+
+  // Method to check if there is only one image
+  isSingleImage(): boolean {
+    return this.postDetail.imageUrls.length === 1;
   }
 }
