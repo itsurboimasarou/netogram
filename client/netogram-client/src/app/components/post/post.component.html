@@ -110,7 +110,7 @@
       <mat-icon>{{ shareIcon }}</mat-icon>
       SHARE
     </button>
-    <button mat-button (click)="deletePost()">
+    <button *ngIf="isProfilePage && postUser.uid === mineUid" mat-button (click)="deletePost()">
       <mat-icon>{{ shareIcon }}</mat-icon>
       delete
     </button>

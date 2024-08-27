@@ -52,15 +52,19 @@ export class PostComponent implements OnInit, OnDestroy {
 
   isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
   isGettingAllPosts$ = this.store.select('post', 'isGettingAllPosts');
+  mineProfile$ = this.store.select('profile', 'mine');
+  mineUid = '';
 
   animation = 'pulse';
   contentLoaded = false;
+  isProfilePage = false;
   count = 2;
   widthHeightSizeInPixels = 50;
 
   intervalId: number | null = null;
 
   ngOnInit() {
+    this.isProfilePage = this.router.url.includes('/profile');
     this.intervalId = window.setInterval(() => {
       this.animation = this.animation === 'pulse' ? 'progress-dark' : 'pulse';
       this.count = this.count === 2 ? 5 : 2;
@@ -70,12 +74,19 @@ export class PostComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.contentLoaded = true;
     }, 1500);
+
+    this.mineProfile$.subscribe((profile) => {
+      if (profile?.uid) {
+        this.mineUid = profile.uid;
+      }
+    });
   }
 
   ngOnDestroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
+    this.isProfilePage = false;
   }
 
   @Input() postUser: PostModel = <PostModel>{};
@@ -157,6 +168,8 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   deletePost() {
-    this.store.dispatch(PostActions.DeletePost({ id: this.postUser.id }));
+    this.store.dispatch(
+      PostActions.DeletePost({ id: this.postUser.id, uid: this.mineUid }),
+    );
   }
 }
