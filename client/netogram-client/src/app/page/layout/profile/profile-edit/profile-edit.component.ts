@@ -136,6 +136,12 @@ export class ProfileEditComponent implements OnInit{
       this.store.dispatch(ProfileActions.updateMine({mine: this.profileData}));
       this.submissionStatus = 'success';
 
+      this.snackBar.open('Profile saved successfully!', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        panelClass: ['snackbar-success'],
+      });
+
     } else {
       console.log('Form is invalid', this.profileForm.value);
 
