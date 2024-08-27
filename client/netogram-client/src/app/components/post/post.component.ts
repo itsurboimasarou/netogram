@@ -87,6 +87,7 @@ export class PostComponent implements OnInit, OnDestroy {
   isDragging = false;
   startX = 0;
   scrollLeft = 0;
+  @Input() post!: any;
   currentIndex = 0;
 
   hasMultipleImages(): boolean {
