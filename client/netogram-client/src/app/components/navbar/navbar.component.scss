@@ -37,6 +37,16 @@
   align-items: center;
   padding-right: 2rem;
 
+  ::ng-deep .mat-mdc-icon-button {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+  }
+
+  ::ng-deep.mat-mdc-icon-button .mat-mdc-button-touch-target {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+
 }
 
 img {
@@ -122,15 +132,6 @@ img {
   margin: 0 10px 0 0;
 }
 
-::ng-deep .mat-mdc-icon-button {
-  width: 3.5rem !important;
-  height: 3.5rem !important;
-}
-
-::ng-deep.mat-mdc-icon-button .mat-mdc-button-touch-target {
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-}
 
 @media (max-width: 1366px) {
 
