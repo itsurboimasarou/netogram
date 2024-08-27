@@ -115,6 +115,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   profileEdit(): void {
+    this.dialog.closeAll();
     const dialogRef = this.dialog.open(ProfileEditComponent, {
       width: '100px',
     });

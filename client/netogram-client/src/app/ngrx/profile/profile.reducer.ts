@@ -76,6 +76,7 @@ export const profileReducer = createReducer(
     console.log(type);
     return {
       ...state,
+      isUpdateSuccess: false,
       isUpdating: true,
     };
   }),
