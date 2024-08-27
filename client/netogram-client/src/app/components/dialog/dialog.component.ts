@@ -21,7 +21,8 @@ import { StorageState } from '../../ngrx/storage/storage.state';
 import * as storageActions from '../../ngrx/storage/storage.actions';
 import * as profileActions from '../../ngrx/profile/profile.actions';
 import * as PostActions from '../../ngrx/post/post.actions';
-import {AsyncPipe} from "@angular/common";
+import { AsyncPipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dialog',
@@ -30,7 +31,7 @@ import {AsyncPipe} from "@angular/common";
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.scss',
 })
-export class DialogComponent implements OnDestroy {
+export class DialogComponent implements OnDestroy, OnInit {
   startX = 0;
   scrollLeft = 0;
 
@@ -49,6 +50,8 @@ export class DialogComponent implements OnDestroy {
   isCreateLoading$ = this.store.select('post', 'isCreating');
 
   isCreateSuccess$ = this.store.select('post', 'isCreateSuccess');
+
+  submissionStatus: 'success' | 'error' | null = null;
 
   postForm = new FormGroup({
     uid: new FormControl(''),
@@ -72,11 +75,28 @@ export class DialogComponent implements OnDestroy {
       post: PostState;
       storage: StorageState;
     }>,
-  ) {
+    public snackBar: MatSnackBar,
+  ) {}
+
+  ngOnInit(): void {
     this.subscription.push(
       this.profileMine$.subscribe((profile) => {
         if (profile) {
           console.log('profile', profile);
+        }
+      }),
+
+      this.isCreateSuccess$.subscribe((success) => {
+        if (success) {
+          this.store.dispatch(
+            PostActions.GetAllPost({ pageNumber: 1, limitNumber: 10 }),
+          );
+          this.snackBar.open('Post successfully', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar'],
+          });
         }
       }),
     );

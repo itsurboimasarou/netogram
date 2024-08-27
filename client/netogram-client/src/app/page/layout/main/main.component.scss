@@ -1,10 +1,10 @@
 .container {
 
   height: calc(100% - 64px);
-  width: calc(100% - 4rem);
+  width: calc(100% - 9rem);
   display: grid;
   grid-template-columns: 2fr 4fr 2.3fr;
-  padding: 2rem 2rem 0 2rem;
+  padding: 2rem 4.5rem 0 4.5rem;
 }
 
 .left {

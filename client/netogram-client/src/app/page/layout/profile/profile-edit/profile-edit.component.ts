@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -53,11 +53,12 @@ interface FileInfo {
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.scss'],
 })
-export class ProfileEditComponent implements OnInit {
+export class ProfileEditComponent implements OnInit, OnDestroy {
   subscription: Subscription[] = [];
   profileMine$ = this.store.select('profile', 'mine');
   storage$ = this.store.select('storage', 'url');
   storageCover$ = this.store.select('storage', 'urlCover');
+  isUpdateSuccess$ = this.store.select('profile', 'isUpdateSuccess');
   profileMine: ProfileModel = <ProfileModel>{};
 
   submissionStatus: 'success' | 'error' | null = null;
@@ -91,6 +92,11 @@ export class ProfileEditComponent implements OnInit {
     }>,
     public snackBar: MatSnackBar,
   ) {}
+
+  ngOnDestroy(): void {
+    this.subscription.forEach((sub) => sub.unsubscribe());
+    this.store.dispatch(StorageActions.clearStorageState());
+  }
 
   ngOnInit(): void {
     this.subscription.push(
@@ -126,6 +132,23 @@ export class ProfileEditComponent implements OnInit {
           }),
         );
       }),
+
+      this.isUpdateSuccess$.subscribe((isSuccess) => {
+        if (isSuccess) {
+          this.store.dispatch(
+            ProfileActions.getMine({ uid: this.profileMine.uid }),
+          );
+
+          console.log('Profile updated successfully');
+          this.snackBar.open('Profile updated successfully', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar'],
+          });
+          this.onClose();
+        }
+      }),
     );
   }
 
@@ -139,31 +162,17 @@ export class ProfileEditComponent implements OnInit {
         bio: this.profileForm.value.bio || this.profileMine.bio,
         coverUrl: this.storageCoverUrl || this.profileMine.coverUrl,
       };
-
-      console.log(this.profileData);
       this.store.dispatch(
         ProfileActions.updateMine({ mine: this.profileData }),
       );
-      this.submissionStatus = 'success';
+
+      console.log(this.profileData);
     } else {
-      console.log('Form is invalid', this.profileForm.value);
-
       this.submissionStatus = 'success';
-
-      this.snackBar.open(
-        'Form is invalid. Please correct the errors.',
-        'Close',
-        {
-          duration: 3000,
-          horizontalPosition: 'right',
-          panelClass: ['snackbar-error'],
-        },
-      );
     }
   }
 
   onClose() {
-    console.log('Close dialog');
     this.dialog.closeAll();
   }
 

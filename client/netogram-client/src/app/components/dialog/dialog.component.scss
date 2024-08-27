@@ -53,7 +53,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#comment{
+#comment {
   position: absolute;
   top: 62%;
   right: 50%;
@@ -61,7 +61,7 @@
   cursor: pointer;
 }
 
-#deletBtn{
+#deletBtn {
   position: absolute;
   top: 34%;
   right: 6%;
@@ -101,12 +101,10 @@
   }
 
 
-
   &.dragover {
     background-color: #e0e0e0;
     border-color: #aaa;
   }
-
 
 
 }
@@ -120,7 +118,7 @@
   cursor: pointer;
 }
 
-.carousel-images{
+.carousel-images {
   width: 100%;
   display: flex;
   gap: 10px;
@@ -166,6 +164,7 @@
   border: none;
   display: flex;
   align-items: center;
+
   &:hover {
     background-color: white;
   }
@@ -186,6 +185,7 @@
   display: block;
   justify-content: center;
   align-items: center;
+
   &:hover {
     background-color: darkred;
   }
@@ -199,10 +199,14 @@
 
 #closeIcon {
   cursor: pointer;
+
   &:hover {
     transform: scale(0.9);
     color: var(--error);
   }
 }
 
+.content-post {
+  font-family: "Public Sans", sans-serif;
+}
 

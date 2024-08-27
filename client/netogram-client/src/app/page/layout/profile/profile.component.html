@@ -18,11 +18,22 @@
          [infiniteScrollThrottle]="50"
          [fromRoot]="true"
          (scrolled)="onScrollDown($event)">
-      <div class="mainContainer">
-        <div class="coverContainer">
-          <img
-            src="{{mineProfile.coverUrl}}">
-        </div>
+      <mat-card class="mainContainer">
+        @if (mineProfile.coverUrl === '') {
+          <div class="coverContainer">
+            <img
+              src="https://images.pexels.com/photos/1668246/pexels-photo-1668246.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+          </div>
+        } @else {
+          <div class="coverContainer">
+            <img
+              src="{{mineProfile.coverUrl}}">
+          </div>
+        }
+        <!--        <div class="coverContainer">-->
+        <!--          <img-->
+        <!--            src="{{mineProfile.coverUrl}}">-->
+        <!--        </div>-->
         <div class="profileContainer">
           <div class="avatarContainer">
             <img
@@ -68,16 +79,16 @@
 
           </div>
         </div>
-      </div>
+      </mat-card>
 
-      <div class="descriptionContainer">
+      <mat-card class="descriptionContainer">
         <h3>
           About
         </h3>
         <p>
           {{ mineProfile.bio }}
         </p>
-      </div>
+      </mat-card>
       <div class="mine-posts">
         <div class="posts">
           @for (post of minePosts; track $index) {
