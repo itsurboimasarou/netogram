@@ -41,4 +41,9 @@ export class FriendshipController {
   suggestFriends(@Param('uid') uid: string, @Query('page') page: number, @Query('limit') limit: number) {
     return this.friendshipService.suggestFriends(uid, page, limit);
   }
+
+  @Delete('unfriend/:uid/:friendUid')
+  unfriend(@Param('uid') uid: string, @Param('friendUid') friendUid: string) {
+    return this.friendshipService.delete(uid, friendUid);
+  }
 }

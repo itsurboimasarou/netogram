@@ -64,6 +64,8 @@ export class FriendshipService {
 
   // get all friends by uid with pagination
   async findFriendsByUid(uid: string, page: number, limit: number) {
+    console.log('page', page);
+    console.log('limit', limit);
     return await this.repository.find({
       where: { uid, status: 'accepted' },
       skip: (page - 1) * limit,
