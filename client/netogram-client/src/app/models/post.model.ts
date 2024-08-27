@@ -12,3 +12,4 @@ export interface PostResponse {
   pageNumber: number;
   limitNumber: number;
 }
+
