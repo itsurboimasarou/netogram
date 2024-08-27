@@ -89,8 +89,9 @@
 }
 
 .avatarContainer img {
-  width: 164px;
-  height: 164px;
+  //width: 100%;
+  width: 160px;
+  height: 160px;
   object-fit: cover;
   position: relative;
   left: 15%;
@@ -178,6 +179,13 @@
   }
   .descriptionContainer{
     max-width: calc(640px - 40px) ;
+  }
+  .nameContainer{
+    font-size: 14px;
+  }
+  .profileContainer img{
+    max-width: 120px;
+    max-height: 120px;
   }
 }
 .spinner {

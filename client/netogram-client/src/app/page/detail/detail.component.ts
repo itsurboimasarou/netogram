@@ -4,14 +4,14 @@ import {
   AsyncPipe,
   Location,
   NgClass,
-  NgForOf,
+  NgForOf, NgIf,
   NgStyle,
 } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PostState } from '../../ngrx/post/post.state';
 import { ProfileState } from '../../ngrx/profile/profile.state';
 import { Store } from '@ngrx/store';
-import {delay, Observable, Subscription} from 'rxjs';
+import {delay, Observable, Subscription, take} from 'rxjs';
 import { PostModel } from '../../models/post.model';
 import { ProfileModel } from '../../models/profile.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
@@ -24,6 +24,9 @@ import * as ProfileActions from "../../ngrx/profile/profile.actions";
 import {map} from "rxjs/operators";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import * as PostActions from '../../ngrx/post/post.actions';
+import {LikepostState} from "../../ngrx/likepost/likepost.state";
+import * as LikeActions from "../../ngrx/likepost/likepost.actions";
+import {LikepostModel} from "../../models/likepost.model";
 
 @Component({
   selector: 'app-detail',
@@ -38,6 +41,7 @@ import * as PostActions from '../../ngrx/post/post.actions';
     IdToNamePipe,
     DateTranformPipe,
     ReactiveFormsModule,
+    NgIf,
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
@@ -55,6 +59,13 @@ export class DetailComponent implements OnInit, OnDestroy {
     text: '',
     createdAt: 'asdfasd'
   }
+
+  likePostData: LikepostModel = {
+    likeId: 1,
+    uid: 'asdfasdfsadf',
+    postId: 8909711579549696,
+    createdAt: 'asdfasd'
+  }
   constructor(
     private location: Location,
     private activeRoute: ActivatedRoute,
@@ -62,6 +73,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       profile: ProfileState;
       post: PostState;
       comment: CommentState;
+      likePost: LikepostState;
     }>,
 
   ) {
@@ -70,8 +82,39 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.store.dispatch(CommentActions.getComments({ postId: Number(post.id) }));
       }
     });
+
+    this.postDetail$.subscribe((post) => {
+      if (post && post.id) {
+        this.store.dispatch(CommentActions.getComments({postId: Number(post.id)}));
+      }
+    });
+
+    this.postDetail$.subscribe((post) => {
+      if (post && post.id) {
+        console.log('oni1')
+        this.store.dispatch(LikeActions.getIsLiked({postId: Number(post.id)}));
+      }
+    });
+
+    this.postDetail$.subscribe((post) => {
+      if (post && post.id) {
+        console.log('oni2')
+        this.store.dispatch(LikeActions.getLikepostCount({postId: Number(post.id)}));
+      }
+    });
+
     this.activeRoute = activeRoute;
   }
+
+  isDeleteLikeSuccess$ = this.store.select('likePost', 'isUnLikedSuccess');
+
+  isLiked$ = this.store.select('likePost', 'isLiked');
+
+  likeCount$ = this.store.select('likePost', 'likeCount');
+
+  createLikedSuccess$ = this.store.select('likePost', 'success');
+
+  createCommentSuccess$ = this.store.select('comment', 'isCreateCommentSuccess');
 
   subscriptions: Subscription[] = [];
 
@@ -80,6 +123,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   profileMine$ = this.store.select('profile', 'mine');
 
   postDetail$ = this.store.select('post', 'postDetail');
+
   isGettingPostDetail$ = this.store.select('post', 'isGettingPostDetail');
 
   profile$ = this.store.select('profile', 'profile');
@@ -94,16 +138,21 @@ export class DetailComponent implements OnInit, OnDestroy {
       this.postDetail$.subscribe((post) => {
         this.postDetail = post;
       }),
-    );
+      this.likeCount$.subscribe((likeCount) => {
+          this.likes = likeCount;
+        }
+      ),
 
+    );
   }
 
- 
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
     this.store.dispatch(PostActions.ClearPostDetail());
     this.store.dispatch(PostActions.ClearAllPosts());
+    this.store.dispatch(LikeActions.clearLikePostState());
   }
 
   postDetail: PostModel = <PostModel>{};
@@ -122,26 +171,59 @@ export class DetailComponent implements OnInit, OnDestroy {
     console.log(this.commentForm.value.text);
     this.postDetail$.subscribe((post) => {
       if (post && post.id) {
-        // this.commentData = {...this.commentData, postId: Number(post.id)}
-        this.commentData.postId = Number(post.id);
-        console.log(this.commentData.postId);
+        this.commentData = {...this.commentData, postId: Number(post.id)}
       }
     });
-    // this.commentData = {...this.commentData, text: this.commentForm.value.text as string}
-    this.commentData.text = this.commentForm.value.text as string;
-    console.log(this.commentData);
-
+    this.commentData = {...this.commentData, text: this.commentForm.value.text as string}
     this.store.dispatch(CommentActions.createComment({comment: this.commentData}));
-    this.store.dispatch(CommentActions.getComments({postId: this.commentData.postId}));
 
-    this.commentList$.subscribe((comments) => {
-      console.log(comments); // đừng xóa không comment không hiện lên :((
-    })
+    this.createCommentSuccess$.subscribe((success) => {
+      if (success) {
+        this.store.dispatch(CommentActions.getComments({postId: this.commentData.postId}));
+      }
+    });
     this.commentForm.reset();
     // this.commentList$.subscribe((comments) => {
     //   console.log(comments);
     // })
   }
+
+  createLikePost() {
+    this.postDetail$.pipe(take(1)).subscribe((post) => {
+      if (post && post.id) {
+        console.log('cre')
+        this.likePostData = {...this.likePostData, postId: Number(post.id)}
+        this.store.dispatch(LikeActions.createLikepost({likePost: this.likePostData}));
+      }
+    });
+
+    this.createLikedSuccess$.subscribe((success) => {
+      if (success) {
+        console.log('get');
+        this.store.dispatch(LikeActions.getLikepostCount({ postId: this.likePostData.postId }));
+        this.store.dispatch(LikeActions.getIsLiked({ postId: this.likePostData.postId }));
+      }
+    });
+  }
+
+  unlikePost() {
+    this.postDetail$.pipe(take(1)).subscribe((post) => {
+      if (post && post.id) {
+        console.log('de')
+        this.likePostData = {...this.likePostData, postId: Number(post.id)}
+
+        this.store.dispatch(LikeActions.deleteLike({postId: Number(post.id)}));
+      }
+    });
+    this.isDeleteLikeSuccess$.subscribe((success) => {
+      if (success) {
+        console.log('deget');
+        this.store.dispatch(LikeActions.getLikepostCount({ postId: this.likePostData.postId }));
+        this.store.dispatch(LikeActions.getIsLiked({ postId: this.likePostData.postId }));
+      }
+    });
+  }
+
 
   loadMoreComments() {
     this.displayedComments += 10;
@@ -150,16 +232,18 @@ export class DetailComponent implements OnInit, OnDestroy {
   favoriteIcon = 'favorite_outlined';
   shareIcon = 'ios_share_outlined';
   bookmarkIcon = 'bookmark_outlined';
-  likes = 856;
+  likes = 0;
   currentIndex = 0;
 
-  toggleFavorite() {
-    this.favoriteIcon =
-      this.favoriteIcon === 'favorite_outlined'
-        ? 'favorite'
-        : 'favorite_outlined';
-    this.likes += this.favoriteIcon === 'favorite' ? 1 : -1;
-  }
+  // toggleFavorite() {
+  //   this.favoriteIcon =
+  //     this.favoriteIcon === 'favorite_outlined'
+  //       ? 'favorite'
+  //       : 'favorite_outlined';
+  //   this.likes += this.favoriteIcon === 'favorite' ? 1 : -1;
+  // }
+
+
 
   toggleShare() {
     this.shareIcon =

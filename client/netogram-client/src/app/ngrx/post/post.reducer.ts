@@ -41,6 +41,7 @@ export const PostReducer = createReducer(
     console.log(type);
     return {
       ...state,
+      isCreateSuccess: false,
       isCreating: true,
     };
   }),
@@ -135,6 +136,7 @@ export const PostReducer = createReducer(
 
   on(postActions.GetAllPostSuccess, (state, { posts, type }) => {
     console.log(type);
+    console.log(posts);
     return {
       ...state,
       isGettingAllPosts: false,

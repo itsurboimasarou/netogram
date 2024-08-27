@@ -59,11 +59,22 @@
         <span class="likes">{{ likes }} likes</span>
       </div>
       <div class="post-actions">
-        <button mat-icon-button (click)="toggleFavorite()">
-          <mat-icon [ngClass]="{'favorite': favoriteIcon === 'favorite'}">{{ favoriteIcon }}</mat-icon>
-        </button>
-        <button mat-icon-button>
+<!--        <button mat-icon-button (click)="toggleFavorite()">-->
+<!--          <mat-icon [ngClass]="{'favorite': favoriteIcon === 'favorite'}">{{ favoriteIcon }}</mat-icon>-->
+<!--        </button>-->
+        @if (isLiked$ | async){
+          <button mat-icon-button id="liked" type="button" (click)="unlikePost()">
+            <mat-icon>favorite</mat-icon>
+          </button>
+        } @else {
+          <button mat-icon-button id="notLiked" type="button" (click)="createLikePost()">
+            <mat-icon>favorite_outlined</mat-icon>
+          </button>
+        }
+
+        <button mat-icon-button class="count">
           <span class="material-symbols-outlined">comment</span>
+          {{(commentList$ | async)!.length}}
         </button>
         <button mat-icon-button (click)="toggleShare()">
           <mat-icon>{{ shareIcon }}</mat-icon>

@@ -1,142 +1,62 @@
-<form [formGroup]="postForm" class="form-post">
-<div class="container">
-  <div class="post">
-    <div class="post-header">
-      <div class="right-top">
-        <div class="profile-pic">
-          <img src="https://s3-alpha-sig.figma.com/img/57bf/d562/43f1eda09c78fa01cb765443993748ee?Expires=1724630400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=od4oykUfzTnlRHnw5UXGy1sSwgmHF3krWd0hgWnOedZqVo~-D~iPpz-7Kmd8ZuXOhmVzfyn7aw6NTkOXV2O4m-Hxd6aWZWjkeS3~qorw-XkrlwCRSTdgQgA-QckGzOMo3Wta2Ogvp-27X~XD4hdExWipXyWM7XNduLBVLT1MxNHP6cB1dG8vFzDHt5xaALBz9F1xzmsv1cUlIMUyOSSXOV0MObBmvHJAHqAhFuPlFW4fbXkxYnOkigvv6aInZMfgOij6xZshJq3eFhPNkELK2C01HH4~lIoZaoy-tsH9zJ-eClwj-17A2uknvVYd4H8Z-6YYaEyFQLJO3CyEXxtdBA__" alt="Fried Dog" />
+
+  <form [formGroup]="postForm" class="form-post">
+    <div class="container">
+      <div class="post">
+        <div class="post-header">
+          <div class="right-top">
+            <div class="profile-pic">
+              <img src="{{ (profileMine$ | async)?.avatarUrl }}">
+            </div>
+            <div class="username">{{ (profileMine$ | async)?.userName }}</div>
+          </div>
+          <div>
+            <mat-icon id="closeIcon" (click)="onNoClick()">close</mat-icon>
+          </div>
         </div>
-        <div class="username">Fried Dog</div>
-      </div>
-      <div>
-          <mat-icon id="closeIcon" (click)="onNoClick()">close</mat-icon>
+
+        <div class="post-content">
+
+
+          <textarea formControlName="content" #postTextarea placeholder="What's on your mind?"></textarea>
+
+          @if (this.imageCount != 0){
+            <button id="deletBtn" (click)="delelteAllImages()" mat-fab>
+              <mat-icon >delete</mat-icon>
+            </button>
+
+            <button mat-icon-button class="carousel-button prev" (click)="prevImage(imageContainer)"><mat-icon>arrow_back_ios</mat-icon></button>
+            <button mat-icon-button class="carousel-button next" (click)="nextImage(imageContainer)"><mat-icon>arrow_forward_ios</mat-icon></button>
+          }
+
+          @if(this.imageCount == 0){
+            <span id="imageIcon" (click)="addProfilePicture()" class="material-symbols-outlined">image</span>
+            <p id="comment" (click)="addProfilePicture()">Add Photos By Click or Drag</p>
+          }
+
+
+          <div
+            (mousedown)="onMouseDown($event, imageContainer)"
+            (click)="addProfilePicture()"
+            class="carousel-container"
+            (dragover)="handleDragOver($event)"
+            (drop)="handleDrop($event)">
+            <div #imageContainer class="carousel-images">
+
+            </div>
+          </div>
+          <br>
+
+          <!-- The dots/circles -->
+          <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+
+          </div>
+        </div>
+        <button (click)="onPost()" mat-button class="share-btn">Share</button>
+        <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;" />
       </div>
     </div>
+  </form>
 
-    <div class="post-content">
-
-
-      <textarea formControlName="content" #postTextarea placeholder="What's on your mind?"></textarea>
-
-      @if (this.imageCount != 0){
-        <button id="deletBtn" (click)="delelteAllImages()" mat-fab>
-          <mat-icon >delete</mat-icon>
-        </button>
-
-        <button mat-icon-button class="carousel-button prev" (click)="prevImage(imageContainer)"><mat-icon>arrow_back_ios</mat-icon></button>
-        <button mat-icon-button class="carousel-button next" (click)="nextImage(imageContainer)"><mat-icon>arrow_forward_ios</mat-icon></button>
-      }
-
-      @if(this.imageCount == 0){
-        <span id="imageIcon" (click)="addProfilePicture()" class="material-symbols-outlined">image</span>
-        <p id="comment" (click)="addProfilePicture()">Add Photos By Click or Drag</p>
-      }
-
-
-      <div
-           (mousedown)="onMouseDown($event, imageContainer)"
-           (click)="addProfilePicture()"
-           class="carousel-container"
-           (dragover)="handleDragOver($event)"
-           (drop)="handleDrop($event)">
-        <div #imageContainer class="carousel-images">
-
-        </div>
-      </div>
-      <br>
-
-      <!-- The dots/circles -->
-      <div style="text-align:center">
-        <span class="dot" onclick="currentSlide(1)"></span>
-        <span class="dot" onclick="currentSlide(2)"></span>
-        <span class="dot" onclick="currentSlide(3)"></span>
-
-      </div>
-    </div>
-    <button (click)="onPost()" mat-button class="share-btn">Share</button>
-    <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;" />
-  </div>
-</div>
-</form>
-
-<!--regisForm = new FormGroup({-->
-<!--email: new FormControl(''),-->
-<!--userName: new FormControl('', Validators.required),-->
-<!--avatarUrl: new FormControl(''),-->
-<!--uid: new FormControl(''),-->
-<!--});-->
-
-<!--regisData: ProfileModel = {-->
-<!--email: '',-->
-<!--userName: '',-->
-<!--uid: '',-->
-<!--bio: '',-->
-<!--avatarUrl: '',-->
-<!--};-->
-
-<!--ngOnDestroy(): void {-->
-<!--this.subscription.forEach((sub) => sub.unsubscribe());-->
-<!--}-->
-
-<!--register() {-->
-<!--this.regisData = {-->
-<!--email: this.regisForm.value.email ?? '',-->
-<!--userName: this.regisForm.value.userName ?? '',-->
-<!--uid: this.regisForm.value.uid ?? '',-->
-<!--bio: '',-->
-<!--avatarUrl: this.regisForm.value.avatarUrl ?? '',-->
-<!--};-->
-
-<!--console.log(this.regisData);-->
-
-<!--this.store.dispatch(profileActions.createMine({ mine: this.regisData }));-->
-<!--}-->
-
-
-<!--<form [formGroup]="regisForm" class="form-register">-->
-<!--  <mat-form-field-->
-<!--    style="width: 400px"-->
-<!--    class="example-full-width"-->
-<!--    appearance="outline"-->
-<!--  >-->
-<!--    <mat-label style="color: #845317; font-weight: bold"-->
-<!--    >Email</mat-label-->
-<!--    >-->
-<!--    <input-->
-<!--      matInput-->
-<!--      formControlName="email"-->
-<!--      placeholder="..."-->
-<!--      value="abc@gmail.com"-->
-<!--    />-->
-<!--  </mat-form-field>-->
-<!--  <mat-form-field-->
-<!--    style="width: auto"-->
-<!--    class="example-full-width"-->
-<!--    appearance="outline"-->
-<!--  >-->
-<!--    <mat-label style="color: #845317; font-weight: bold"-->
-<!--    >User name</mat-label-->
-<!--    >-->
-<!--    <input-->
-<!--      matInput-->
-<!--      formControlName="userName"-->
-<!--      placeholder="..."-->
-<!--      value="Alan Fatter"-->
-<!--    />-->
-<!--  </mat-form-field>-->
-<!--  &lt;!&ndash;-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;INPUT_FORM_END&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
-<!--  <div class="check-with-box">-->
-<!--    <mat-checkbox style="margin-left: -12px" class="example-margin"-->
-<!--    >Nhấn đồng ý với tất cả các điều khoản<br />và điều kiện của chúng-->
-<!--      tôi.</mat-checkbox-->
-<!--    >-->
-<!--  </div>-->
-<!--  <button-->
-<!--    style="background: #845317"-->
-<!--    class="register-text"-->
-<!--    mat-flat-button-->
-<!--    (click)="register()"-->
-<!--  >-->
-<!--    Register-->
-<!--  </button>-->
-<!--</form>-->

@@ -101,3 +101,22 @@ mat-form-field ::ng-deep .mdc-notched-outline__trailing {
   flex-direction: column;
   align-items: center;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#dialogSpinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}

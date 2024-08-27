@@ -26,3 +26,7 @@
     }
   </div>
 </div>
+
+<div *ngIf="(isCreateLoading$ | async)" class="overlay">
+  <mat-spinner id="dialogSpinner"></mat-spinner>
+</div>
