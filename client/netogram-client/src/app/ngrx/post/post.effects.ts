@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PostService } from '../../services/post/post.service';
 import * as PostActions from './post.actions';
-import { of, switchMap } from 'rxjs';
+import {delay, of, switchMap} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpErrorResponseModel } from '../../models/http-error-response.model';
 
 @Injectable()
 export class PostEffects {
   createPost$ = createEffect(() => {
+    // delay(2000)
     return this.actions$.pipe(
       ofType(PostActions.CreatePost),
       switchMap((action) => {

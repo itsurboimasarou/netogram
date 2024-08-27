@@ -50,7 +50,7 @@ export class CommentService {
     if (!post) {
       throw new NotFoundException('Post not found');
     }
-    return await this.commentRepository.find({ where: { postId } });
+    return await this.commentRepository.find({ where: { postId }, order: { createdAt: 'DESC'} });
   }
 
   async countComments(postId: number) {

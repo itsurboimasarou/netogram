@@ -14,6 +14,18 @@ export class CommentEffects {
       private commentService: CommentService
     ) {
     }
+    createComment$ = createEffect(() => this.actions$.pipe(
+    ofType(CommentActions.createComment),
+    exhaustMap((action) => this.commentService.createComment(action.comment).pipe(
+        map((comment: CommentModel) => {
+          console.log(action.comment);
+          return  CommentActions.createCommentSuccess();
+        }),
+        catchError(() => {
+          return of(CommentActions.createCommentFailure());
+        })
+    ))
+      ))
 
   getAllComments$ = createEffect(() => this.actions$.pipe(
     ofType(CommentActions.getComments),
@@ -37,16 +49,4 @@ export class CommentEffects {
         })
       ))
   ));
-
-    createComment$ = createEffect(() => this.actions$.pipe(
-    ofType(CommentActions.createComment),
-    switchMap((action) => this.commentService.createComment(action.comment).pipe(
-        map((comment: CommentModel) => {
-          return CommentActions.createCommentSuccess();
-        }),
-        catchError(() => {
-          return of(CommentActions.createCommentFailure());
-        })
-    ))
-      ))
 }

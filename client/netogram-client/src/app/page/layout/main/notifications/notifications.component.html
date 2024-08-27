@@ -3,7 +3,7 @@
   <div class="notificationBox">
     <h2>Notifications</h2>
     <div class="container">
-      <div *ngFor="let user of userList | slice:start:end; let i = index" class="userBox">
+      <mat-card *ngFor="let user of userList | slice:start:end; let i = index" class="userBox">
         <img [src]="user.avatar"/>
         <div class="user">
           <div id="nameUser">
@@ -13,7 +13,7 @@
           <p>{{user.timestamp}}</p>
         </div>
         <div class="icon"></div>
-      </div>
+      </mat-card>
     </div>
   </div>
   <mat-paginator [length]="userList.length" [hidePageSize]="true" [pageSizeOptions]="[6]" (page)="handlePageEvent($event)"  aria-label="Select page">

@@ -6,7 +6,7 @@
 .box {
   width: 80%;
   height: 78vh;
-  background-color: white;
+  //background-color: white;
   padding: 0 60px;
   border-radius: 12px ;
   display: flex;
@@ -31,6 +31,7 @@ h3{
 }
 .userBox {
   display: flex;
+  flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
   padding: 10px;

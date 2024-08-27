@@ -17,6 +17,7 @@ import { LikepostModule } from './likepost/likepost.module';
 
 import * as process from 'node:process';
 import { ConfigModule } from '@nestjs/config';
+import { FriendshipModule } from './friendship/friendship.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({
@@ -46,6 +47,7 @@ dotenv.config();
       SearchModule,
       CommentModule,
       LikepostModule,
+      FriendshipModule,
   ],
   controllers: [AppController],
   providers: [AppService, IdgenService],

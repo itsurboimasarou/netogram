@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import {HttpException, Injectable, NotFoundException} from '@nestjs/common';
 import { CreateLikepostDto } from './dto/create-likepost.dto';
 import { UpdateLikepostDto } from './dto/update-likepost.dto';
 import {InjectRepository} from "@nestjs/typeorm";
@@ -47,15 +47,19 @@ export class LikepostService {
     return await this.LikepostRepository.save(like);
   }
 
-  delete (likeId: number) {
-    let deletedLike = this.LikepostRepository.findOne({ where: { likeId } });
+  async delete (uid: string, postId: number) {
+    let deletedLike = await this.LikepostRepository.findOne({ where: { postId,uid } });
     if (!deletedLike) {
-      throw new NotFoundException('Like not found');
+      throw new HttpException('Like not found', 404);
     }
-    return this.LikepostRepository.delete(likeId);
+    return await this.LikepostRepository.delete(deletedLike);
   }
 
-  countLikes(postId: number) {
-    return this.LikepostRepository.count({ where: { postId } });
+  async isLiked(postId: number, uid: string) {
+    return await this.LikepostRepository.findOne({ where: { postId, uid } });
+  }
+
+  async countLikes(postId: number) {
+    return await this.LikepostRepository.count({ where: { postId } });
   }
 }
