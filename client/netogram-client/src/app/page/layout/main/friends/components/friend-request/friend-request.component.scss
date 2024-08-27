@@ -29,6 +29,7 @@ h3{
 }
 .userBox {
   display: flex;
+  flex-direction: row;
   width: 100%;
   align-items: center;
   margin-top: 18px;

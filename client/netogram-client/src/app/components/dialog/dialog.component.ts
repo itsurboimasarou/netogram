@@ -21,11 +21,12 @@ import { StorageState } from '../../ngrx/storage/storage.state';
 import * as storageActions from '../../ngrx/storage/storage.actions';
 import * as profileActions from '../../ngrx/profile/profile.actions';
 import * as PostActions from '../../ngrx/post/post.actions';
+import {AsyncPipe} from "@angular/common";
 
 @Component({
   selector: 'app-dialog',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule],
+  imports: [MaterialModule, ReactiveFormsModule, AsyncPipe],
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.scss',
 })
@@ -44,6 +45,8 @@ export class DialogComponent implements OnDestroy {
 
   profileMine$ = this.store.select('profile', 'mine');
   readonly dialogRef = inject(MatDialogRef<DialogComponent>);
+
+  isCreateLoading$ = this.store.select('post', 'isCreating');
 
   isCreateSuccess$ = this.store.select('post', 'isCreateSuccess');
 
@@ -74,15 +77,6 @@ export class DialogComponent implements OnDestroy {
       this.profileMine$.subscribe((profile) => {
         if (profile) {
           console.log('profile', profile);
-        }
-      }),
-
-      this.isCreateSuccess$.subscribe((isCreateSuccess) => {
-        if (isCreateSuccess) {
-          this.store.dispatch(
-            postActions.GetAllPost({ pageNumber: 1, limitNumber: 5 }),
-          );
-          this.dialogRef.close();
         }
       }),
     );

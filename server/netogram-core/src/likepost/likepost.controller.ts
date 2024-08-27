@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Req, HttpStatus, HttpException} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Req, HttpStatus, HttpException, Query} from '@nestjs/common';
 import { LikepostService } from './likepost.service';
 import { CreateLikepostDto } from './dto/create-likepost.dto';
 import { UpdateLikepostDto } from './dto/update-likepost.dto';
@@ -23,10 +23,11 @@ export class LikepostController {
   }
 
   @Delete()
-    delete(@Body() deleteLikepostDto: CreateLikepostDto,
+    delete(@Query('postId') postId: number,
              @Req() req) {
         try {
-        return this.likepostService.delete(deleteLikepostDto.likeId);
+        const { uid } = req.user;
+        return this.likepostService.delete(uid, postId);
         }catch (e){
         if (e.status === HttpStatus.BAD_REQUEST) {
             throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
@@ -37,9 +38,28 @@ export class LikepostController {
     }
 
     @Get()
-    countLikes(@Body() countLikepostDto: CreateLikepostDto) {
+    countLikes(@Query('postId') postId: number) {
         try {
-        return this.likepostService.countLikes(countLikepostDto.postId);
+        return this.likepostService.countLikes(postId);
+        }catch (e){
+        if (e.status === HttpStatus.BAD_REQUEST) {
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+        } else if (e.status === HttpStatus.NOT_FOUND) {
+            throw new HttpException(e.message, HttpStatus.NOT_FOUND);
+        }
+        }
+    }
+
+    @Get('isLiked')
+    async isLiked(@Query('postId') postId: number,
+            @Req() req) {
+        try {
+        const { uid } = req.user;
+        let isLike = await this.likepostService.isLiked(postId, uid);
+        if(isLike !== null) {
+            return true;
+        }
+        return false;
         }catch (e){
         if (e.status === HttpStatus.BAD_REQUEST) {
             throw new HttpException(e.message, HttpStatus.BAD_REQUEST);

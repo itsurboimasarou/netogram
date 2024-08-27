@@ -17,12 +17,13 @@ import { ProfileState } from '../../../../ngrx/profile/profile.state';
 import { Subscription } from 'rxjs';
 import { PostModel, PostResponse } from '../../../../models/post.model';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import {AsyncPipe, NgIf} from "@angular/common";
 import { ProfileModel } from '../../../../models/profile.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MaterialModule, PostComponent, InfiniteScrollDirective],
+  imports: [MaterialModule, PostComponent, InfiniteScrollDirective, AsyncPipe, NgIf],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -41,6 +42,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
   }
 
+  isCreateLoading$ = this.store.select('post', 'isCreating');
+  isCreateSuccess$ = this.store.select('post', 'isCreateSuccess');
   allPosts$ = this.store.select('post', 'posts');
   mine$ = this.store.select('profile', 'mine');
   profilePic = 'https://www.w3schools.com/howto/img_avatar.png';
@@ -60,8 +63,22 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription.push(
+      this.isCreateSuccess$.subscribe((success) => {
+        if (success) {
+          console.log('success');
+          this.subscription.forEach((sub) => sub.unsubscribe());
+          this.store.dispatch(PostActions.ClearAllPosts());
+          this.store.dispatch(
+            PostActions.GetAllPost({
+              pageNumber: this.currentPage,
+              limitNumber: this.size,
+            })
+          )
+        }
+      }),
       this.allPosts$.subscribe((posts) => {
         if (posts.limitNumber > 0) {
+          console.log('all' + posts.data);
           this.tempArray = [...this.allPosts];
           this.allPosts = [...this.tempArray, ...posts.data];
           console.log(posts);
@@ -75,6 +92,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       }),
     );
+
+
+
   }
 
   ngOnDestroy(): void {
