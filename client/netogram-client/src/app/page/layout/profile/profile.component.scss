@@ -167,6 +167,10 @@
 
 
 @media screen and (max-width: 1367px) {
+
+  .nameContainer{
+    font-size: 14px;
+  }
   .profileContainer img{
     max-width: 120px;
     max-height: 120px;
@@ -182,7 +186,7 @@
 }
 
 .mine-posts {
-  width: 100%;
+  width: 672px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -190,4 +194,8 @@
 }
 .post{
   width: 672px;
+}
+
+.posts {
+  width: 100%;
 }

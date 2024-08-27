@@ -5,5 +5,6 @@ export interface StorageState {
   url: string[];
   storage: StorageModel;
   isUploading: boolean;
+  urlCover: string[];
   uploadError: HttpErrorResponseModel;
 }
