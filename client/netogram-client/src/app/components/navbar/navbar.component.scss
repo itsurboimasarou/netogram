@@ -1,40 +1,42 @@
 .fullwcontainer {
   display: flex;
-  justify-content: center;
   background-color: var(--surface);
 }
 
 .container {
-  display: flex;
-  justify-content: center;
+
   //height: 100%;
-  width: calc(100% - 4rem);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 4fr 2.3fr;
 }
 
 .left {
-  width: calc(26% - 2rem);
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 1rem;
 }
 
 .main {
-  width: 48%;
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
 
   //background-color: #E22;
 }
 
 .right {
-  width: 26%;
+  width: calc(100% - 2rem);
   height: 100%;
   display: flex;
   justify-content: end;
   align-items: center;
+  padding-right: 2rem;
+
 }
 
 img {
@@ -45,10 +47,12 @@ img {
 .search {
   display: flex;
   align-items: center;
-  width: 70%;
+  width: 100%;
+  height: 80%;
+  max-width: 672px;
+  max-height: 50px;
   background-color: var(--surfaceContainer);
   border-radius: 12px;
-  margin-left: 10%;
 }
 
 .material-symbols-outlined {
@@ -73,7 +77,6 @@ img {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 100%;
-  margin: 10px;
 }
 
 #notiIcon {
@@ -119,6 +122,53 @@ img {
   margin: 0 10px 0 0;
 }
 
+::ng-deep .mat-mdc-icon-button {
+  width: 3.5rem !important;
+  height: 3.5rem !important;
+}
+
+::ng-deep.mat-mdc-icon-button .mat-mdc-button-touch-target {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+}
+
+@media (max-width: 1366px) {
+
+  .search {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    max-width: 555px;
+    max-height: 50px;
+    background-color: var(--surfaceContainer);
+    border-radius: 12px;
+  }
+
+}
+
+@media (max-width: 1024px) {
+
+  .search {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    max-width: 390px;
+    max-height: 50px;
+    background-color: var(--surfaceContainer);
+    border-radius: 12px;
+  }
+
+  .container {
+
+    //height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 4fr 1fr;
+  }
+
+}
 
 //.container{
 //  width: calc(100% - 4rem);

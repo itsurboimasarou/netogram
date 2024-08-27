@@ -32,10 +32,10 @@
       </button>
 
       <!-- Navigation Buttons -->
-      <button mat-icon-button class="prev-button" (click)="prevImage()">
+      <button *ngIf="!isFirstImage() && !isSingleImage()" mat-icon-button class="prev-button" (click)="prevImage()">
         <mat-icon>chevron_left</mat-icon>
       </button>
-      <button mat-icon-button class="next-button" (click)="nextImage()">
+      <button *ngIf="!isLastImage() && !isSingleImage()" mat-icon-button class="next-button" (click)="nextImage()">
         <mat-icon>chevron_right</mat-icon>
       </button>
     </div>

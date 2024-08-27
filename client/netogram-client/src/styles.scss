@@ -42,7 +42,6 @@ $_palettes: (
     98: #FFF8F7,
     99: #FFFBFF,
     100: #FFFFFF
-
   ),
   tertiary: (
     0: #000000,
@@ -61,7 +60,6 @@ $_palettes: (
     98: #FFF8F4,
     99: #FFFBFF,
     100: #FFFFFF
-
   ),
   neutral: (
     0: #000000,
@@ -89,7 +87,6 @@ $_palettes: (
     87: #E7DADA,
     92: #F3E7E7,
     94: #F8EBEB
-
   ),
   neutral-variant: (
     0: #000000,
@@ -208,11 +205,9 @@ $light-theme: mat.define-theme((
   --surfaceContainerHighest: #F0DEDF;
 
 }
+
 @include mat.color-variants-backwards-compatibility($light-theme);
 @include mat.typography-hierarchy($light-theme);
-
-
-
 
 
 html, body {
@@ -224,8 +219,10 @@ html, body {
 
 
 }
-body { margin: 0;  }
 
+body {
+  margin: 0;
+}
 
 
 //.custom-dialog-container .mat-mdc-dialog-surface.mdc-dialog__surface {
@@ -233,7 +230,10 @@ body { margin: 0;  }
 //}
 
 
-body { margin: 0;  }
+body {
+  margin: 0;
+}
+
 body::-webkit-scrollbar {
   background-color: #fff;
   width: 16px;
@@ -253,10 +253,14 @@ body::-webkit-scrollbar-thumb {
 
 /* set button(top and bottom of the scrollbar) */
 body::-webkit-scrollbar-button {
-  display:none;
+  display: none;
 
 }
 
 .custom-dialog-container .mat-mdc-dialog-surface.mdc-dialog__surface {
   --mdc-dialog-container-shape: 12px;
 }
+
+
+
+

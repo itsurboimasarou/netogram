@@ -131,7 +131,5 @@ export class PostService {
   }
 
   //search post by content
-  async searchPosts(query: string) {
-    return this.searchService.searchPosts(query);
-  }
+
 }

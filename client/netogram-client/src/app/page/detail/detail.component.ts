@@ -146,8 +146,6 @@ export class DetailComponent implements OnInit, OnDestroy {
     );
   }
 
-
-
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
     this.store.dispatch(PostActions.ClearPostDetail());
@@ -278,5 +276,19 @@ export class DetailComponent implements OnInit, OnDestroy {
   goBack(): void {
     this.location.back();
     this.store.dispatch(PostActions.ClearPostDetail());
+  }
+
+  isFirstImage(): boolean {
+    return this.currentIndex === 0;
+  }
+
+  // Method to check if the current image is the last one
+  isLastImage(): boolean {
+    return this.currentIndex === this.postDetail.imageUrls.length - 1;
+  }
+
+  // Method to check if there is only one image
+  isSingleImage(): boolean {
+    return this.postDetail.imageUrls.length === 1;
   }
 }

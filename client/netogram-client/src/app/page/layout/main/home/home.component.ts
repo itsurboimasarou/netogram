@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs';
 import { PostModel, PostResponse } from '../../../../models/post.model';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import {AsyncPipe, NgIf} from "@angular/common";
+import { ProfileModel } from '../../../../models/profile.model';
 
 @Component({
   selector: 'app-home',
@@ -44,15 +45,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   isCreateLoading$ = this.store.select('post', 'isCreating');
   isCreateSuccess$ = this.store.select('post', 'isCreateSuccess');
   allPosts$ = this.store.select('post', 'posts');
+  mine$ = this.store.select('profile', 'mine');
   profilePic = 'https://www.w3schools.com/howto/img_avatar.png';
   readonly port = signal('');
   readonly name = model('');
   readonly dialog = inject(MatDialog);
 
   subscription: Subscription[] = [];
+  mine: ProfileModel = <ProfileModel>{};
 
   currentPage = 1;
-  size = 5;
+  size = 4;
   itemsCount = 0;
   tempArray: PostModel[] = [];
 
@@ -83,6 +86,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       }),
 
+      this.mine$.subscribe((mine) => {
+        if (mine) {
+          this.mine = mine;
+        }
+      }),
     );
 
 
