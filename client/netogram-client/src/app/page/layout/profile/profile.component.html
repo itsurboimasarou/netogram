@@ -18,7 +18,7 @@
          [infiniteScrollThrottle]="50"
          [fromRoot]="true"
          (scrolled)="onScrollDown($event)">
-      <div class="mainContainer">
+      <mat-card class="mainContainer">
         <div class="coverContainer">
           <img
             src="https://s3-alpha-sig.figma.com/img/64c9/f3a6/f0a23190ef0bac6c838565e5648be3f5?Expires=1724630400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=hhBmUgUM032bwaph3uwjXknx9opfB5yA43~-BnIsm~TPggkQw7P48wMo-ilIx0Xk5dZoQzi-IiS4mE0MOXdluYmoSVZMRITXpi1WKRR2MSE38jnsVZ0iFVq6YVS-eOLyomAWg1AYI18NHNkFTaI4kdtxOomW7E5r46sNlcdbLhl~yvOV~qu8fDr~QpDF6DF65RMp4FwrT9bZpPizWeoHl3blAFOo75cLiKIOrFvohex~RzdyzIp5Bo9qzskWOFDusOOqMadDqjd6~RoZyg~1TBDnZT7lRv1wicCZ3nba9VxKSYoamY4TqoRG9J3LziSxk8GtOoYrr8FMW0s64bOXcw__">
@@ -68,16 +68,17 @@
 
           </div>
         </div>
-      </div>
+      </mat-card>
 
-      <div class="descriptionContainer">
+      <mat-card class="descriptionContainer">
         <h3>
           About
         </h3>
         <p>
           {{ mineProfile.bio }}
         </p>
-      </div>
+      </mat-card>
+
       <div class="mine-posts">
         <div class="posts">
           @for (post of minePosts; track $index) {
@@ -89,9 +90,7 @@
             <mat-spinner></mat-spinner>
           </div>
         }
-
       </div>
-
 
     </div>
     <div class="right">

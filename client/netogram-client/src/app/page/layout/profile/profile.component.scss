@@ -20,13 +20,13 @@
 }
 
 .left {
-  width: calc(20% - 2rem);
+  width: calc(18% - 2rem);
   height: 100%;
   padding-right: 2rem;
 }
 
 .main {
-  width: 60%;
+  width: 64%;
   height: 50%;
   display: flex;
   flex-direction: column;
@@ -50,9 +50,9 @@
 
 .mainContainer {
   width: 100%;
-  height: calc(315px + 20vh);
+  height: calc(200px + 20vh);
   border-radius: 12px;
-  max-width: 851px;
+  max-width: 672px;
   //background-color: var(--surface);
 }
 
@@ -90,8 +90,8 @@
 
 .avatarContainer img {
   //width: 100%;
-  width: 160px;
-  height: 160px;
+  width: 130px;
+  height: 130px;
   object-fit: cover;
   position: relative;
   left: 15%;
@@ -102,6 +102,7 @@
 }
 
 .nameContainer {
+  font-size: 14px;
   width: 50%;
   height: 100%;
   display: flex;
@@ -111,7 +112,7 @@
 }
 
 .nameContainer span {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   color: var(--onBackground);
 }
@@ -143,16 +144,16 @@
 //
 .descriptionContainer {
   height: fit-content;
-  width: calc(851px - 40px);
+  width: 672px;
   background-color: var(--surface);
   border-radius: 12px;
   padding: 20px;
   margin: 20px 0;
-  max-width: 851px;
+  //max-width: 672px;
 }
 
 .descriptionContainer h3 {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   color: var(--onBackground);
   margin: 0;
@@ -166,23 +167,6 @@
 
 
 @media screen and (max-width: 1367px) {
-  .mainContainer {
-    max-width: 640px;
-    max-height: 360px;
-  }
-  .coverContainer {
-    max-width: 640px;
-  }
-  .coverContainer img {
-    max-width: 640px;
-
-  }
-  .descriptionContainer {
-    max-width: calc(640px - 40px);
-  }
-  .nameContainer{
-    font-size: 14px;
-  }
   .profileContainer img{
     max-width: 120px;
     max-height: 120px;
@@ -202,5 +186,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  max-width: 672px;
+}
+.post{
+  width: 672px;
 }
