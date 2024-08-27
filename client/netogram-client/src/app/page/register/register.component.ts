@@ -116,16 +116,25 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.errorMessage.set('');
     }
   }
+  canProceed(): boolean {
+    return this.regisForm.get('userName')?.valid ?? false;
+  }
 
   register() {
-    this.regisData = {
-      email: this.regisForm.value.email ?? '',
-      userName: this.regisForm.value.userName ?? '',
-      uid: this.regisForm.value.uid ?? '',
-      bio: '',
-      avatarUrl: this.regisForm.value.avatarUrl ?? '',
-      coverUrl: '',
-    };
+    if (!this.canProceed()) {
+      this.errorMessage.set('Name must be at least 5 characters long');
+      return;
+    }else {
+      console.log('run')
+      this.regisData = {
+        email: this.regisForm.value.email ?? '',
+        userName: this.regisForm.value.userName ?? '',
+        uid: this.regisForm.value.uid ?? '',
+        bio: '',
+        avatarUrl: this.regisForm.value.avatarUrl ?? '',
+        coverUrl: '',
+      }
+    }
 
     console.log(this.regisData);
 
