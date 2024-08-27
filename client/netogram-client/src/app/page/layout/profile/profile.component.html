@@ -18,7 +18,7 @@
          [infiniteScrollThrottle]="50"
          [fromRoot]="true"
          (scrolled)="onScrollDown($event)">
-      <div class="mainContainer">
+      <mat-card class="mainContainer">
         <div class="coverContainer">
           <img
             src="{{mineProfile.coverUrl}}">
@@ -68,16 +68,16 @@
 
           </div>
         </div>
-      </div>
+      </mat-card>
 
-      <div class="descriptionContainer">
+      <mat-card class="descriptionContainer">
         <h3>
           About
         </h3>
         <p>
           {{ mineProfile.bio }}
         </p>
-      </div>
+      </mat-card>
       <div class="mine-posts">
         <div class="posts">
           @for (post of minePosts; track $index) {
