@@ -9,7 +9,7 @@
         <mat-label>Name</mat-label>
         <input
           matInput
-          [formControl]="userName"
+          formControlName="userName"
           (blur)="updateErrorMessage()"
           required
         />
