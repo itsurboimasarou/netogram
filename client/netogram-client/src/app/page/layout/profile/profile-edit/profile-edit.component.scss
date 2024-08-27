@@ -26,6 +26,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   h2 {
     margin: 5px;
     font-size: 18px;
@@ -39,9 +40,11 @@ mat-form-field {
 
 .small-input {
   font-size: 14px;
+
   .mat-form-field-wrapper {
     padding-bottom: 0.5em;
   }
+
   .mat-form-field-infix {
     padding: 0.5em 0;
   }
@@ -79,8 +82,7 @@ mat-form-field {
 .avatar-menu-button {
   position: absolute;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(100%);
   background-color: var(--surface);
 }
 
@@ -106,7 +108,7 @@ mat-form-field {
 .submit-button {
   width: 100%;
   color: var(--surfaceContainer);
-  background-color: var(--primary) ;
+  background-color: var(--primary);
   border-radius: 12px;
 
 

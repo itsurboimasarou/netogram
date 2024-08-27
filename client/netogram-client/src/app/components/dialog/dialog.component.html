@@ -1,62 +1,66 @@
-
-  <form [formGroup]="postForm" class="form-post">
-    <div class="container">
-      <div class="post">
-        <div class="post-header">
-          <div class="right-top">
-            <div class="profile-pic">
-              <img src="{{ (profileMine$ | async)?.avatarUrl }}">
-            </div>
-            <div class="username">{{ (profileMine$ | async)?.userName }}</div>
+<form [formGroup]="postForm" class="form-post">
+  <div class="container">
+    <div class="post">
+      <div class="post-header">
+        <div class="right-top">
+          <div class="profile-pic">
+            <img src="{{ (profileMine$ | async)?.avatarUrl }}">
           </div>
-          <div>
-            <mat-icon id="closeIcon" (click)="onNoClick()">close</mat-icon>
-          </div>
+          <div class="username">{{ (profileMine$ | async)?.userName }}</div>
         </div>
-
-        <div class="post-content">
-
-
-          <textarea formControlName="content" #postTextarea placeholder="What's on your mind?"></textarea>
-
-          @if (this.imageCount != 0){
-            <button id="deletBtn" (click)="delelteAllImages()" mat-fab>
-              <mat-icon >delete</mat-icon>
-            </button>
-
-            <button mat-icon-button class="carousel-button prev" (click)="prevImage(imageContainer)"><mat-icon>arrow_back_ios</mat-icon></button>
-            <button mat-icon-button class="carousel-button next" (click)="nextImage(imageContainer)"><mat-icon>arrow_forward_ios</mat-icon></button>
-          }
-
-          @if(this.imageCount == 0){
-            <span id="imageIcon" (click)="addProfilePicture()" class="material-symbols-outlined">image</span>
-            <p id="comment" (click)="addProfilePicture()">Add Photos By Click or Drag</p>
-          }
-
-
-          <div
-            (mousedown)="onMouseDown($event, imageContainer)"
-            (click)="addProfilePicture()"
-            class="carousel-container"
-            (dragover)="handleDragOver($event)"
-            (drop)="handleDrop($event)">
-            <div #imageContainer class="carousel-images">
-
-            </div>
-          </div>
-          <br>
-
-          <!-- The dots/circles -->
-          <div style="text-align:center">
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-            <span class="dot" onclick="currentSlide(3)"></span>
-
-          </div>
+        <div>
+          <mat-icon id="closeIcon" (click)="onNoClick()">close</mat-icon>
         </div>
-        <button (click)="onPost()" mat-button class="share-btn">Share</button>
-        <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;" />
       </div>
+
+      <div class="post-content">
+
+
+        <textarea class="content-post" formControlName="content" #postTextarea
+                  placeholder="What's on your mind?"></textarea>
+
+        @if (this.imageCount != 0) {
+          <button id="deletBtn" (click)="delelteAllImages()" mat-fab>
+            <mat-icon>delete</mat-icon>
+          </button>
+
+          <button mat-icon-button class="carousel-button prev" (click)="prevImage(imageContainer)">
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+          <button mat-icon-button class="carousel-button next" (click)="nextImage(imageContainer)">
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        }
+
+        @if (this.imageCount == 0) {
+          <span id="imageIcon" (click)="addProfilePicture()" class="material-symbols-outlined">image</span>
+          <p id="comment" (click)="addProfilePicture()">Add Photos By Click or Drag</p>
+        }
+
+
+        <div
+          (mousedown)="onMouseDown($event, imageContainer)"
+          (click)="addProfilePicture()"
+          class="carousel-container"
+          (dragover)="handleDragOver($event)"
+          (drop)="handleDrop($event)">
+          <div #imageContainer class="carousel-images">
+
+          </div>
+        </div>
+        <br>
+
+        <!-- The dots/circles -->
+        <div style="text-align:center">
+          <span class="dot" onclick="currentSlide(1)"></span>
+          <span class="dot" onclick="currentSlide(2)"></span>
+          <span class="dot" onclick="currentSlide(3)"></span>
+
+        </div>
+      </div>
+      <button (click)="onPost()" mat-button class="share-btn">Share</button>
+      <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;"/>
     </div>
-  </form>
+  </div>
+</form>
 

@@ -55,15 +55,13 @@
   background-color: var(--primary); /* Change to transparent for outline button */
   color: var(--primary); /* Change text color to primary */
   border: 2px solid var(--primary); /* Add border for outline */
-  transition: filter 0.3s ease, transform 0.3s ease;
+
 
   i {
     margin-right: 10px;
   }
 
   &:hover {
-    filter: brightness(1);
-    transform: scale(1.05);
     background-color: var(--onPrimary); /* Add background color on hover */
     color: var(--primary); /* Change text color on hover */
   }

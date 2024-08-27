@@ -42,7 +42,7 @@
     <div class="details-container">
       <div class="post-header">
         <div class="profile-pic">
-          <img src="{{ postDetail.uid | idToAvatar | async }}" alt="Profile Picture"/>
+          <img src="{{ postDetail.uid | idToAvatar | async }}" (click)="navigateToProfile()" alt="Profile Picture"/>
         </div>
         <div class="post-info">
           <span class="username">{{ postDetail.uid | idToName | async }}</span>
@@ -72,9 +72,11 @@
           </button>
         }
 
-        <button mat-icon-button class="count">
-          <span class="material-symbols-outlined">comment</span>
-          {{(commentList$ | async)!.length}}
+        <button mat-button class="count">
+          <div class="comment-bt">
+            <span class="material-symbols-outlined">comment</span>
+            <span style="margin: 0">{{(commentList$ | async)!.length}}</span>
+          </div>
         </button>
         <button mat-icon-button (click)="toggleShare()">
           <mat-icon>{{ shareIcon }}</mat-icon>
@@ -99,13 +101,26 @@
       @for (user of (commentList$ | async) ; track $index) {
         <div class="comment">
           <div class="profile-pic-small">
-            <img [src]=" user.uid | idToAvatar| async">
+            <img [src]=" user.uid | idToAvatar| async" (click)="navigateToCommentUser(user.uid)">
           </div>
           <div class="comment-content">
-            <span class="comment-username">{{ user.uid | idToName | async }}</span>
+            <span class="comment-username" (click)="navigateToCommentUser(user.uid)">{{ user.uid | idToName | async }}</span>
             <span class="comment-text">{{ user.text }}</span>
             <span class="comment-date">{{ user.createdAt | dateTranform }}</span>
           </div>
+          <div class="comment-options">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <span class="material-symbols-outlined">more_horiz</span>
+            </button>
+          </div>
+          <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <div class="delete-comment">
+                  <span class="material-symbols-outlined">delete</span>
+                  Delete
+                </div>
+              </button>
+          </mat-menu>
         </div>
       }
       @if (displayedComments < (commentList$ | async)!.length) {

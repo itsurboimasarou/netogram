@@ -7,7 +7,7 @@ export class Comment {
     @PrimaryColumn({type: 'bigint' })
     id: number;
 
-    @ManyToOne(() => Post)
+    @ManyToOne(() => Post,  { onDelete: 'CASCADE' })
     @Column({type: "bigint"})
     postId: number;
 
