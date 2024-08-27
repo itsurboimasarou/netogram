@@ -20,11 +20,13 @@ import { Subscription } from 'rxjs';
 import { StorageState } from '../../ngrx/storage/storage.state';
 import * as storageActions from '../../ngrx/storage/storage.actions';
 import * as profileActions from '../../ngrx/profile/profile.actions';
+import * as PostActions from '../../ngrx/post/post.actions';
+import {AsyncPipe} from "@angular/common";
 
 @Component({
   selector: 'app-dialog',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule],
+  imports: [MaterialModule, ReactiveFormsModule, AsyncPipe],
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.scss',
 })
@@ -44,11 +46,16 @@ export class DialogComponent implements OnDestroy {
   profileMine$ = this.store.select('profile', 'mine');
   readonly dialogRef = inject(MatDialogRef<DialogComponent>);
 
+  isCreateLoading$ = this.store.select('post', 'isCreating');
+
+  isCreateSuccess$ = this.store.select('post', 'isCreateSuccess');
+
   postForm = new FormGroup({
     uid: new FormControl(''),
     imageUrl: new FormControl(''),
     content: new FormControl(''),
     id: new FormControl(''),
+    createdAt: new FormControl(''),
   });
 
   postData: PostModel = {
@@ -56,6 +63,7 @@ export class DialogComponent implements OnDestroy {
     imageUrls: [],
     content: '',
     id: BigInt(0),
+    createdAt: '',
   };
 
   constructor(

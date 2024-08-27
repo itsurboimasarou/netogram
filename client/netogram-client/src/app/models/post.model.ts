@@ -2,7 +2,8 @@ export interface PostModel {
   uid: string;
   imageUrls: string[] | File[];
   content: string;
-  id: BigInt;
+  id: bigint;
+  createdAt: string;
 }
 
 export interface PostResponse {
@@ -11,3 +12,4 @@ export interface PostResponse {
   pageNumber: number;
   limitNumber: number;
 }
+

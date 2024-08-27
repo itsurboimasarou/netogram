@@ -25,6 +25,10 @@ import { StorageEffects } from './ngrx/storage/storage.effects';
 import { StorageReducer } from './ngrx/storage/storage.reducer';
 import { SearchReducer } from './ngrx/search/search.reducer';
 import { searchEffects } from './ngrx/search/search.effects';
+import {CommentEffects} from "./ngrx/comment/comment.effects";
+import {commentReducer} from "./ngrx/comment/comment.reducer";
+import {likepostReducer} from "./ngrx/likepost/likepost.reducer";
+import {LikepostEffects} from "./ngrx/likepost/likepost.effects";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -41,12 +45,16 @@ export const appConfig: ApplicationConfig = {
       PostEffects,
       StorageEffects,
       searchEffects,
+      CommentEffects,
+      LikepostEffects
     ),
     provideState({ name: 'auth', reducer: authReducer }),
     provideState({ name: 'profile', reducer: profileReducer }),
     provideState({ name: 'post', reducer: PostReducer }),
     provideState({ name: 'storage', reducer: StorageReducer }),
     provideState({ name: 'search', reducer: SearchReducer }),
+    provideState({ name: 'comment', reducer: commentReducer }),
+    provideState({ name: 'likePost', reducer: likepostReducer }),
     HttpClientAuth,
     provideHttpClient(),
     provideAnimationsAsync(),

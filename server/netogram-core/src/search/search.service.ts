@@ -74,6 +74,7 @@ export class SearchService {
       index: 'netogram_posts',
       id: post.id.toString(),
       document: {
+        id: post.id,
         uid: post.uid,
         content: post.content,
         createdAt: post.createdAt,
@@ -161,6 +162,7 @@ export class SearchService {
 
   async searchAny( indexName: string, query: string) {
     try{
+      console.log("searchAny",indexName,query);
       const response = await this.esClient.search({
         index: [indexName],
         query: {
@@ -175,6 +177,26 @@ export class SearchService {
       return [];
     }
   }
+
+ //get all index posts
+
+  async getAllIndexPosts() {
+    const response = await this.esClient.search({
+      index: 'netogram_posts',
+      query: {
+        match_all: {},
+      },
+    });
+    return response.hits.hits.map((hit) => hit._source);
+  }
+
+  async deleteIndexPost(postId: number) {
+    await this.esClient.delete({
+      index: 'netogram_posts',
+      id: postId.toString(),
+    });
+  }
+
 
 }
 

@@ -41,6 +41,7 @@ export const PostReducer = createReducer(
     console.log(type);
     return {
       ...state,
+      isCreateSuccess: false,
       isCreating: true,
     };
   }),
@@ -135,6 +136,7 @@ export const PostReducer = createReducer(
 
   on(postActions.GetAllPostSuccess, (state, { posts, type }) => {
     console.log(type);
+    console.log(posts);
     return {
       ...state,
       isGettingAllPosts: false,
@@ -187,6 +189,22 @@ export const PostReducer = createReducer(
     return {
       ...state,
       minePosts: <PostResponse>{},
+    };
+  }),
+
+  on(postActions.ClearAllPosts, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      posts: <PostResponse>{},
+    };
+  }),
+
+  on(postActions.ClearPostDetail, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      postDetail: <PostModel>{},
     };
   }),
 );

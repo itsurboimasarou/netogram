@@ -1,33 +1,93 @@
-<mat-card class="example-card" appearance="outlined">
+<mat-card class="example-card" appearance="raised">
+
   <mat-card-header class="example-card-header">
+    @if (contentLoaded) {
+      <img mat-card-avatar
+           class="example-header-image"
+           src="{{ postUser.uid | idToAvatar | async }}"
+           (click)="navigateToProfile()"
+      >
+    } @else {
+      <ngx-skeleton-loader mat-card-avatar
 
-    <img mat-card-avatar
-         class="example-header-image"
-         src="{{ postUser.uid | idToAvatar | async }}"
-         (click)="navigateToProfile()"
-    >
-
-    <mat-card-title (click)="navigateToProfile()" class="username">{{ postUser.uid | idToName | async }}
+                           appearance="circle"
+      >
+      </ngx-skeleton-loader>
+    }
+    <mat-card-title *ngIf="!contentLoaded" class="username">
+      <ngx-skeleton-loader
+        [theme]="{
+            width: '100px',
+            'border-radius': '0',
+            height: '15px',
+            'margin-bottom': '10px'
+          }"
+      ></ngx-skeleton-loader>
     </mat-card-title>
-    <mat-card-subtitle (click)="navigateToProfile()" class="post-time">Dog Breed</mat-card-subtitle>
+    <mat-card-title *ngIf="contentLoaded" (click)="navigateToProfile()" class="username">
+      {{ postUser.uid | idToName | async }}
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="!contentLoaded" class="post-time">
+      <ngx-skeleton-loader
+        [theme]="{
+            width: '100px',
+            'border-radius': '0',
+            height: '15px',
+            'margin-bottom': '10px'
+          }"
+      ></ngx-skeleton-loader>
+    </mat-card-subtitle>
+    <mat-card-subtitle *ngIf="contentLoaded" (click)="navigateToProfile()" class="post-time">
+      {{
+        postUser.createdAt | dateTranform
+      }}
+    </mat-card-subtitle>
   </mat-card-header>
 
-  <mat-card-content class="content-post">
+  <mat-card-content *ngIf="!contentLoaded" class="content-post">
+    <div class="wrapper">
+      <ngx-skeleton-loader
+        [theme]="{
+          width: '80%',
+          'border-radius': '0',
+          height: '15px',
+          'margin-bottom': '10px'
+        }"
+      ></ngx-skeleton-loader>
+    </div>
+    <div class="wrapper">
+      <ngx-skeleton-loader
+        [theme]="{
+          width: '90%',
+          'border-radius': '0',
+          height: '15px',
+          'margin-bottom': '10px'
+        }"
+      ></ngx-skeleton-loader>
+    </div>
+    <div class="wrapper">
+      <ngx-skeleton-loader
+        [theme]="{
+          width: '60%',
+          'border-radius': '0',
+          height: '15px',
+          'margin-bottom': '10px'
+        }"
+      ></ngx-skeleton-loader>
+    </div>
+  </mat-card-content>
+
+  <mat-card-content *ngIf="contentLoaded" class="content-post">
     <p>
       {{ postUser.content }}
     </p>
   </mat-card-content>
-  <div class="carousel-container">
-    <div class="carousel-button-prev" (click)="prevImage(carousel)">
+  <div *ngIf="contentLoaded" class="carousel-container">
+    <div class="carousel-button-prev" (click)="prevImage(carousel)" *ngIf="hasMultipleImages()">
       <mat-icon>chevron_left</mat-icon>
     </div>
-
-
     <div class="carousel-images"
-         (mousedown)="onMouseDown($event, carousel)"
-         (mouseleave)="onMouseLeave()"
-         (mouseup)="onMouseUp()"
-         (mousemove)="onMouseMove($event, carousel)"
+         (click)="navigateToDetail()"
          #carousel>
       @for (image of postUser.imageUrls; track $index) {
         <img src="{{image}}"
@@ -35,15 +95,15 @@
              (mousedown)="$event.preventDefault()"/>
       }
     </div>
-    <div class="carousel-button-next" (click)="nextImage(carousel)">
+    <div class="carousel-button-next" (click)="nextImage(carousel)" *ngIf="hasMultipleImages()">
       <mat-icon>chevron_right</mat-icon>
     </div>
   </div>
 
 
-  <mat-card-actions>
-    <button mat-button (click)="toggleFavorite(postUser)">
-      <mat-icon>{{ favoriteIcon }}</mat-icon>
+  <mat-card-actions *ngIf="contentLoaded">
+    <button mat-button (click)="toggleFavorite()">
+      <mat-icon [ngClass]="{'favorite': favoriteIcon === 'favorite'}">{{ favoriteIcon }}</mat-icon>
       LIKE
     </button>
     <button mat-button (click)="toggleShare()">
@@ -52,7 +112,3 @@
     </button>
   </mat-card-actions>
 </mat-card>
-
-
-
-

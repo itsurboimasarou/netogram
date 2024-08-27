@@ -15,12 +15,15 @@ import { Store } from '@ngrx/store';
 import { PostState } from '../../../../ngrx/post/post.state';
 import { ProfileState } from '../../../../ngrx/profile/profile.state';
 import { Subscription } from 'rxjs';
-import { PostResponse } from '../../../../models/post.model';
+import { PostModel, PostResponse } from '../../../../models/post.model';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import {AsyncPipe, NgIf} from "@angular/common";
+import { ProfileModel } from '../../../../models/profile.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MaterialModule, PostComponent],
+  imports: [MaterialModule, PostComponent, InfiniteScrollDirective, AsyncPipe, NgIf],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -32,34 +35,71 @@ export class HomeComponent implements OnInit, OnDestroy {
     }>,
   ) {
     this.store.dispatch(
-      PostActions.GetAllPost({ pageNumber: 1, limitNumber: 5 }),
+      PostActions.GetAllPost({
+        pageNumber: this.currentPage,
+        limitNumber: this.size,
+      }),
     );
   }
 
+  isCreateLoading$ = this.store.select('post', 'isCreating');
+  isCreateSuccess$ = this.store.select('post', 'isCreateSuccess');
   allPosts$ = this.store.select('post', 'posts');
-
+  mine$ = this.store.select('profile', 'mine');
   profilePic = 'https://www.w3schools.com/howto/img_avatar.png';
   readonly port = signal('');
   readonly name = model('');
   readonly dialog = inject(MatDialog);
 
   subscription: Subscription[] = [];
+  mine: ProfileModel = <ProfileModel>{};
 
-  allPosts = <PostResponse>{};
+  currentPage = 1;
+  size = 4;
+  itemsCount = 0;
+  tempArray: PostModel[] = [];
+
+  allPosts: PostModel[] = [];
 
   ngOnInit(): void {
     this.subscription.push(
+      this.isCreateSuccess$.subscribe((success) => {
+        if (success) {
+          console.log('success');
+          this.subscription.forEach((sub) => sub.unsubscribe());
+          this.store.dispatch(PostActions.ClearAllPosts());
+          this.store.dispatch(
+            PostActions.GetAllPost({
+              pageNumber: this.currentPage,
+              limitNumber: this.size,
+            })
+          )
+        }
+      }),
       this.allPosts$.subscribe((posts) => {
-        if (posts) {
+        if (posts.limitNumber > 0) {
+          console.log('all' + posts.data);
+          this.tempArray = [...this.allPosts];
+          this.allPosts = [...this.tempArray, ...posts.data];
           console.log(posts);
-          this.allPosts = posts;
+          this.itemsCount = posts.limitNumber;
+        }
+      }),
+
+      this.mine$.subscribe((mine) => {
+        if (mine) {
+          this.mine = mine;
         }
       }),
     );
+
+
+
   }
 
   ngOnDestroy(): void {
     this.subscription.forEach((sub) => sub.unsubscribe());
+    this.store.dispatch(PostActions.ClearAllPosts());
   }
 
   openDialog(): void {
@@ -78,5 +118,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     //     this.port.set(result);
     //   }
     // });
+  }
+
+  onScrollDown(ev: any) {
+    console.log('scrolled down!!', ev);
+    this.currentPage += 1;
+    console.log(this.currentPage);
+
+    if (this.currentPage <= this.itemsCount) {
+      console.log('get more post');
+      this.store.dispatch(
+        PostActions.GetAllPost({
+          pageNumber: this.currentPage,
+          limitNumber: this.size,
+        }),
+      );
+    }
   }
 }

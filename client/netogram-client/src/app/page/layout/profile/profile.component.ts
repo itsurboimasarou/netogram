@@ -12,8 +12,9 @@ import { ProfileState } from '../../../ngrx/profile/profile.state';
 import * as ProfileActions from '../../../ngrx/profile/profile.actions';
 import * as PostActions from '../../../ngrx/post/post.actions';
 import { Subscription } from 'rxjs';
-import { PostResponse } from '../../../models/post.model';
+import { PostModel, PostResponse } from '../../../models/post.model';
 import { ProfileModel } from '../../../models/profile.model';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-profile',
@@ -24,6 +25,7 @@ import { ProfileModel } from '../../../models/profile.model';
     MaterialModule,
     PostComponent,
     AsyncPipe,
+    InfiniteScrollDirective,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -39,13 +41,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }>,
   ) {
     const { uid } = this.activeRoute.snapshot.params;
+    this.yourUid = uid;
     this.store.dispatch(ProfileActions.getById({ uid }));
     this.store.dispatch(
-      PostActions.GetMinePost({ uid, pageNumber: 1, limitNumber: 5 }),
+      PostActions.GetMinePost({
+        uid,
+        pageNumber: this.currentPage,
+        limitNumber: this.size,
+      }),
     );
 
     // window.scrollTo({ top: window.innerHeight * 0.3, behavior: 'auto'});
   }
+
+  mineUid = '';
+  yourUid = '';
 
   subscriptions: Subscription[] = [];
 
@@ -53,8 +63,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   minePosts$ = this.store.select('post', 'minePosts');
   isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
   isGettingMine$ = this.store.select('profile', 'isGettingById');
-  minePosts: PostResponse = <PostResponse>{};
+  mineProfile$ = this.store.select('profile', 'mine');
   mineProfile: ProfileModel = <ProfileModel>{};
+
+  currentPage = 1;
+  size = 5;
+  itemsCount = 0;
+  tempArray: PostModel[] = [];
+
+  minePosts: PostModel[] = [];
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
@@ -63,6 +80,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     this.location.back();
+    this.store.dispatch(PostActions.ClearMinePost());
   }
 
   ngOnInit(): void {
@@ -74,12 +92,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }),
 
       this.minePosts$.subscribe((posts) => {
-        console.log(posts);
-        this.minePosts = posts;
+        if (posts.limitNumber > 0) {
+          console.log(posts);
+
+          this.tempArray = [...this.minePosts];
+          this.minePosts = [...this.tempArray, ...posts.data];
+          console.log(posts);
+          this.itemsCount = posts.limitNumber;
+        }
       }),
 
       this.isGettingMine$.subscribe((isGettingMine) => {
         console.log(isGettingMine);
+      }),
+
+      this.mineProfile$.subscribe((mineProfile) => {
+        if (mineProfile) {
+          this.mineUid = mineProfile.uid;
+        }
       }),
     );
   }
@@ -88,5 +118,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ProfileEditComponent, {
       width: '100px',
     });
+  }
+
+  onScrollDown(ev: any) {
+    console.log('scrolled down mine !!', ev);
+    this.currentPage += 1;
+    console.log(this.currentPage);
+
+    if (this.currentPage <= this.itemsCount) {
+      console.log('get more mine post');
+      this.store.dispatch(
+        PostActions.GetMinePost({
+          pageNumber: this.currentPage,
+          limitNumber: this.size,
+          uid: this.yourUid,
+        }),
+      );
+    }
   }
 }

@@ -9,16 +9,16 @@
 
 }
 .friendcontainer {
-  width: 46%;
-  padding: 10px;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 47%;
+  padding: 10px;
   margin-top: 18px;
   background-color: var(--surface);
   border-radius: 12px;
 }
-
 .friendavaname {
   display: flex;
 }
@@ -62,12 +62,4 @@
 .nameMutual p {
   margin: 0;
 }
-
-@media only screen and (max-width: 820px) {
-  /* For mobile phones: */
-  .friendcontainer{
-    width: 100%;
-  }
-}
-
 

@@ -15,6 +15,7 @@ import { ShareModule } from '../../shared/share.module';
 import { FormControl } from '@angular/forms';
 import { SearchState } from '../../ngrx/search/search.state';
 import * as SearchActions from '../../ngrx/search/search.actions';
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-navbar',
@@ -55,6 +56,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private route: Router,
+    private dialog: MatDialog,
     private store: Store<{
       profile: ProfileState;
       auth: AuthState;
@@ -87,7 +89,6 @@ export class NavbarComponent implements OnInit {
 
       this.searchResult$.subscribe((searchResult) => {
         this.searchResults = searchResult;
-        console.log('searchResult:', searchResult);
       }),
     );
   }
@@ -105,4 +106,15 @@ export class NavbarComponent implements OnInit {
     this.store.dispatch(AuthActions.clearState());
     this.store.dispatch(ProfileActions.clearGetState());
   }
+  onSearchKeyUp(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      const query = this.searchControl.value;
+      console.log('Close dialog');
+      this.dialog.closeAll();
+      if (query && query.trim() !== '') {
+        this.route.navigate(['/search-result'], {queryParams: {search: query}}).then(r =>{});
+      }
+    }
+  }
 }
+

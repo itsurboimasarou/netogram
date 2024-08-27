@@ -19,11 +19,21 @@ export class SearchController {
 
   @Get('any')
   async searchTags(@Query('q') q: string) {
-    let profiles = await this.searchService.searchAny('profiles',q);
-    let posts = await this.searchService.searchAny('posts',q);
+    let profiles = await this.searchService.searchAny('netogram_profiles',q);
+    let posts = await this.searchService.searchAny('netogram_posts',q);
     return {
       profiles: profiles,
       posts: posts
     };
+  }
+
+  @Get()
+  findAll() {
+    return this.searchService.getAllIndexPosts();
+  }
+
+  @Delete('posts/:id')
+  async deleteIndexPost(@Param('id') id: number) {
+    return this.searchService.deleteIndexPost(id);
   }
 }

@@ -52,6 +52,8 @@ export class PostService {
     const [result, total] = await this.postRepository.findAndCount({
       skip,
       take: limitNumber,
+      order: { createdAt: 'DESC' }
+
     });
 
     return {
@@ -74,6 +76,7 @@ export class PostService {
       where: { uid },
       skip,
       take: limitNumber,
+      order: { createdAt: 'DESC' },
     });
 
     return {
@@ -112,23 +115,21 @@ export class PostService {
   }
 
   //delete post
-  async deletePost(id: number, uid: string) {
+  async deletePost(id: number) {
     const post = await this.findPostById(id);
 
     //check if the post is owned by the user
-    if (post.uid !== uid) {
-      throw new NotFoundException('You are not the owner of this post');
-    }
 
     if (!post) {
       throw new NotFoundException('Post not found');
     }
 
+    //delete post from the index
+
     await this.postRepository.delete({ id });
+    await this.searchService.deletePost(post.id);
   }
 
   //search post by content
-  async searchPosts(query: string) {
-    return this.searchService.searchPosts(query);
-  }
+
 }

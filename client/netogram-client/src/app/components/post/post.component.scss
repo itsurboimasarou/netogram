@@ -5,6 +5,7 @@
   border-radius: 12px;
   margin-bottom: 20px;
   max-width: 672px;
+  border: none;
 }
 
 .example-card-header {
@@ -109,7 +110,7 @@
 }
 
 .carousel-images:active {
-  cursor: grabbing;
+  cursor: pointer;
 }
 
 .carousel-images::-webkit-scrollbar {
@@ -144,7 +145,7 @@
 
 .username {
   font-weight: bold;
-  display: block;
+  //display: block;
   font-size: 16px;
 }
 
@@ -219,4 +220,101 @@ mat-icon {
   border-radius: 100px;
   width: 25px;
   height: 31px;
+}
+
+
+//loader
+
+.item {
+  width: auto;
+  height: auto;
+  margin: 10px auto;
+  border: 1px solid #eaeaea;
+  padding: 10px;
+}
+
+.fb-item {
+  width: auto;
+  height: auto;
+  margin: 10px auto;
+  border: 1px solid #eaeaea;
+  padding: 10px;
+  background-color: var(--surface);
+}
+
+.gravatar {
+  width: 100px;
+  height: 90px;
+}
+
+.gravatar-title {
+  width: 500px;
+  padding: 10px;
+  height: 80px;
+}
+
+.first-section-wrapper,
+.second-section-wrapper {
+  width: 100%;
+  height: auto;
+  flex: 1;
+}
+
+.first-section-wrapper {
+  display: inline-flex;
+}
+
+.second-section-wrapper {
+  margin-top: 30px;
+}
+
+.wrapper {
+  width: 100%;
+  flex: 1;
+}
+
+.item-with-background {
+  background: #121212;
+  padding: 10px;
+}
+
+.loader {
+  line-height: 1;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background: rgb(239, 241, 246) no-repeat;
+  background-color: rgb(239, 241, 246);
+  line-height: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.content-loaded-image {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  background-color: rgb(174, 174, 174);
+  margin: 5px;
+  border-radius: 50%;
+}
+
+.gravatar-title-name {
+  margin-top: 0;
+  width: 200px;
+  border-radius: 0;
+  height: 15px;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.gravatar-description {
+  width: 170px;
+  border-radius: 0;
+  height: 15px;
+  font-size: 12px;
+}
+
+
+::ng-deep .mat-mdc-card-outlined {
+  box-shadow: none !important;
 }

@@ -1,6 +1,18 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { merge, Subscription } from 'rxjs';
@@ -14,7 +26,12 @@ import { ProfileModel } from '../../models/profile.model';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,7 +40,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   subscription: Subscription[] = [];
   regisForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    userName: new FormControl('', [Validators.required, Validators.minLength(5)]),
+    userName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5),
+    ]),
     avatarUrl: new FormControl(''),
     uid: new FormControl(''),
   });
@@ -39,10 +59,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   uid = '';
   createMineSuccess$ = this.store.select('profile', 'isCreateSuccess');
-  readonly userName = new FormControl('', [Validators.required, Validators.minLength(5)]);
+  readonly userName = new FormControl('', [
+    Validators.required,
+    Validators.minLength(5),
+  ]);
 
   errorMessage = signal('');
-
 
   constructor(
     private router: Router,
@@ -64,7 +86,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
       }),
     );
 
-    merge(this.regisForm.get('userName')!.statusChanges, this.regisForm.get('userName')!.valueChanges)
+    merge(
+      this.regisForm.get('userName')!.statusChanges,
+      this.regisForm.get('userName')!.valueChanges,
+    )
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
   }

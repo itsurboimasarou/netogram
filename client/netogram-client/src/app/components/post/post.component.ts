@@ -1,7 +1,13 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { AsyncPipe, NgClass, NgForOf } from '@angular/common';
+import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { PostModel } from '../../models/post.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
@@ -11,6 +17,10 @@ import { ProfileState } from '../../ngrx/profile/profile.state';
 import { Store } from '@ngrx/store';
 import * as ProfileActions from '../../ngrx/profile/profile.actions';
 import * as PostActions from '../../ngrx/post/post.actions';
+import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { PostState } from '../../ngrx/post/post.state';
+import { combineLatest } from 'rxjs';
 
 class PostResult {}
 
@@ -20,72 +30,55 @@ class PostResult {}
   imports: [
     MaterialModule,
     NgClass,
-
+    NgxSkeletonLoaderModule,
     NgForOf,
     IdToAvatarPipe,
     AsyncPipe,
     IdToNamePipe,
+    DateTranformPipe,
+    NgIf,
   ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
 })
-export class PostComponent {
+export class PostComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private store: Store<{
       profile: ProfileState;
+      post: PostState;
     }>,
   ) {}
 
-  @Input() postUser: PostModel = <PostModel>{};
+  isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
+  isGettingAllPosts$ = this.store.select('post', 'isGettingAllPosts');
 
-  // postUser = [
-  //   {
-  //     avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-  //     name: 'John Doe',
-  //     caption: 'Lorem ipsum dolor sit amet...',
-  //     postTime: '3 days ago',
-  //     postImages: [
-  //       'https://images.unsplash.com/photo-1460353581641-37baddab0fa2',
-  //       'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
-  //       'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
-  //     ],
-  //     likes: 856,
-  //     comments: 23,
-  //     shares: 12,
-  //     isLiked: false,
-  //   },
-  //   {
-  //     avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-  //     name: 'Jane Doe',
-  //     caption: 'Another post caption...',
-  //     postTime: '1 day ago',
-  //     postImages: [
-  //       'https://images.unsplash.com/photo-1460353581641-37baddab0fa2',
-  //       'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
-  //       'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
-  //     ],
-  //     likes: 123,
-  //     comments: 5,
-  //     shares: 2,
-  //     isLiked: false,
-  //   },
-  //   {
-  //     avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-  //     name: 'Jane Doe',
-  //     caption: 'Another post caption...',
-  //     postTime: '1 day ago',
-  //     postImages: [
-  //       'https://images.unsplash.com/photo-1460353581641-37baddab0fa2',
-  //       'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
-  //       'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
-  //     ],
-  //     likes: 123,
-  //     comments: 5,
-  //     shares: 2,
-  //     isLiked: false,
-  //   },
-  // ];
+  animation = 'pulse';
+  contentLoaded = false;
+  count = 2;
+  widthHeightSizeInPixels = 50;
+
+  intervalId: number | null = null;
+
+  ngOnInit() {
+    this.intervalId = window.setInterval(() => {
+      this.animation = this.animation === 'pulse' ? 'progress-dark' : 'pulse';
+      this.count = this.count === 2 ? 5 : 2;
+      this.widthHeightSizeInPixels =
+        this.widthHeightSizeInPixels === 50 ? 100 : 50;
+    }, 1500);
+    setTimeout(() => {
+      this.contentLoaded = true;
+    }, 1500);
+  }
+
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  @Input() postUser: PostModel = <PostModel>{};
 
   favoriteIcon = 'favorite_outlined';
   commentIcon = 'comment_outlined';
@@ -95,10 +88,15 @@ export class PostComponent {
   startX = 0;
   scrollLeft = 0;
 
-  toggleFavorite(post: any) {
-    post.isLiked = !post.isLiked;
-    post.likes += post.isLiked ? 1 : -1;
-    this.favoriteIcon = post.isLiked ? 'favorite' : 'favorite_outlined';
+  hasMultipleImages(): boolean {
+    return this.postUser.imageUrls.length > 1;
+  }
+
+  toggleFavorite() {
+    this.favoriteIcon =
+      this.favoriteIcon === 'favorite_outlined'
+        ? 'favorite'
+        : 'favorite_outlined';
   }
 
   toggleShare() {
@@ -107,13 +105,6 @@ export class PostComponent {
         ? 'ios_share'
         : 'ios_share_outlined';
   }
-
-  // toggleBookmark() {
-  //   this.bookmarkIcon =
-  //     this.bookmarkIcon === 'bookmark_outlined'
-  //       ? 'bookmark'
-  //       : 'bookmark_outlined';
-  // }
 
   prevImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
@@ -154,8 +145,9 @@ export class PostComponent {
     carousel.scrollLeft = this.scrollLeft - walk;
   }
 
-  navigateToDetail(postIndex: number) {
-    this.router.navigate(['/detail', postIndex]);
+  navigateToDetail() {
+    this.router.navigateByUrl(`/detail/${this.postUser.id}`).then();
+    this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
   }
 
   navigateToProfile() {

@@ -120,6 +120,19 @@ mat-form-field {
   background-color: var(--surface);
 }
 
+
+.snackbar-success {
+  background-color: #4caf50; // Green for success
+  color: white;
+}
+
+.snackbar-error {
+  background-color: #f44336; // Red for error
+  color: white;
+
+}
+
+
 //div ::-webkit-scrollbar-track {
 //  background-color: #fff;
 //}
@@ -135,4 +148,3 @@ mat-form-field {
 //div ::-webkit-scrollbar-button {
 //  display:none;
 //}
-
