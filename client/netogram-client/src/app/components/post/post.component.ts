@@ -87,6 +87,7 @@ export class PostComponent implements OnInit, OnDestroy {
   isDragging = false;
   startX = 0;
   scrollLeft = 0;
+  currentIndex = 0;
 
   hasMultipleImages(): boolean {
     return this.postUser.imageUrls.length > 1;
@@ -106,12 +107,25 @@ export class PostComponent implements OnInit, OnDestroy {
         : 'ios_share_outlined';
   }
 
+  // Method to check if the current image is the first one
+  isFirstImage(): boolean {
+    return this.currentIndex === 0;
+  }
+
+  // Method to check if the current image is the last one
+  isLastImage(): boolean {
+    return this.currentIndex === this.postUser.imageUrls.length - 1;
+  }
+
   prevImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
     carousel.scrollBy({
       left: -(imageWidth + 10), // Adjust gap between images
       behavior: 'smooth',
     });
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
   }
 
   nextImage(carousel: HTMLDivElement) {
@@ -120,6 +134,9 @@ export class PostComponent implements OnInit, OnDestroy {
       left: imageWidth + 10, // Adjust gap between images
       behavior: 'smooth',
     });
+    if (this.currentIndex < this.postUser.imageUrls.length - 1) {
+      this.currentIndex++;
+    }
   }
 
   onMouseDown(event: MouseEvent, carousel: HTMLDivElement) {
