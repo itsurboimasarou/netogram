@@ -155,4 +155,8 @@ export class PostComponent implements OnInit, OnDestroy {
     this.store.dispatch(PostActions.ClearMinePost());
     this.store.dispatch(ProfileActions.getById({ uid: this.postUser.uid }));
   }
+
+  deletePost() {
+    this.store.dispatch(PostActions.DeletePost({ id: this.postUser.id }));
+  }
 }

@@ -31,6 +31,10 @@ export const initialState: PostState = {
   isGettingAllPosts: false,
   isGetAllPostsSuccess: false,
   isGetAllPostsFailure: false,
+
+  isDeleting: false,
+  isDeleteSuccess: false,
+  deleteErrorMessage: <HttpErrorResponseModel>{},
 };
 
 export const PostReducer = createReducer(
@@ -181,6 +185,34 @@ export const PostReducer = createReducer(
       isGettingMinePost: false,
       isGetMinePostSuccess: false,
       getErrorMessage: getMinePostErrorMessage,
+    };
+  }),
+
+  //delete post
+  on(postActions.DeletePost, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isDeleting: true,
+    };
+  }),
+
+  on(postActions.DeletePostSuccess, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isDeleting: false,
+      isDeleteSuccess: true,
+    };
+  }),
+
+  on(postActions.DeletePostFailure, (state, { deletePostErrorMessage }) => {
+    console.log(deletePostErrorMessage);
+    return {
+      ...state,
+      isDeleting: false,
+      isDeleteSuccess: false,
+      deleteErrorMessage: deletePostErrorMessage,
     };
   }),
 
