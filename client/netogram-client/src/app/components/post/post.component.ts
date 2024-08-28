@@ -21,6 +21,9 @@ import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { PostState } from '../../ngrx/post/post.state';
 import { combineLatest } from 'rxjs';
+import { DetailComponent } from '../../page/detail/detail.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Location } from '@angular/common';
 
 class PostResult {}
 
@@ -37,17 +40,21 @@ class PostResult {}
     IdToNamePipe,
     DateTranformPipe,
     NgIf,
+    DetailComponent,
+    MaterialModule,
   ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
 })
 export class PostComponent implements OnInit, OnDestroy {
   constructor(
+    private location: Location,
     private router: Router,
     private store: Store<{
       profile: ProfileState;
       post: PostState;
     }>,
+    private dialog: MatDialog,
   ) {}
 
   isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
@@ -177,6 +184,24 @@ export class PostComponent implements OnInit, OnDestroy {
   navigateToDetail() {
     this.router.navigateByUrl(`/detail/${this.postUser.id}`).then();
     this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
+  }
+
+  openPostDetail(post: any) {
+    const dialogRef = this.dialog.open(DetailComponent, {
+      maxWidth: '100%',
+      maxHeight: '100%',
+    });
+    this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
+
+    this.location.go(`/detail/${this.postUser.id}`);
+
+    // const currentUrl = this.router.url;
+    // console.log('post', post);
+
+    //change url to detail. change url but dont change page
+    // dialogRef.afterClosed().subscribe(() => {
+    //   this.location.go(currentUrl);
+    // });
   }
 
   navigateToProfile() {

@@ -2,7 +2,6 @@
 .body {
   display: flex;
   justify-content: center;
-  min-height: 100vh;
   background-color: var(--surfaceContainer);
   padding: 20px;
   height: 80%;
@@ -35,6 +34,7 @@
   margin-bottom: 10px;
   background-color: var(--surface);
   border-radius: 12px;
+
   .mat-mdc-card-content {
     padding: 0;
   }
@@ -94,5 +94,12 @@
   background-color: var(--surfaceContainerHigh);
   position: fixed;
   left: 20px;
+}
+
+.title-search {
+  margin: 16px 0 8px 0;
+  padding-left: 14px;
+  font-size: 22px;
+  font-weight: bolder;
 }
 
