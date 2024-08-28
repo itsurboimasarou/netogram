@@ -8,7 +8,7 @@ import {
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { PostModel } from '../../models/post.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
 import { IdToNamePipe } from '../../shared/pipes/id-to-name.pipe';
@@ -20,7 +20,11 @@ import * as PostActions from '../../ngrx/post/post.actions';
 import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { PostState } from '../../ngrx/post/post.state';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
+import { DetailComponent } from '../../page/detail/detail.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Location } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 class PostResult {}
 
@@ -37,30 +41,40 @@ class PostResult {}
     IdToNamePipe,
     DateTranformPipe,
     NgIf,
+    DetailComponent,
+    MaterialModule,
   ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
 })
 export class PostComponent implements OnInit, OnDestroy {
   constructor(
+    private location: Location,
     private router: Router,
     private store: Store<{
       profile: ProfileState;
       post: PostState;
     }>,
+    private dialog: MatDialog,
   ) {}
+
+  private routerSubscription: Subscription | null = null;
 
   isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
   isGettingAllPosts$ = this.store.select('post', 'isGettingAllPosts');
+  mineProfile$ = this.store.select('profile', 'mine');
+  mineUid = '';
 
   animation = 'pulse';
   contentLoaded = false;
+  isProfilePage = false;
   count = 2;
   widthHeightSizeInPixels = 50;
 
   intervalId: number | null = null;
 
   ngOnInit() {
+    this.isProfilePage = this.router.url.includes('/profile');
     this.intervalId = window.setInterval(() => {
       this.animation = this.animation === 'pulse' ? 'progress-dark' : 'pulse';
       this.count = this.count === 2 ? 5 : 2;
@@ -70,12 +84,24 @@ export class PostComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.contentLoaded = true;
     }, 1500);
+
+    this.mineProfile$.subscribe((profile) => {
+      if (profile?.uid) {
+        this.mineUid = profile.uid;
+      }
+    });
+    this.routerSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.dialog.closeAll();
+      });
   }
 
   ngOnDestroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
+    this.isProfilePage = false;
   }
 
   @Input() postUser: PostModel = <PostModel>{};
@@ -87,6 +113,7 @@ export class PostComponent implements OnInit, OnDestroy {
   isDragging = false;
   startX = 0;
   scrollLeft = 0;
+  @Input() post!: any;
   currentIndex = 0;
 
   hasMultipleImages(): boolean {
@@ -167,6 +194,25 @@ export class PostComponent implements OnInit, OnDestroy {
     this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
   }
 
+  openPostDetail(post: any) {
+    const dialogRef = this.dialog.open(DetailComponent, {
+      maxWidth: '100%',
+      maxHeight: '100%',
+      closeOnNavigation: true,
+    });
+    this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
+
+    this.location.go(`/detail/${this.postUser.id}`);
+
+    // const currentUrl = this.router.url;
+    // console.log('post', post);
+
+    //change url to detail. change url but dont change page
+    // dialogRef.afterClosed().subscribe(() => {
+    //   this.location.go(currentUrl);
+    // });
+  }
+
   navigateToProfile() {
     this.router.navigateByUrl(`/profile/${this.postUser.uid}`).then();
     this.store.dispatch(PostActions.ClearMinePost());
@@ -174,6 +220,8 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   deletePost() {
-    this.store.dispatch(PostActions.DeletePost({ id: this.postUser.id }));
+    this.store.dispatch(
+      PostActions.DeletePost({ id: this.postUser.id, uid: this.mineUid }),
+    );
   }
 }

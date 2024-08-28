@@ -1,5 +1,46 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <router-outlet></router-outlet>
+  <div class="body">
+    <div class="search-result">
+      <div>
+        <button id="backButton" (click)="goBack()" mat-fab>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+     
+      <mat-card class="user-suggestions">
+        <h6 class="title-search">Everyone</h6>
+        @for (profile of profiles; track $index) {
+          <mat-card-content>
+            <div class="user-item">
+              <div class="user-info">
+                <img [src]="profile.uid| idToAvatar|async" [alt]="profile" class="user-avatar">
+                <div class="user-details">
+                  <div class="user-name">{{ profile.uid|idToName|async }}</div>
+                </div>
+              </div>
+              <button mat-flat-button class="add-friend-button">
+                <mat-icon>person_add_outlined</mat-icon>
+                Add friend
+              </button>
+            </div>
+          </mat-card-content>
+        }
+
+      </mat-card>
+      <div class="post">
+      </div>
+      @for (post of posts; track $index) {
+        <app-post [postUser]="post"></app-post>
+      }
+    </div>
+  </div>
+</div>
+
 <!--<app-navbar></app-navbar>-->
 <!--<div class="container">-->
+<!--  <router-outlet></router-outlet>-->
 <!--  <div class="body">-->
 <!--    <div class="search-result">-->
 <!--      <div>-->
@@ -7,91 +48,68 @@
 <!--          <mat-icon>arrow_back</mat-icon>-->
 <!--        </button>-->
 <!--      </div>-->
-
-<!--      <ng-container *ngIf="(loading$ | async) === false; else loading">-->
-<!--        <ng-container *ngIf="(error$ | async) === null; else error">-->
-<!--          <div class="profiles" *ngIf="(profiles$ | async)?.length">-->
-<!--            <h4>Profiles</h4>-->
-<!--            <mat-card class="user-suggestions">-->
-<!--              <mat-card-content>-->
-<!--                <div *ngFor="let profile of profiles$ | async" class="user-item">-->
-<!--                  <div class="user-info">-->
-<!--                    <img [src]="profile.avatarUrl" [alt]="profile.name" class="user-avatar">-->
-<!--                    <div class="user-details">-->
-<!--                      <div class="user-name">{{ profile.name }}</div>-->
-<!--                      <div class="mutual-friends">{{ profile.mutualFriends }} mutual friends</div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  <button mat-flat-button class="add-friend-button">-->
-<!--                    <mat-icon>person_add_outlined</mat-icon>-->
-<!--                    Add friend-->
-<!--                  </button>-->
-<!--                </div>-->
-<!--              </mat-card-content>-->
-<!--            </mat-card>-->
+<!--      <div class="everyone">-->
+<!--        <h4>Everyone</h4>-->
+<!--      </div>-->
+<!--      <mat-card class="user-suggestions">-->
+<!--        <mat-card-content>-->
+<!--          <div *ngFor="let user of userResults" class="user-item">-->
+<!--            <div class="user-info">-->
+<!--              <img [src]="user.avatarUrl" [alt]="user.name" class="user-avatar">-->
+<!--              <div class="user-details">-->
+<!--                <div class="user-name">{{ user.name }}</div>-->
+<!--                <div class="mutual-friends">{{ user.mutualFriends }} mutual friends</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <button mat-flat-button class="add-friend-button">-->
+<!--              <mat-icon>person_add_outlined</mat-icon>-->
+<!--              Add friend</button>-->
 <!--          </div>-->
+<!--        </mat-card-content>-->
+<!--      </mat-card>-->
+<!--      <div class="post">-->
+<!--        <h4>Related post</h4>-->
+<!--      </div>-->
+<!--      <app-post>-->
 
-<!--          <div class="posts" *ngIf="(posts$ | async)?.length">-->
-<!--            <h4>Related posts</h4>-->
-<!--            <app-post *ngFor="let post of posts$ | async" [postUser]="post"></app-post>-->
-<!--          </div>-->
-
-<!--          <div *ngIf="!(profiles$ | async)?.length && !(posts$ | async)?.length">-->
-<!--            <p>No results found for "{{ searchTerm }}"</p>-->
-<!--          </div>-->
-<!--        </ng-container>-->
-<!--      </ng-container>-->
-
-<!--      <ng-template #loading>-->
-<!--        <div class="loading">-->
-<!--          <mat-spinner></mat-spinner>-->
-<!--          <p>Searching...</p>-->
-<!--        </div>-->
-<!--      </ng-template>-->
-
-<!--      <ng-template #error>-->
-<!--        <div class="error">-->
-<!--          <p>An error occurred while searching. Please try again.</p>-->
-<!--        </div>-->
-<!--      </ng-template>-->
+<!--      </app-post>-->
 <!--    </div>-->
 <!--  </div>-->
 <!--</div>-->
 
-<app-navbar></app-navbar>
-<div class="container">
-  <router-outlet></router-outlet>
-<div class="body">
-  <div class="search-result">
-    <div>
-      <button id="backButton" (click)="goBack()" mat-fab>
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </div>
-    <div class="everyone">
-        <h4>Everyone</h4>
-    </div>
-    <mat-card class="user-suggestions">
-      <mat-card-content>
-        <div *ngFor="let user of userResults" class="user-item">
-          <div class="user-info">
-            <img [src]="user.avatarUrl" [alt]="user.name" class="user-avatar">
-            <div class="user-details">
-              <div class="user-name">{{ user.name }}</div>
-              <div class="mutual-friends">{{ user.mutualFriends }} mutual friends</div>
-            </div>
-          </div>
-          <button mat-flat-button class="add-friend-button">
-            <mat-icon>person_add_outlined</mat-icon>
-            Add friend</button>
-        </div>
-      </mat-card-content>
-    </mat-card>
-    <div class="post">
-      <h4>Related post</h4>
-    </div>
-    <app-post> </app-post>
-  </div>
-</div>
-</div>
-
+<!--&lt;!&ndash;<app-navbar> </app-navbar>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;  <router-outlet></router-outlet>&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="body">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="search-result">&ndash;&gt;-->
+<!--&lt;!&ndash;      <div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <button id="backButton" (click)="goBack()" mat-fab>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon>arrow_back</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="everyone">&ndash;&gt;-->
+<!--&lt;!&ndash;        <h4>Everyone</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      <mat-card class="user-suggestions">&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-card-content>&ndash;&gt;-->
+<!--&lt;!&ndash;          <div *ngFor="let user of userResults" class="user-item">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="user-info">&ndash;&gt;-->
+<!--&lt;!&ndash;              <img [src]="user.avatarUrl" [alt]="user.name" class="user-avatar">&ndash;&gt;-->
+<!--&lt;!&ndash;              <div class="user-details">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="user-name">{{ user.name }}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="mutual-friends">{{ user.mutualFriends }} mutual friends</div>&ndash;&gt;-->
+<!--&lt;!&ndash;              </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <button mat-flat-button class="add-friend-button">&ndash;&gt;-->
+<!--&lt;!&ndash;              <mat-icon>person_add_outlined</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;              Add friend</button>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </mat-card-content>&ndash;&gt;-->
+<!--&lt;!&ndash;      </mat-card>&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="post">&ndash;&gt;-->
+<!--&lt;!&ndash;        <h4>Related post</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      <app-post> </app-post>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
