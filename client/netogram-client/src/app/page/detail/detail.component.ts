@@ -28,6 +28,7 @@ import * as PostActions from '../../ngrx/post/post.actions';
 import { LikepostState } from '../../ngrx/likepost/likepost.state';
 import * as LikeActions from '../../ngrx/likepost/likepost.actions';
 import { LikepostModel } from '../../models/likepost.model';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-detail',
@@ -68,6 +69,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   };
 
   constructor(
+    private dialogRef: MatDialogRef<DetailComponent>,
     private location: Location,
     private router: Router,
     private activeRoute: ActivatedRoute,
@@ -286,6 +288,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     this.location.back();
+    this.dialogRef.close();
     this.store.dispatch(PostActions.ClearPostDetail());
   }
 

@@ -20,7 +20,8 @@ export const routes: Routes = [
   },
   {
     path: 'detail/:id',
-    component: DetailComponent,
+    loadChildren: () =>
+      import('./page/detail/detail.routes').then((m) => m.DETAIL_ROUTES),
   },
   {
     path: 'search-result',

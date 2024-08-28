@@ -8,7 +8,7 @@ import {
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { PostModel } from '../../models/post.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
 import { IdToNamePipe } from '../../shared/pipes/id-to-name.pipe';
@@ -20,10 +20,11 @@ import * as PostActions from '../../ngrx/post/post.actions';
 import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { PostState } from '../../ngrx/post/post.state';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { DetailComponent } from '../../page/detail/detail.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 class PostResult {}
 
@@ -57,6 +58,8 @@ export class PostComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
   ) {}
 
+  private routerSubscription: Subscription | null = null;
+
   isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
   isGettingAllPosts$ = this.store.select('post', 'isGettingAllPosts');
   mineProfile$ = this.store.select('profile', 'mine');
@@ -87,6 +90,11 @@ export class PostComponent implements OnInit, OnDestroy {
         this.mineUid = profile.uid;
       }
     });
+    this.routerSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.dialog.closeAll();
+      });
   }
 
   ngOnDestroy() {
@@ -190,6 +198,7 @@ export class PostComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DetailComponent, {
       maxWidth: '100%',
       maxHeight: '100%',
+      closeOnNavigation: true,
     });
     this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
 
