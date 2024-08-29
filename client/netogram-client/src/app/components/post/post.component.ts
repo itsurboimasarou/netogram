@@ -8,7 +8,7 @@ import {
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { PostModel } from '../../models/post.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
 import { IdToNamePipe } from '../../shared/pipes/id-to-name.pipe';
@@ -20,7 +20,11 @@ import * as PostActions from '../../ngrx/post/post.actions';
 import { DateTranformPipe } from '../../shared/pipes/date-tranform.pipe';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { PostState } from '../../ngrx/post/post.state';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
+import { DetailComponent } from '../../page/detail/detail.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Location } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 class PostResult {}
 
@@ -37,18 +41,25 @@ class PostResult {}
     IdToNamePipe,
     DateTranformPipe,
     NgIf,
+    DetailComponent,
+    MaterialModule,
   ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
 })
 export class PostComponent implements OnInit, OnDestroy {
   constructor(
+    private location: Location,
     private router: Router,
     private store: Store<{
       profile: ProfileState;
       post: PostState;
     }>,
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
   ) {}
+
+  private routerSubscription: Subscription | null = null;
 
   isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
   isGettingAllPosts$ = this.store.select('post', 'isGettingAllPosts');
@@ -78,6 +89,23 @@ export class PostComponent implements OnInit, OnDestroy {
     this.mineProfile$.subscribe((profile) => {
       if (profile?.uid) {
         this.mineUid = profile.uid;
+      }
+    });
+    this.routerSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.dialog.closeAll();
+      });
+
+    this.route.url.subscribe((url) => {
+      const urlSegment = url.join('/');
+      if (urlSegment.startsWith('detail/')) {
+        const id = BigInt(urlSegment.split('/')[1]);
+        //convert string to bigint
+
+        this.store.dispatch(PostActions.GetPostById({ id: id }));
+
+        this.openPostDetail(id);
       }
     });
   }
@@ -177,6 +205,24 @@ export class PostComponent implements OnInit, OnDestroy {
   navigateToDetail() {
     this.router.navigateByUrl(`/detail/${this.postUser.id}`).then();
     this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
+  }
+
+  openPostDetail(post: any) {
+    const dialogRef = this.dialog.open(DetailComponent, {
+      maxWidth: '100%',
+      maxHeight: '100%',
+      closeOnNavigation: true,
+    });
+    this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
+
+    this.location.go(`/detail/${this.postUser.id}`);
+
+    // const currentUrl = this.router.url;
+    // // console.log('post', post);
+    //
+    // dialogRef.afterClosed().subscribe(() => {
+    //   this.location.go(currentUrl);
+    // });
   }
 
   navigateToProfile() {
