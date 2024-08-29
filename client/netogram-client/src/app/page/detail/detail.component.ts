@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { MaterialModule } from '../../shared/material.module';
 import {
   AsyncPipe,
@@ -48,6 +48,10 @@ import { clearState } from '../../ngrx/comment/comment.actions';
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
+  providers: [
+    { provide: MatDialogRef, useValue: {} },
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+  ],
 })
 export class DetailComponent implements OnInit, OnDestroy {
   commentForm = new FormGroup({
@@ -86,7 +90,9 @@ export class DetailComponent implements OnInit, OnDestroy {
       if (post.id) {
         this.postDetail = post;
         this.store.dispatch(
-          LikeActions.getLikepostCount({ postId: Number(this.postDetail.id) }),
+          LikeActions.getLikepostCount({
+            postId: Number(this.postDetail.id),
+          }),
         );
         this.store.dispatch(
           LikeActions.getIsLiked({ postId: Number(this.postDetail.id) }),
@@ -129,6 +135,12 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
+      this.activeRoute.params.subscribe((params) => {
+        console.log(params['id']);
+        // const id = BigInt(params['id']);
+        // this.store.dispatch(PostActions.GetPostById({ id }));
+      }),
+
       this.profileMine$.subscribe((profile) => {
         if (profile) {
           this.profileMine = profile;
@@ -220,7 +232,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
     this.store.dispatch(PostActions.ClearPostDetail());
-    this.store.dispatch(PostActions.ClearAllPosts());
     this.store.dispatch(LikeActions.clearLikePostState());
     this.store.dispatch(CommentActions.clearState());
   }
