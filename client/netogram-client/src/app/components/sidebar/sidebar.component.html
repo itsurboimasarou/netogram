@@ -9,7 +9,8 @@
     }
 
     <div class="profile-avatar-and-name" (click)="navigateToProfile()">
-      <img src="{{user.avatarUrl}}" alt="Avatar" class="avatar" (error)="handleImageError($event)">
+      <img src="{{user.avatarUrl}}" alt="Avatar" class="avatar"
+           onerror="this.onerror=null;this.src='public/images/avatar.jpg';">
       <span class="name">{{ (profileMine$|async)?.userName }}</span>
 
     </div>

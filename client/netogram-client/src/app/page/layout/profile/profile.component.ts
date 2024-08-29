@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet, Scroll } from '@angular/router';
 import { SidebarComponent } from '../../../components/sidebar/sidebar.component';
 import { MaterialModule } from '../../../shared/material.module';
-import { AsyncPipe, Location } from '@angular/common';
+import { AsyncPipe, Location, NgClass } from '@angular/common';
 import { PostComponent } from '../../../components/post/post.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
@@ -15,10 +15,10 @@ import { Subscription } from 'rxjs';
 import { PostModel, PostResponse } from '../../../models/post.model';
 import { ProfileModel } from '../../../models/profile.model';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import {FriendshipState} from "../../../ngrx/friend-ship/friendship.state";
-import * as FriendshipActions from "../../../ngrx/friend-ship/friendship.actions";
-import {FriendShipModel} from "../../../models/friend-ship.model";
-import {getMutualFriends} from "../../../ngrx/friend-ship/friendship.actions";
+import { FriendshipState } from '../../../ngrx/friend-ship/friendship.state';
+import * as FriendshipActions from '../../../ngrx/friend-ship/friendship.actions';
+import { FriendShipModel } from '../../../models/friend-ship.model';
+import { getMutualFriends } from '../../../ngrx/friend-ship/friendship.actions';
 
 @Component({
   selector: 'app-profile',
@@ -30,18 +30,18 @@ import {getMutualFriends} from "../../../ngrx/friend-ship/friendship.actions";
     PostComponent,
     AsyncPipe,
     InfiniteScrollDirective,
+    NgClass,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-
   friendRequestSentData: FriendShipModel = {
     friendUid: '',
     status: '',
     createdAt: '',
     id: 0,
-    uid: ''
+    uid: '',
   };
 
   constructor(
@@ -51,7 +51,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private store: Store<{
       post: PostState;
       profile: ProfileState;
-      friendship: FriendshipState
+      friendship: FriendshipState;
     }>,
   ) {
     const { uid } = this.activeRoute.snapshot.params;
@@ -64,7 +64,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
         limitNumber: this.size,
       }),
     );
-    this.store.dispatch(FriendshipActions.getFriendshipStatus({friendUid: this.yourUid}));
+    this.store.dispatch(
+      FriendshipActions.getFriendshipStatus({ friendUid: this.yourUid }),
+    );
     // window.scrollTo({ top: window.innerHeight * 0.3, behavior: 'auto'});
   }
 
@@ -75,14 +77,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   mutualFriends$ = this.store.select('friendship', 'mutualFriends');
   isUnfriendSuccess$ = this.store.select('friendship', 'isDeleteSuccess');
-  isSentFriendRequestSuccess$ = this.store.select('friendship', 'isCreateSuccess');
-  isGetFriendshipStatus$ = this.store.select('friendship', 'friendshipStatusSuccess');
+  isSentFriendRequestSuccess$ = this.store.select(
+    'friendship',
+    'isCreateSuccess',
+  );
+  isGetFriendshipStatus$ = this.store.select(
+    'friendship',
+    'friendshipStatusSuccess',
+  );
   friendshipStatus$ = this.store.select('friendship', 'friendshipStatus');
   profileByUid$ = this.store.select('profile', 'profile');
   minePosts$ = this.store.select('post', 'minePosts');
   isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
   isGettingMine$ = this.store.select('profile', 'isGettingById');
   mineProfile$ = this.store.select('profile', 'mine');
+  isUpdating$ = this.store.select('profile', 'isUpdating');
   mineProfile: ProfileModel = <ProfileModel>{};
 
   currentPage = 1;
@@ -133,12 +142,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }),
     );
     this.isGetFriendshipStatus$.subscribe((success) => {
-      if(success) {
+      if (success) {
         this.friendshipStatus$.subscribe((status) => {
           console.log(status);
         });
       }
-    })
+    });
     this.getMutualFriends();
   }
 
@@ -150,30 +159,51 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   sentFriendRequest() {
-    this.friendRequestSentData = {...this.friendRequestSentData,friendUid: this.yourUid};
-    this.store.dispatch(FriendshipActions.addFriend({friendShipModel: this.friendRequestSentData}));
+    this.friendRequestSentData = {
+      ...this.friendRequestSentData,
+      friendUid: this.yourUid,
+    };
+    this.store.dispatch(
+      FriendshipActions.addFriend({
+        friendShipModel: this.friendRequestSentData,
+      }),
+    );
 
     this.isSentFriendRequestSuccess$.subscribe((success) => {
-      if(success) {
-        this.store.dispatch(FriendshipActions.getFriendshipStatus({friendUid: this.yourUid}));
+      if (success) {
+        this.store.dispatch(
+          FriendshipActions.getFriendshipStatus({ friendUid: this.yourUid }),
+        );
       }
-    })
+    });
   }
 
   getMutualFriends() {
     if (this.mineUid != this.yourUid) {
-      this.store.dispatch(FriendshipActions.getMutualFriends({uid: this.mineUid, friendUid: this.yourUid}));
+      this.store.dispatch(
+        FriendshipActions.getMutualFriends({
+          uid: this.mineUid,
+          friendUid: this.yourUid,
+        }),
+      );
     }
   }
 
   sendUnfriend() {
-    this.store.dispatch(FriendshipActions.unfriend({friendUid: this.yourUid, uid: this.mineUid}));
+    this.store.dispatch(
+      FriendshipActions.unfriend({
+        friendUid: this.yourUid,
+        uid: this.mineUid,
+      }),
+    );
 
     this.isUnfriendSuccess$.subscribe((success) => {
       if (success) {
-        this.store.dispatch(FriendshipActions.getFriendshipStatus({friendUid: this.yourUid}));
+        this.store.dispatch(
+          FriendshipActions.getFriendshipStatus({ friendUid: this.yourUid }),
+        );
       }
-    })
+    });
   }
 
   onScrollDown(ev: any) {

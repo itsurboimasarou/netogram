@@ -11,7 +11,8 @@
   <mat-card class="example-card" appearance="raised">
     <mat-card-header class="example-card-header">
       <div mat-card-avatar class="example-header-image">
-        <img src="{{mine.avatarUrl}}" alt="Avatar" class="avatar" (error)="handleImageError($event)">
+        <img src="{{mine.avatarUrl}}" alt="Avatar" class="avatar"
+             onerror="this.onerror=null;this.src='public/images/avatar.jpg';">
       </div>
       <mat-form-field appearance="outline" subscriptSizing="dynamic" (click)="this.openDialog()">
         <input matInput placeholder="Tell me your story" readonly/>

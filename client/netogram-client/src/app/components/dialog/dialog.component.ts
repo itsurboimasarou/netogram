@@ -89,12 +89,12 @@ export class DialogComponent implements OnDestroy, OnInit {
       this.isCreateSuccess$.subscribe((success) => {
         if (success) {
           this.store.dispatch(
-            PostActions.GetAllPost({ pageNumber: 1, limitNumber: 10 }),
+            PostActions.GetAllPost({ pageNumber: 1, limitNumber: 4 }),
           );
           this.snackBar.open('Post successfully', 'Close', {
             duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
             panelClass: ['snackbar'],
           });
         }
