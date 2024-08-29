@@ -15,6 +15,11 @@ import { ProfileModel } from '../../models/profile.model';
 import { PostModel } from '../../models/post.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
 import { IdToNamePipe } from '../../shared/pipes/id-to-name.pipe';
+import {ProfileState} from "../../ngrx/profile/profile.state";
+import * as FriendshipActions from "../../ngrx/friend-ship/friendship.actions";
+import {FriendshipModel} from "../../models/friendship.model";
+import {getFriendshipStatus} from "../../ngrx/friend-ship/friendship.actions";
+import {FriendshipState} from "../../ngrx/friend-ship/friendship.state";
 
 @Component({
   selector: 'app-search-result',
@@ -41,17 +46,39 @@ import { IdToNamePipe } from '../../shared/pipes/id-to-name.pipe';
 export class SearchResultComponent implements OnInit {
   searchTerm: string = '';
 
+  friendRequestSentData: FriendshipModel = {
+    id: 0,
+    uid: "",
+    friendUid: "",
+    status: ""
+  };
+
+  isCreateSuccess$ = this.store.select('friendship', 'isCreateSuccess');
   searchResult$ = this.store.select('search', 'searchResult');
   subscription: Subscription[] = [];
 
   posts: PostModel[] = [];
   profiles: ProfileModel[] = [];
+  status: any[] = [];
+  mineUid!: string;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private store: Store<{ search: SearchState }>,
-  ) {}
+    private store: Store<{ search: SearchState,
+    profile: ProfileState,
+    friendship: FriendshipState}>,
+  ) {
+    this.mineProfile$.subscribe((mineProfile) => {
+      if(mineProfile) {
+        this.mineUid = mineProfile.uid;
+      }
+    })
+  }
+
+  getStatusSuccess$ = this.store.select('friendship', 'friendshipStatusSuccess');
+  friendshipStatus$ = this.store.select('friendship', 'friendshipStatus');
+  mineProfile$ = this.store.select('profile', 'mine');
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -71,6 +98,35 @@ export class SearchResultComponent implements OnInit {
         }
       }),
     );
+
+    for (let profile of this.profiles){
+      this.store.dispatch(getFriendshipStatus({friendUid: profile.uid}));
+
+      this.getStatusSuccess$.subscribe((success) => {
+        if (success) {
+          this.friendshipStatus$.subscribe((status) => {
+            this.status.push(status);
+          })}
+      })
+    }
+    console.log('status', this.status);
+  }
+
+  addFriendSearch(friendUid: string) {
+    this.mineProfile$.subscribe((mineProfile) => {
+      if (mineProfile) {
+        this.friendRequestSentData = {...this.friendRequestSentData, friendUid: friendUid, uid: mineProfile.uid};
+      }
+    })
+    this.friendRequestSentData = {...this.friendRequestSentData, friendUid};
+    console.log(this.friendRequestSentData);
+    this.store.dispatch(FriendshipActions.addFriend({friendShipModel: this.friendRequestSentData}));
+
+    this.isCreateSuccess$.subscribe((isSuggestedFriendsLoaded) => {
+      if (isSuggestedFriendsLoaded){
+        this.store.dispatch(getFriendshipStatus({friendUid}));
+      }
+    })
   }
 
   goBack(): void {

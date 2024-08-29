@@ -8,7 +8,7 @@
           <mat-icon>arrow_back</mat-icon>
         </button>
       </div>
-     
+
       <mat-card class="user-suggestions">
         <h6 class="title-search">Everyone</h6>
         @for (profile of profiles; track $index) {
@@ -20,13 +20,47 @@
                   <div class="user-name">{{ profile.uid|idToName|async }}</div>
                 </div>
               </div>
-              <button mat-flat-button class="add-friend-button">
-                <mat-icon>person_add_outlined</mat-icon>
-                Add friend
-              </button>
+
+                @if ((friendshipStatus$ | async) == null){
+                  <button (click)="addFriendSearch(profile.uid)" class="btnProfile" mat-stroked-button>
+                    <div class="box">
+            <span class="material-symbols-outlined">
+              person_add
+            </span>
+                      Add Friend
+                    </div>
+                  </button>
+                } @else if ((friendshipStatus$ | async)?.status == 'pending'){
+                  @if ((friendshipStatus$ | async)?.uid == mineUid){
+                    <button class="btnProfile"   mat-stroked-button>
+                      <div class="box">
+                <span class="material-symbols-outlined">
+                  pending
+                </span>
+                        Requested
+                      </div>
+                    </button>
+                  } @else {
+                    <button mat-flat-button id="confirmButton" class="button">Confirm</button>
+                    <button mat-stroked-button  class="button">Delete</button>
+
+                  }
+
+                } @else {
+                  <button class="btnProfile"  mat-stroked-button>
+                    <div class="box">
+              <span class="material-symbols-outlined">
+                person_check
+              </span>
+                      Friends
+                    </div>
+                  </button>
+                }
+
             </div>
           </mat-card-content>
         }
+
 
       </mat-card>
       <div class="post">
