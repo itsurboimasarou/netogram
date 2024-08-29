@@ -1,0 +1,88 @@
+.friend-suggestions {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface);
+  padding: 5px;
+  border-radius: 12px;
+}
+h3 {
+  font-size: 22px;
+  font-weight: bold;
+  padding-left: 14px;
+  margin-top: 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--onSurface);
+  @media only screen and (max-width: 1366px) {
+    font-size: 20px;
+  }
+}
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1px 0;
+  padding: 12px;
+  @media only screen and (max-width: 1366px) {
+    padding: 10px;
+  }
+}
+
+.avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 100%;
+  margin-right: 10px;
+  @media only screen and (max-width: 1366px) {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.label {
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  @media only screen and (max-width: 1366px) {
+    font-size: 14px;
+  }
+}
+
+.name {
+  font-weight: bold;
+  color: var(--onSurface);
+}
+.mutual-friends{
+  font-size: 13px;
+  color: var(--outline);
+  font-weight: 500;
+  @media only screen and (max-width: 1366px) {
+    font-size: 14px;
+  }
+}
+
+.add-friend-button {
+  background-color: var(--primary) !important;
+  border-radius: 12px;
+  color: var(--onPrimary);
+  text-transform: none;
+
+  @media only screen and (max-width: 1366px) {
+    padding: 0;
+    min-width: 0;
+    width: 40px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    border-radius: 8px;
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .add-friend-button mat-icon {
+    font-size: 18px;
+    padding-left: 15px;
+  }
+}
