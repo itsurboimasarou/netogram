@@ -98,6 +98,10 @@
   object-fit: cover;
 }
 
+.profile-pic:hover {
+   cursor: pointer;
+}
+
 .post-info {
   flex: 1;
   margin-left: 10px;
