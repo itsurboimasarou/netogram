@@ -15,7 +15,8 @@ import { ShareModule } from '../../shared/share.module';
 import { FormControl } from '@angular/forms';
 import { SearchState } from '../../ngrx/search/search.state';
 import * as SearchActions from '../../ngrx/search/search.actions';
-import {MatDialog} from "@angular/material/dialog";
+import { MatDialog } from '@angular/material/dialog';
+import * as PostActions from '../../ngrx/post/post.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -33,14 +34,7 @@ export class NavbarComponent implements OnInit {
 
   searchResult$ = this.store.select('search', 'searchResult');
 
-  user = {
-    uid: '12',
-    userName: 'John Doe',
-    avatarUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-    coverUrl: 'https://www.w3schools.com/howto/img_snow.jpg',
-    bio: 'I am a web developer',
-    email: '',
-  };
+  user = <ProfileModel>{};
 
   link = {
     label: 'Notifications',
@@ -90,6 +84,12 @@ export class NavbarComponent implements OnInit {
       this.searchResult$.subscribe((searchResult) => {
         this.searchResults = searchResult;
       }),
+
+      this.profileMine$.subscribe((profile) => {
+        if (profile?.uid) {
+          this.user = profile;
+        }
+      }),
     );
   }
 
@@ -106,15 +106,32 @@ export class NavbarComponent implements OnInit {
     this.store.dispatch(AuthActions.clearState());
     this.store.dispatch(ProfileActions.clearGetState());
   }
+
   onSearchKeyUp(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       const query = this.searchControl.value;
       console.log('Close dialog');
       this.dialog.closeAll();
       if (query && query.trim() !== '') {
-        this.route.navigate(['/search-result'], {queryParams: {search: query}}).then(r =>{});
+        this.route
+          .navigate(['/search-result'], { queryParams: { search: query } })
+          .then((r) => {});
       }
     }
   }
-}
 
+  handleImageError(event: any) {
+    event.target.src = 'public/images/avatar.png';
+  }
+
+  navigateToHome() {
+    this.route.navigateByUrl('/home').then(() => {
+      this.store.dispatch(
+        PostActions.GetAllPost({
+          pageNumber: 1,
+          limitNumber: 4,
+        }),
+      );
+    });
+  }
+}

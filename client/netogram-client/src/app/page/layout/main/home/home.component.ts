@@ -128,4 +128,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       );
     }
   }
+
+  handleImageError(event: any) {
+    event.target.src = 'public/images/avatar.png';
+  }
 }

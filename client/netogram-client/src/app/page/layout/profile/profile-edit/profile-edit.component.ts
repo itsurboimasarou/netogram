@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -60,8 +60,8 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
   storageCover$ = this.store.select('storage', 'urlCover');
   isUpdateSuccess$ = this.store.select('profile', 'isUpdateSuccess');
   isUpdateLoading$ = this.store.select('storage', 'isUploading');
+  isUpdateFileError$ = this.store.select('storage', 'uploadError');
   profileMine: ProfileModel = <ProfileModel>{};
-
   submissionStatus: 'success' | 'error' | null = null;
 
   isGettingMine$ = this.store.select('profile', 'isGettingById');
@@ -110,29 +110,40 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
             bio: profile.bio,
           });
         }
-        this.subscription.push(
-          this.profileMine$.subscribe((profile) => {
-            if (profile) {
-              this.profileMine = profile;
-            }
-          }),
+      }),
+      this.profileMine$.subscribe((profile) => {
+        if (profile) {
+          this.profileMine = profile;
+        }
+      }),
 
-          this.storage$.subscribe((url) => {
-            if (url) {
-              url.forEach((data) => {
-                this.storageUrl = data;
-              });
-            }
-          }),
+      this.storage$.subscribe((url) => {
+        if (url) {
+          url.forEach((data) => {
+            this.storageUrl = data;
+          });
+        }
+      }),
 
-          this.storageCover$.subscribe((url) => {
-            if (url) {
-              url.forEach((data) => {
-                this.storageCoverUrl = data;
-              });
-            }
-          }),
-        );
+      this.storageCover$.subscribe((url) => {
+        if (url) {
+          url.forEach((data) => {
+            this.storageCoverUrl = data;
+          });
+        }
+      }),
+
+      this.isUpdateFileError$.subscribe((error) => {
+        if (error.status) {
+          this.submissionStatus = 'error';
+
+          this.snackBar.open('image smaller 5MB', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            panelClass: ['snackbar'],
+          });
+        }
       }),
 
       this.isUpdateSuccess$.subscribe((isSuccess) => {
@@ -202,6 +213,7 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
       const input = document.createElement('input');
       input.type = 'file';
       input.accept = 'image/*';
+      input.size = 5;
       input.onchange = (event: any) => {
         const file = event.target.files[0];
         if (file) {

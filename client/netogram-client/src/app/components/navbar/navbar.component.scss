@@ -87,6 +87,7 @@ img {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 100%;
+  object-fit: cover;
 }
 
 #notiIcon {
@@ -171,104 +172,7 @@ img {
 
 }
 
-//.container{
-//  width: calc(100% - 4rem);
-//  display: flex;
-//  flex-direction: row;
-//  background-color: var(--surface);
-//  height: 90%;
-//  align-items: center;
-//  padding: 0 2rem;
-//}
-//
-//
-//.left-navbar{
-//  width: 25%;
-//
-//  .logo{
-//    width: 180px;
-//
-//  }
-//}
-//
-//
-//
-//.middle-navbar{
-//  width: 50%;
-//
-//  display: flex;
-//  justify-content: center;
-//
-//  .search{
-//    width: 70%;
-//    height: 80%;
-//
-//    mat-form-field{
-//      width: 100%;
-//      background-color: var(--surfaceContainer);
-//      border-radius: 12px;
-//      transition: background-color 0.3s;
-//      border: none!important;
-//      outline: none;
-//    }
-//
-//    mat-form-field ::ng-deep .mdc-notched-outline__leading {
-//      border: none;
-//    }
-//
-//    mat-form-field ::ng-deep .mdc-notched-outline__notch {
-//      border: none;
-//    }
-//
-//    mat-form-field ::ng-deep .mdc-notched-outline__trailing {
-//      border: none;
-//    }
-//
-//    mat-form-field:hover {
-//      background-color: var(--surfaceContainerHighest);
-//    }
-//  }
-//}
-//
-//.right-navbar{
-//  width: 25%;
-//  display: flex;
-//  justify-content: flex-end;
-//  flex-direction: row;
-//  gap:5%;
-//
-//
-//  .notifications-icon{
-//    box-shadow: none;
-//    background-color: var(--surface);
-//    color: var(--onSecondaryContainer);
-//    border-radius: 8px;
-//  }
-//
-//
-//  .avatar-user{
-//    width: 2.5rem;
-//    height: 2.5rem;
-//    border-radius: 100%;
-//
-//  }
-//
-//
-//  .user-information-avatar{
-//    display: flex;
-//    flex-direction: row;
-//    align-items: center;
-//    gap:10px;
-//
-//    .userName{
-//      font-size: 16px;
-//      color: var(--onSurface);
-//      margin: 0 0 0 5px;
-//    }
-//  }
-//}
-//.notifications-icon.active {
-//  background-color: var(--secondaryContainer);
-//  color: var(--onSecondaryContainer);
-//  border-radius: 12px;
-//}
+
+.logo {
+  cursor: pointer;
+}
