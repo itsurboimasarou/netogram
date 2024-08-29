@@ -124,12 +124,7 @@ export class AppComponent implements OnInit {
         if (authCredential.uid) {
           if (isGetMineSuccess && mine?.uid) {
             console.log('calll');
-            this.store.dispatch(
-              PostActions.GetAllPost({
-                pageNumber: 1,
-                limitNumber: 4,
-              }),
-            );
+          
             const currentUrl = this.router.url;
             if (
               currentUrl === '/friends/friend%20list' ||

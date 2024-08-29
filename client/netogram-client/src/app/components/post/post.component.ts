@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatMenu , MatMenuModule, MatMenuItem } from "@angular/material/menu";
+import { MatMenu, MatMenuModule, MatMenuItem } from '@angular/material/menu';
 import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { PostModel } from '../../models/post.model';
@@ -69,8 +69,9 @@ export class PostComponent implements OnInit, OnDestroy {
   isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
   isGettingAllPosts$ = this.store.select('post', 'isGettingAllPosts');
   mineProfile$ = this.store.select('profile', 'mine');
+  isDeleteSuccess$ = this.store.select('post', 'isDeleteSuccess');
   mineUid = '';
-
+  subscription: Subscription[] = [];
   animation = 'pulse';
   contentLoaded = false;
   isProfilePage = false;
@@ -90,20 +91,23 @@ export class PostComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.contentLoaded = true;
     }, 1500);
-
-    this.mineProfile$.subscribe((profile) => {
-      if (profile?.uid) {
-        this.mineUid = profile.uid;
-      }
-    });
-    this.routerSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.dialog.closeAll();
-      });
+    this.subscription.push(
+      this.mineProfile$.subscribe((profile) => {
+        if (profile?.uid) {
+          this.mineUid = profile.uid;
+        }
+      }),
+      (this.routerSubscription = this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.dialog.closeAll();
+        })),
+    );
   }
 
   ngOnDestroy() {
+    this.subscription.forEach((sub) => sub.unsubscribe());
+
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
@@ -132,13 +136,6 @@ export class PostComponent implements OnInit, OnDestroy {
         ? 'favorite'
         : 'favorite_outlined';
   }
-
-  // toggleShare() {
-  //   this.shareIcon =
-  //     this.shareIcon === 'ios_share_outlined'
-  //       ? 'ios_share'
-  //       : 'ios_share_outlined';
-  // }
 
   // Method to check if the current image is the first one
   isFirstImage(): boolean {
@@ -221,15 +218,14 @@ export class PostComponent implements OnInit, OnDestroy {
     this.store.dispatch(ProfileActions.getById({ uid: this.postUser.uid }));
   }
 
-  deletePost() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.store.dispatch(
-          PostActions.DeletePost({id: this.postUser.id, uid: this.mineUid}),
-        );
-      }
+  deletePost(post: any) {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: { post, mineUid: this.mineUid },
     });
+    console.log('post', post);
+    //
+    // this.store.dispatch(
+    //   PostActions.DeletePost({ id: this.postUser.id, uid: this.mineUid }),
+    // );
   }
 }

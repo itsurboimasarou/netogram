@@ -51,6 +51,8 @@ export class DialogComponent implements OnDestroy, OnInit {
 
   isCreateSuccess$ = this.store.select('post', 'isCreateSuccess');
 
+  isGetAllPostSuccess$ = this.store.select('post', 'isGetAllPostsSuccess');
+
   submissionStatus: 'success' | 'error' | null = null;
 
   postForm = new FormGroup({
@@ -95,8 +97,9 @@ export class DialogComponent implements OnDestroy, OnInit {
             duration: 3000,
             horizontalPosition: 'center',
             verticalPosition: 'bottom',
-            panelClass: ['snackbar'],
+            // panelClass: ['snackbar'],
           });
+          this.dialogRef.close();
         }
       }),
     );
@@ -104,6 +107,7 @@ export class DialogComponent implements OnDestroy, OnInit {
 
   ngOnDestroy(): void {
     this.subscription.forEach((sub) => sub.unsubscribe());
+    //unsubscribe all post
   }
 
   onNoClick(): void {
@@ -218,7 +222,7 @@ export class DialogComponent implements OnDestroy, OnInit {
     this.postData.imageUrls = this.selectedFiles;
     console.log('Post Data', this.postData);
     this.store.dispatch(postActions.CreatePost({ post: this.postData }));
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
 
   onMouseDown(event: MouseEvent, carousel: HTMLDivElement) {

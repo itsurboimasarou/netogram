@@ -13,11 +13,9 @@ export class IdToAvatarPipe implements PipeTransform {
   constructor(private profileService: ProfileService) {}
 
   transform(uid: string): Observable<string> {
-    console.log('uid:', uid);
     return this.profileService.getById(uid).pipe(
       map((profile: ProfileModel) => {
         const url = profile.avatarUrl;
-        console.log('url:', url);
         return url;
       }),
     );
