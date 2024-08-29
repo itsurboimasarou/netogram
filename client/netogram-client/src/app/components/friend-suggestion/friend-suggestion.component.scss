@@ -18,9 +18,7 @@ h3 {
 }
 
 .suggestion {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  align-content: space-between;
   margin: 1px 0;
   padding: 12px;
   @media only screen and (max-width: 1366px) {

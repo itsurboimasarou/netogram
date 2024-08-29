@@ -11,6 +11,7 @@ import {MatButton} from "@angular/material/button";
 import {getFriendshipStatus} from "../../../../ngrx/friend-ship/friendship.actions";
 import {FriendshipModel} from "../../../../models/friendship.model";
 import {SuggestedFriend} from "../../../../models/suggested-friend";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-friend-card',
@@ -28,6 +29,7 @@ export class FriendCardComponent {
   @Input() friend: SuggestedFriend = {
     suggestedFriend: "",
     mutualFriendsCount: 0,
+    status: null
   };
 
   friendRequestSentData: FriendshipModel = {
@@ -37,65 +39,70 @@ export class FriendCardComponent {
     status: ""
   };
 
-  status = 'none';
-
   isRemoved$ = this.store.select('friendship', 'isDeleteSuccess');
   friendSatus$ = this.store.select('friendship', 'friendshipStatus');
   isSuggestedFriendsLoading$ = this.store.select('friendship', 'isCreating');
   isSuggestedFriendsLoaded$ = this.store.select('friendship', 'isCreateSuccess');
   mineProfile$ = this.store.select('profile', 'mine');
 
+  private subscriptions: Subscription[] = [];
+
   constructor(private store: Store<{
     profile: ProfileState,
     friendship: FriendshipState
   }>) {
-    console.log('11111')
     this.store.dispatch(FriendshipActions.getFriendshipStatus({friendUid: this.friend.suggestedFriend}));
-    this.friendSatus$.subscribe((friendSatus) => {
-      if (friendSatus){
-        this.status = friendSatus.status;
+  }
+
+  ngOnInit(): void {
+    const friendStatusSub = this.friendSatus$.subscribe((friendSatus) => {
+      if (friendSatus && friendSatus.friendUid === this.friend.suggestedFriend){
+        this.friend = {...this.friend, status: friendSatus.status};
       }
-    })
+    });
+    this.subscriptions.push(friendStatusSub);
   }
 
   addFriend(friendUid: string){
-    this.mineProfile$.subscribe((mineProfile) => {
+    const mineProfileSub = this.mineProfile$.subscribe((mineProfile) => {
       if (mineProfile) {
         this.friendRequestSentData = {...this.friendRequestSentData, friendUid: friendUid, uid: mineProfile.uid};
       }
-    })
+    });
+    this.subscriptions.push(mineProfileSub);
+
     this.friendRequestSentData = {...this.friendRequestSentData, friendUid};
-    console.log(this.friendRequestSentData);
     this.store.dispatch(FriendshipActions.addFriend({friendShipModel: this.friendRequestSentData}));
 
-    this.isSuggestedFriendsLoaded$.subscribe((isSuggestedFriendsLoaded) => {
+    const isSuggestedFriendsLoadedSub = this.isSuggestedFriendsLoaded$.subscribe((isSuggestedFriendsLoaded) => {
       if (isSuggestedFriendsLoaded){
-        this.status = 'pending';
+        this.friend = {...this.friend, status: 'pending'};
       }
-    })
-
-
-    // this.isSuggestedFriendsLoaded$.subscribe((isSuggestedFriendsLoaded) => {
-    //   if (isSuggestedFriendsLoaded) {
-    //     this.mineProfile$.subscribe((mineProfile) => {
-    //       if (mineProfile) {
-    //         this.store.dispatch(FriendshipActions.getSuggestedFriends({uid: mineProfile.uid,page:1,limit:5} ));
-    //     }
-    //   })
-    // }})
+    });
+    this.subscriptions.push(isSuggestedFriendsLoadedSub);
   }
 
   removeRequest(friendUid: string){
-    this.mineProfile$.subscribe((mineProfile) => {
+    const mineProfileSub = this.mineProfile$.subscribe((mineProfile) => {
       if (mineProfile) {
         this.friendRequestSentData = {...this.friendRequestSentData, friendUid: friendUid, uid: mineProfile.uid};
+        this.store.dispatch(FriendshipActions.unfriend({uid: mineProfile.uid, friendUid: friendUid}));
       }
-    })
+    });
+    this.subscriptions.push(mineProfileSub);
 
-    this.isRemoved$.subscribe((isRemoved) => {
+    const isRemovedSub = this.isRemoved$.subscribe((isRemoved) => {
       if (isRemoved) {
-        this.status = 'none';
+        this.friend = {...this.friend, status: null};
       }
-    })
+    });
+    this.subscriptions.push(isRemovedSub);
+    this.friend = {...this.friend, status: null};
+
+    this.ngOnDestroy()
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
