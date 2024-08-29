@@ -43,6 +43,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     userName: new FormControl('', [
       Validators.required,
       Validators.minLength(5),
+      Validators.maxLength(20),
     ]),
     avatarUrl: new FormControl(''),
     uid: new FormControl(''),
@@ -62,6 +63,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   readonly userName = new FormControl('', [
     Validators.required,
     Validators.minLength(5),
+    Validators.maxLength(20),
   ]);
 
   getMineSuccess$ = this.store.select('profile', 'isGetMineSuccess');
@@ -73,7 +75,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private store: Store<{
       profile: ProfileState;
       auth: AuthState;
-    }>,
+    }>
   ) {
     this.subscription.push(
       this.store.select('auth').subscribe((auth: AuthState) => {
@@ -85,12 +87,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
             uid: auth.authCredential.uid,
           });
         }
-      }),
+      })
     );
 
     merge(
       this.regisForm.get('userName')!.statusChanges,
-      this.regisForm.get('userName')!.valueChanges,
+      this.regisForm.get('userName')!.valueChanges
     )
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
@@ -116,8 +118,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   updateErrorMessage() {
     const userName = this.regisForm.get('userName');
-    if (userName?.hasError('required')) {
+    if (this.userName.hasError('required')) {
+      this.errorMessage.set('Name is required');
+    } else if (this.userName.hasError('minLength')) {
       this.errorMessage.set('Name must be at least 5 characters long');
+    } else if (this.userName.hasError('maxLength')) {
+      this.errorMessage.set('Name must not exceed 20 characters');
     } else {
       this.errorMessage.set('');
     }
@@ -128,8 +134,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   register() {
-    if (!this.canProceed()) {
+    const userName = this.regisForm.get('userName')?.value ?? '';
+
+    if (userName.length < 5) {
       this.errorMessage.set('Name must be at least 5 characters long');
+      return;
+    } else if (userName.length > 20) {
+      this.errorMessage.set('Name must not exceed 20 characters');
       return;
     } else {
       console.log('run');
