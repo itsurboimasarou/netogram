@@ -154,7 +154,7 @@
 .post-actions button {
   background: none;
   border: none;
-  font-size: 1.2em;
+  font-size: 1.0em;
   cursor: pointer;
 }
 
@@ -339,4 +339,8 @@ mat-form-field {
   align-items: center;
   height: 100vh;
   width: 100vw;
+}
+
+#send-button {
+  margin-right: 10px;
 }
