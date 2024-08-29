@@ -9,7 +9,7 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenu , MatMenuModule, MatMenuItem } from "@angular/material/menu";
 import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { PostModel } from '../../models/post.model';
 import { IdToAvatarPipe } from '../../shared/pipes/id-to-avatar.pipe';
 import { IdToNamePipe } from '../../shared/pipes/id-to-name.pipe';
@@ -61,6 +61,7 @@ export class PostComponent implements OnInit, OnDestroy {
       post: PostState;
     }>,
     private dialog: MatDialog,
+    private route: ActivatedRoute,
   ) {}
 
   private routerSubscription: Subscription | null = null;
@@ -100,6 +101,18 @@ export class PostComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.dialog.closeAll();
       });
+
+    this.route.url.subscribe((url) => {
+      const urlSegment = url.join('/');
+      if (urlSegment.startsWith('detail/')) {
+        const id = BigInt(urlSegment.split('/')[1]);
+        //convert string to bigint
+
+        this.store.dispatch(PostActions.GetPostById({ id: id }));
+
+        this.openPostDetail(id);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -210,9 +223,8 @@ export class PostComponent implements OnInit, OnDestroy {
     this.location.go(`/detail/${this.postUser.id}`);
 
     // const currentUrl = this.router.url;
-    // console.log('post', post);
-
-    //change url to detail. change url but dont change page
+    // // console.log('post', post);
+    //
     // dialogRef.afterClosed().subscribe(() => {
     //   this.location.go(currentUrl);
     // });

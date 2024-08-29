@@ -344,3 +344,8 @@ mat-form-field {
 #send-button {
   margin-right: 10px;
 }
+
+.blur {
+  pointer-events: none;
+  opacity: 0.5;
+}
