@@ -22,6 +22,8 @@ import {IdToNamePipe} from "../../../../../../shared/pipes/id-to-name.pipe";
 })
 export class FriendListComponent {
 
+  isDeleteFriendSuccess$: Observable<boolean> = this.store.select('friendship', 'isDeleteSuccess');
+  mineProfile$: Observable<ProfileModel | null> = this.store.select('profile', 'mine');
   friendships$: Observable<FriendshipModel[] | null> = this.store.select('friendship', 'friendships');
   isGetFriendListSucces$ = this.store.select('friendship','friendshipSuccess');
 
@@ -39,6 +41,20 @@ export class FriendListComponent {
     })
   }
 
+  deleteFriend(friendUid: string) {
+    this.mineProfile$.subscribe((mineProfile) => {
+      if (mineProfile){
+        this.store.dispatch(FriendshipActions.unfriend({uid: mineProfile.uid, friendUid: friendUid}))
+      }
+    })
+
+    this.isDeleteFriendSuccess$.subscribe((isSuccess) => {
+      if (isSuccess) {
+        this.store.dispatch(FriendshipActions.getAllFriendships({uid: '5', page: 1, limit: 10}));
+      }
+    })
+  }
+
   ngOnInit() {
     this.onResize({ target: window });
 
@@ -48,19 +64,6 @@ export class FriendListComponent {
   start = 0;
   end = 10;
 
-  user1 = {
-    name: 'Jack',
-    avatar: 'https://www.w3schools.com/howto/img_avatar2.png',
-    mutualFriends: '240 mutual friends',
-    id: 5,
-  }
-
-  user2 = {
-    name: 'Jane',
-    avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-    mutualFriends: '150 mutual friends',
-    id: 6,
-  }
 
   pageSizeOptions = [10];
 
@@ -87,6 +90,5 @@ export class FriendListComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  friendsList: any[] = [this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user2, this.user1, this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2,this.user1,this.user2];
 
 }

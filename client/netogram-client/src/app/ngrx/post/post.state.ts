@@ -1,4 +1,4 @@
-import {PostModel, PostResponse} from '../../models/post.model';
+import { PostModel, PostResponse } from '../../models/post.model';
 import { HttpErrorResponseModel } from '../../models/http-error-response.model';
 
 export interface PostState {
@@ -27,5 +27,7 @@ export interface PostState {
   isGetAllPostsSuccess: boolean;
   isGetAllPostsFailure: boolean;
 
-
+  isDeleting: boolean;
+  isDeleteSuccess: boolean;
+  deleteErrorMessage: HttpErrorResponseModel;
 }

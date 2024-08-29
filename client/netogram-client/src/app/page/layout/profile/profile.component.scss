@@ -199,3 +199,10 @@
 .posts {
   width: 100%;
 }
+.button {
+  margin: 3px;
+}
+#confirmButton{
+  background-color: var(--primary);
+  color: var(--onPrimary);
+}

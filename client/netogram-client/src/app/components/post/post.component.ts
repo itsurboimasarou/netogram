@@ -52,15 +52,19 @@ export class PostComponent implements OnInit, OnDestroy {
 
   isGettingMinePost$ = this.store.select('post', 'isGettingMinePost');
   isGettingAllPosts$ = this.store.select('post', 'isGettingAllPosts');
+  mineProfile$ = this.store.select('profile', 'mine');
+  mineUid = '';
 
   animation = 'pulse';
   contentLoaded = false;
+  isProfilePage = false;
   count = 2;
   widthHeightSizeInPixels = 50;
 
   intervalId: number | null = null;
 
   ngOnInit() {
+    this.isProfilePage = this.router.url.includes('/profile');
     this.intervalId = window.setInterval(() => {
       this.animation = this.animation === 'pulse' ? 'progress-dark' : 'pulse';
       this.count = this.count === 2 ? 5 : 2;
@@ -70,12 +74,19 @@ export class PostComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.contentLoaded = true;
     }, 1500);
+
+    this.mineProfile$.subscribe((profile) => {
+      if (profile?.uid) {
+        this.mineUid = profile.uid;
+      }
+    });
   }
 
   ngOnDestroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
+    this.isProfilePage = false;
   }
 
   @Input() postUser: PostModel = <PostModel>{};
@@ -87,6 +98,8 @@ export class PostComponent implements OnInit, OnDestroy {
   isDragging = false;
   startX = 0;
   scrollLeft = 0;
+  @Input() post!: any;
+  currentIndex = 0;
 
   hasMultipleImages(): boolean {
     return this.postUser.imageUrls.length > 1;
@@ -106,12 +119,25 @@ export class PostComponent implements OnInit, OnDestroy {
         : 'ios_share_outlined';
   }
 
+  // Method to check if the current image is the first one
+  isFirstImage(): boolean {
+    return this.currentIndex === 0;
+  }
+
+  // Method to check if the current image is the last one
+  isLastImage(): boolean {
+    return this.currentIndex === this.postUser.imageUrls.length - 1;
+  }
+
   prevImage(carousel: HTMLDivElement) {
     const imageWidth = carousel.querySelector('.post-image')?.clientWidth || 0;
     carousel.scrollBy({
       left: -(imageWidth + 10), // Adjust gap between images
       behavior: 'smooth',
     });
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
   }
 
   nextImage(carousel: HTMLDivElement) {
@@ -120,6 +146,9 @@ export class PostComponent implements OnInit, OnDestroy {
       left: imageWidth + 10, // Adjust gap between images
       behavior: 'smooth',
     });
+    if (this.currentIndex < this.postUser.imageUrls.length - 1) {
+      this.currentIndex++;
+    }
   }
 
   onMouseDown(event: MouseEvent, carousel: HTMLDivElement) {
@@ -154,5 +183,11 @@ export class PostComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(`/profile/${this.postUser.uid}`).then();
     this.store.dispatch(PostActions.ClearMinePost());
     this.store.dispatch(ProfileActions.getById({ uid: this.postUser.uid }));
+  }
+
+  deletePost() {
+    this.store.dispatch(
+      PostActions.DeletePost({ id: this.postUser.id, uid: this.mineUid }),
+    );
   }
 }

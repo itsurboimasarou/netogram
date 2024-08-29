@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PostService } from '../../services/post/post.service';
 import * as PostActions from './post.actions';
-import {delay, of, switchMap} from 'rxjs';
+import { delay, of, switchMap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpErrorResponseModel } from '../../models/http-error-response.model';
 
@@ -83,6 +83,26 @@ export class PostEffects {
             return of(
               PostActions.GetPostByIdFailure({
                 getPostByIdErrorMessage: error,
+              }),
+            );
+          }),
+        );
+      }),
+    );
+  });
+
+  deletePost$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PostActions.DeletePost),
+      switchMap((action) => {
+        return this.postService.deletePost(action.id, action.uid).pipe(
+          map(() => {
+            return PostActions.DeletePostSuccess();
+          }),
+          catchError((error: HttpErrorResponseModel) => {
+            return of(
+              PostActions.DeletePostFailure({
+                deletePostErrorMessage: error,
               }),
             );
           }),

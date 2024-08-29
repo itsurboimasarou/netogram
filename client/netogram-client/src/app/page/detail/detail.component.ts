@@ -7,7 +7,7 @@ import {
   NgForOf, NgIf,
   NgStyle,
 } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { PostState } from '../../ngrx/post/post.state';
 import { ProfileState } from '../../ngrx/profile/profile.state';
 import { Store } from '@ngrx/store';
@@ -68,6 +68,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
   constructor(
     private location: Location,
+    private router: Router,
     private activeRoute: ActivatedRoute,
     private store: Store<{
       profile: ProfileState;
@@ -165,6 +166,13 @@ export class DetailComponent implements OnInit, OnDestroy {
     'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
   ];
 
+  favoriteIcon = 'favorite_outlined';
+  shareIcon = 'ios_share_outlined';
+  bookmarkIcon = 'bookmark_outlined';
+  likes = 0;
+  currentIndex = 0;
+
+
   createComment() {
     console.log(this.commentForm.value.text);
     this.postDetail$.subscribe((post) => {
@@ -222,26 +230,9 @@ export class DetailComponent implements OnInit, OnDestroy {
     });
   }
 
-
   loadMoreComments() {
     this.displayedComments += 10;
   }
-
-  favoriteIcon = 'favorite_outlined';
-  shareIcon = 'ios_share_outlined';
-  bookmarkIcon = 'bookmark_outlined';
-  likes = 0;
-  currentIndex = 0;
-
-  // toggleFavorite() {
-  //   this.favoriteIcon =
-  //     this.favoriteIcon === 'favorite_outlined'
-  //       ? 'favorite'
-  //       : 'favorite_outlined';
-  //   this.likes += this.favoriteIcon === 'favorite' ? 1 : -1;
-  // }
-
-
 
   toggleShare() {
     this.shareIcon =
@@ -290,5 +281,15 @@ export class DetailComponent implements OnInit, OnDestroy {
   // Method to check if there is only one image
   isSingleImage(): boolean {
     return this.postDetail.imageUrls.length === 1;
+  }
+
+  navigateToProfile() {
+    this.router.navigateByUrl(`/profile/${this.postDetail.uid}`).then();
+    this.store.dispatch(ProfileActions.getById({ uid: this.postDetail.uid }));
+  }
+
+  navigateToCommentUser(uid: string) {
+    this.router.navigateByUrl(`/profile/${uid}`).then();
+    this.store.dispatch(ProfileActions.getById({ uid }));
   }
 }

@@ -80,6 +80,18 @@ export const GetMinePostFailure = createAction(
   props<{ getMinePostErrorMessage: HttpErrorResponseModel }>(),
 );
 
+//delete post
+export const DeletePost = createAction(
+  '[Post] Delete Post',
+  props<{ id: bigint; uid: string }>(),
+);
+
+export const DeletePostSuccess = createAction('[Post] Delete Post Success');
+export const DeletePostFailure = createAction(
+  '[Post] Delete Post Failure',
+  props<{ deletePostErrorMessage: HttpErrorResponseModel }>(),
+);
+
 export const ClearMinePost = createAction('[Post] Clear Mine Post');
 export const ClearPostDetail = createAction('[Post] Clear Post Detail');
 export const ClearAllPosts = createAction('[Post] Clear All Posts');
