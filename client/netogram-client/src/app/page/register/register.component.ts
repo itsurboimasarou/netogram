@@ -113,6 +113,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   updateErrorMessage() {
     const userName = this.regisForm.get('userName');
     if (this.userName.hasError('required')) {
+      this.errorMessage.set('Name is required');
+    }else if (this.userName.hasError('minLength')) {
       this.errorMessage.set('Name must be at least 5 characters long');
     }else if (this.userName.hasError('maxLength')) {
       this.errorMessage.set('Name must not exceed 20 characters');
