@@ -83,16 +83,18 @@ export class DetailComponent implements OnInit, OnDestroy {
     }>,
   ) {
     this.postDetail$.subscribe((post) => {
-      this.postDetail = post;
-      this.store.dispatch(
-        LikeActions.getLikepostCount({ postId: Number(this.postDetail.id) }),
-      );
-      this.store.dispatch(
-        LikeActions.getIsLiked({ postId: Number(this.postDetail.id) }),
-      );
-      this.store.dispatch(
-        CommentActions.getComments({ postId: Number(this.postDetail.id) }),
-      );
+      if (post.id) {
+        this.postDetail = post;
+        this.store.dispatch(
+          LikeActions.getLikepostCount({ postId: Number(this.postDetail.id) }),
+        );
+        this.store.dispatch(
+          LikeActions.getIsLiked({ postId: Number(this.postDetail.id) }),
+        );
+        this.store.dispatch(
+          CommentActions.getComments({ postId: Number(this.postDetail.id) }),
+        );
+      }
     });
   }
 
