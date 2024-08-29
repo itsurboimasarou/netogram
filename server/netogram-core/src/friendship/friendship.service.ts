@@ -223,12 +223,15 @@ export class FriendshipService {
         ]
       });
 
+
       // Iterate through each friend of the friend
       for (const fof of friendsOfFriend) {
         const suggestedUid = fof.uid === friendUid ? fof.friendUid : fof.uid;
 
-        // Check if the suggested friend is not the user and not already a friend
-        if (suggestedUid !== uid && !friends.some(f => (f.uid === suggestedUid || f.friendUid === suggestedUid))) {
+        const uidFriend = await this.checkFriendship(uid, suggestedUid);
+        const isNotPending = uidFriend == null || uidFriend.status !== 'pending';
+
+        if (suggestedUid !== uid && isNotPending && !friends.some(f => (f.uid === suggestedUid || f.friendUid === suggestedUid))) {
           suggestedFriends.add(suggestedUid);
         }
       }

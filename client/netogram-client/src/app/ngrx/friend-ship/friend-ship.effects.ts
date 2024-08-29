@@ -2,9 +2,10 @@ import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {CommentService} from "../../services/comment/comment.service";
 import * as FriendshipActions from "./friendship.actions";
-import {exhaustMap, mergeMap, of} from "rxjs";
+import {exhaustMap, mergeMap, of, switchMap} from "rxjs";
 import {FriendShipService} from "../../services/friend-ship/friend-ship.service";
 import {catchError, map} from "rxjs/operators";
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 @Injectable()
 export class FriendshipEffects {
@@ -27,7 +28,7 @@ export class FriendshipEffects {
 
   createFriendship$ = createEffect(() => this.actions$.pipe(
     ofType(FriendshipActions.addFriend),
-    exhaustMap((action) => this.friendshipService.addFriend(action.friendShipModel).pipe(
+    mergeMap((action) => this.friendshipService.addFriend(action.friendShipModel).pipe(
       map(() => {
         return FriendshipActions.addFriendSuccess()
       }),

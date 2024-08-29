@@ -8,6 +8,9 @@ import * as FriendshipActions from "../../ngrx/friend-ship/friendship.actions";
 import {ProfileState} from "../../ngrx/profile/profile.state";
 import {IdToNamePipe} from "../../shared/pipes/id-to-name.pipe";
 import {IdToAvatarPipe} from "../../shared/pipes/id-to-avatar.pipe";
+import {FriendshipModel} from "../../models/friendship.model";
+import {FriendShipModel} from "../../models/friend-ship.model";
+import {getFriendshipStatus} from "../../ngrx/friend-ship/friendship.actions";
 
 @Component({
   selector: 'app-friend-suggestion',
@@ -25,35 +28,21 @@ import {IdToAvatarPipe} from "../../shared/pipes/id-to-avatar.pipe";
   styleUrl: './friend-suggestion.component.scss'
 })
 export class FriendSuggestionComponent {
-  suggestions = [
-    { name: 'John Doe',
-      profilePic: 'https://www.w3schools.com/howto/img_avatar.png',
-      mutual: 23,
-    },
-    { name: 'Jane Smith',
-      profilePic: 'https://www.w3schools.com/howto/img_avatar.png',
-      mutual: 12,
-    },
-    { name: 'Jane Smith',
-      profilePic: 'https://www.w3schools.com/howto/img_avatar.png',
-      mutual: 12,
-    },
-    { name: 'Jane Smith',
-      profilePic: 'https://www.w3schools.com/howto/img_avatar.png',
-      mutual: 12,
-    },
-    { name: 'Jane Smith',
-      profilePic: 'https://www.w3schools.com/howto/img_avatar.png',
-      mutual: 12,
-    },
-    { name: 'Jane Smith',
-      profilePic: 'https://www.w3schools.com/howto/img_avatar.png',
-      mutual: 12,
-    },
-  ];
+
+  isRemoved$ = this.store.select('friendship', 'isDeleteSuccess');
+  friendSatus$ = this.store.select('friendship', 'friendshipStatus');
+  isSuggestedFriendsLoading$ = this.store.select('friendship', 'isCreating');
+  isSuggestedFriendsLoaded$ = this.store.select('friendship', 'isCreateSuccess');
 
   suggetedFriends$ = this.store.select('friendship', 'suggestedFriends');
   mineProfile$ = this.store.select('profile', 'mine');
+
+  friendRequestSentData: FriendshipModel = {
+    id: 0,
+    uid: "",
+    friendUid: "",
+    status: ""
+  };
 
   constructor(private store: Store<{
   friendship: FriendshipState,
@@ -62,6 +51,47 @@ export class FriendSuggestionComponent {
       if (mineProfile) {
         this.store.dispatch(FriendshipActions.getSuggestedFriends({uid: mineProfile.uid,page:1,limit:5} ));
       }
+    })
+
+  }
+
+  addFriend(friendUid: string){
+    this.mineProfile$.subscribe((mineProfile) => {
+      if (mineProfile) {
+        this.friendRequestSentData = {...this.friendRequestSentData, friendUid: friendUid, uid: mineProfile.uid};
+      }
+    })
+    this.friendRequestSentData = {...this.friendRequestSentData, friendUid};
+    console.log(this.friendRequestSentData);
+    this.store.dispatch(FriendshipActions.addFriend({friendShipModel: this.friendRequestSentData}));
+
+    this.isSuggestedFriendsLoaded$.subscribe((isSuggestedFriendsLoaded) => {
+      if (isSuggestedFriendsLoaded){
+        this.store.dispatch(getFriendshipStatus({friendUid}));
+      }
+    })
+
+
+    // this.isSuggestedFriendsLoaded$.subscribe((isSuggestedFriendsLoaded) => {
+    //   if (isSuggestedFriendsLoaded) {
+    //     this.mineProfile$.subscribe((mineProfile) => {
+    //       if (mineProfile) {
+    //         this.store.dispatch(FriendshipActions.getSuggestedFriends({uid: mineProfile.uid,page:1,limit:5} ));
+    //     }
+    //   })
+    // }})
+  }
+
+  removeRequest(friendUid: string){
+    this.mineProfile$.subscribe((mineProfile) => {
+      if (mineProfile) {
+        this.friendRequestSentData = {...this.friendRequestSentData, friendUid: friendUid, uid: mineProfile.uid};
+      }
+    })
+
+    this.store.dispatch(FriendshipActions.unfriend({uid: this.friendRequestSentData.uid, friendUid: this.friendRequestSentData.friendUid}));
+    this.isRemoved$.subscribe((isRemoved) => {
+      this.store.dispatch(FriendshipActions.getFriendshipStatus({friendUid}));
     })
   }
 
