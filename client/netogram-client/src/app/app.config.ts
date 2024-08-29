@@ -3,7 +3,7 @@ import {
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -25,15 +25,15 @@ import { StorageEffects } from './ngrx/storage/storage.effects';
 import { StorageReducer } from './ngrx/storage/storage.reducer';
 import { SearchReducer } from './ngrx/search/search.reducer';
 import { searchEffects } from './ngrx/search/search.effects';
-import {CommentEffects} from "./ngrx/comment/comment.effects";
-import {commentReducer} from "./ngrx/comment/comment.reducer";
-import {likepostReducer} from "./ngrx/likepost/likepost.reducer";
-import {LikepostEffects} from "./ngrx/likepost/likepost.effects";
+import { CommentEffects } from './ngrx/comment/comment.effects';
+import { commentReducer } from './ngrx/comment/comment.reducer';
+import { likepostReducer } from './ngrx/likepost/likepost.reducer';
+import { LikepostEffects } from './ngrx/likepost/likepost.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideAnimationsAsync(),
     provideStore(),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -46,7 +46,7 @@ export const appConfig: ApplicationConfig = {
       StorageEffects,
       searchEffects,
       CommentEffects,
-      LikepostEffects
+      LikepostEffects,
     ),
     provideState({ name: 'auth', reducer: authReducer }),
     provideState({ name: 'profile', reducer: profileReducer }),

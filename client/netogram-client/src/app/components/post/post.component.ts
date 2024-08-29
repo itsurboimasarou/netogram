@@ -96,18 +96,6 @@ export class PostComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.dialog.closeAll();
       });
-
-    this.route.url.subscribe((url) => {
-      const urlSegment = url.join('/');
-      if (urlSegment.startsWith('detail/')) {
-        const id = BigInt(urlSegment.split('/')[1]);
-        //convert string to bigint
-
-        this.store.dispatch(PostActions.GetPostById({ id: id }));
-
-        this.openPostDetail(id);
-      }
-    });
   }
 
   ngOnDestroy() {
@@ -202,19 +190,16 @@ export class PostComponent implements OnInit, OnDestroy {
     carousel.scrollLeft = this.scrollLeft - walk;
   }
 
-  navigateToDetail() {
-    this.router.navigateByUrl(`/detail/${this.postUser.id}`).then();
-    this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
-  }
-
   openPostDetail(post: any) {
     const dialogRef = this.dialog.open(DetailComponent, {
       maxWidth: '100%',
       maxHeight: '100%',
       closeOnNavigation: true,
+      enterAnimationDuration: 0,
+      exitAnimationDuration: 0,
     });
     this.store.dispatch(PostActions.GetPostById({ id: this.postUser.id }));
-
+    // this.router.navigateByUrl(`/detail/${this.postUser.id}`).then();
     this.location.go(`/detail/${this.postUser.id}`);
 
     // const currentUrl = this.router.url;
