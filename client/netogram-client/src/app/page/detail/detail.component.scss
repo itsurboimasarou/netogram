@@ -340,3 +340,9 @@ mat-form-field {
   height: 100vh;
   width: 100vw;
 }
+
+
+.blur {
+  pointer-events: none;
+  opacity: 0.5;
+}

@@ -64,6 +64,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     Validators.minLength(5),
   ]);
 
+  getMineSuccess$ = this.store.select('profile', 'isGetMineSuccess');
+
   errorMessage = signal('');
 
   constructor(
@@ -97,9 +99,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createMineSuccess$.subscribe((isSuccess) => {
       if (isSuccess) {
-        this.router.navigate(['/home']).then(() => {
-          this.store.dispatch(ProfileActions.getMine({ uid: this.uid }));
-        });
+        this.store.dispatch(ProfileActions.getMine({ uid: this.uid }));
+      }
+    });
+
+    this.getMineSuccess$.subscribe((isSuccess) => {
+      if (isSuccess) {
+        this.router.navigate(['/home']).then();
       }
     });
   }
@@ -116,6 +122,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.errorMessage.set('');
     }
   }
+
   canProceed(): boolean {
     return this.regisForm.get('userName')?.valid ?? false;
   }
@@ -124,8 +131,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     if (!this.canProceed()) {
       this.errorMessage.set('Name must be at least 5 characters long');
       return;
-    }else {
-      console.log('run')
+    } else {
+      console.log('run');
       this.regisData = {
         email: this.regisForm.value.email ?? '',
         userName: this.regisForm.value.userName ?? '',
@@ -133,7 +140,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         bio: '',
         avatarUrl: this.regisForm.value.avatarUrl ?? '',
         coverUrl: '',
-      }
+      };
     }
 
     console.log(this.regisData);
