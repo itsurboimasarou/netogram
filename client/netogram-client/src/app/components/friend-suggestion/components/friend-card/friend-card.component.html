@@ -8,19 +8,19 @@
 @if (this.friend.status == null){
   <button (click)="addFriend(friend.suggestedFriend)" class="btnProfile" mat-stroked-button>
     <div class="box">
-            <span class="material-symbols-outlined">
-              person_add
-            </span>
+      <span class="material-symbols-outlined">
+        person_add
+      </span>
       Add Friend
     </div>
   </button>
 } @else {
   @if (friend.status == 'pending'){
-  <button class="btnProfile"  (click)="removeRequest(friend.suggestedFriend)" mat-stroked-button>
+  <button class="btnProfile" (click)="removeRequest(friend.suggestedFriend)" mat-stroked-button>
     <div class="box">
-                <span class="material-symbols-outlined">
-                  pending
-                </span>
+      <span class="material-symbols-outlined">
+        pending
+      </span>
       Requested
     </div>
   </button>

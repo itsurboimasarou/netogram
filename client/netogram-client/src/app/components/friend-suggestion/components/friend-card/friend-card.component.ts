@@ -12,6 +12,7 @@ import {getFriendshipStatus} from "../../../../ngrx/friend-ship/friendship.actio
 import {FriendshipModel} from "../../../../models/friendship.model";
 import {SuggestedFriend} from "../../../../models/suggested-friend";
 import {Subscription} from "rxjs";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-friend-card',
@@ -20,7 +21,8 @@ import {Subscription} from "rxjs";
     AsyncPipe,
     IdToAvatarPipe,
     IdToNamePipe,
-    MatButton
+    MatButton,
+    MatIcon
   ],
   templateUrl: './friend-card.component.html',
   styleUrl: './friend-card.component.scss'

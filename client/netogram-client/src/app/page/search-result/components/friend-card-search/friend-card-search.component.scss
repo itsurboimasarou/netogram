@@ -47,9 +47,40 @@
   color: var(--onSurfaceVariant);
 }
 
-.add-friend-button {
-  background-color: var(--primary) !important;
+//.add-friend-button {
+//  background-color: var(--primary) !important;
+//  border-radius: 12px;
+//  color: var(--onPrimary);
+//  text-transform: none;
+//}
+
+.btnProfile {
   border-radius: 12px;
-  color: var(--onPrimary);
   text-transform: none;
+
+  @media only screen and (max-width: 1366px) {
+    padding: 0;
+    min-width: 0;
+    width: 40px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    border-radius: 8px;
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .add-friend-button mat-icon {
+    font-size: 18px;
+    padding-left: 15px;
+  }
+}
+
+.btnProfile .box {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 10px;
 }

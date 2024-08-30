@@ -1,22 +1,3 @@
-.friend-suggestions {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--surface);
-  padding: 5px;
-  border-radius: 12px;
-}
-h3 {
-  font-size: 22px;
-  font-weight: bold;
-  padding-left: 14px;
-  margin-top: 10px;
-  border-bottom: 1px solid var(--border);
-  color: var(--onSurface);
-  @media only screen and (max-width: 1366px) {
-    font-size: 20px;
-  }
-}
-
 .suggestion {
   width: 100%;
   display: flex;
@@ -62,11 +43,12 @@ h3 {
   }
 }
 
-.add-friend-button {
+.btnProfile {
   background-color: var(--primary) !important;
   border-radius: 12px;
   color: var(--onPrimary);
   text-transform: none;
+  padding-right: 15px;
 
   @media only screen and (max-width: 1366px) {
     padding: 0;
@@ -86,4 +68,11 @@ h3 {
     font-size: 18px;
     padding-left: 15px;
   }
+}
+
+.btnProfile .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  //gap: 10px;
 }

@@ -18,6 +18,7 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { FriendshipState } from '../../../ngrx/friend-ship/friendship.state';
 import * as FriendshipActions from '../../../ngrx/friend-ship/friendship.actions';
 import { FriendShipModel } from '../../../models/friend-ship.model';
+import { MatIcon } from "@angular/material/icon";
 import { getMutualFriends } from '../../../ngrx/friend-ship/friendship.actions';
 
 @Component({

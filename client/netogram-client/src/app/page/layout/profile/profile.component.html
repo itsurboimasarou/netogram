@@ -77,8 +77,18 @@
                     </div>
                   </button>
                 } @else {
-                  <button mat-flat-button id="confirmButton" class="button">Confirm</button>
-                  <button mat-stroked-button (click)="sendUnfriend()" class="button">Delete</button>
+                  <button mat-button id="confirmButton" class="button">
+                    <div class="box">
+                      <span class="material-symbols-outlined">check</span>
+                      Confirm
+                    </div>
+                  </button>
+                  <button mat-stroked-button (click)="sendUnfriend()" class="button">
+                    <div class="box">
+                      <span class="material-symbols-outlined">delete</span>
+                      Delete
+                    </div>
+                  </button>
 
                 }
 
