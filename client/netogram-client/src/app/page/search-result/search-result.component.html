@@ -3,12 +3,13 @@
 <div class="container">
   <router-outlet></router-outlet>
   <div class="body">
+    <div class="left">
+      <button id="backButton" (click)="goBack()" mat-fab>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
     <div class="search-result">
-      <div>
-        <button id="backButton" (click)="goBack()" mat-fab>
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-      </div>
+
 
       <mat-card class="user-suggestions">
         <h6 class="title-search">Everyone</h6>
@@ -26,7 +27,11 @@
         <app-post [postUser]="post"></app-post>
       }
     </div>
+    <div class="right">
+
+    </div>
   </div>
+
 </div>
 
 <!--<app-navbar></app-navbar>-->

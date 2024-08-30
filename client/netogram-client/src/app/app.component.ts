@@ -29,6 +29,11 @@ export class AppComponent implements OnInit {
   authCredential$ = this.store.select((state) => state.auth.authCredential);
   mine$ = this.store.select((state) => state.profile.mine);
   getMineError$ = this.store.select((state) => state.profile.getErrorMessage);
+  getByIdError$ = this.store.select(
+    (state) => state.profile.getErrorMessageById,
+  );
+  geByIdSuccess$ = this.store.select((state) => state.profile.isGetByIdSuccess);
+
   isGetMineSuccess$ = this.store.select(
     (state) => state.profile.isGetMineSuccess,
   );
@@ -119,18 +124,13 @@ export class AppComponent implements OnInit {
         if (authCredential.uid) {
           if (isGetMineSuccess && mine?.uid) {
             console.log('calll');
-            this.store.dispatch(
-              PostActions.GetAllPost({
-                pageNumber: 1,
-                limitNumber: 4,
-              }),
-            );
+          
             const currentUrl = this.router.url;
             if (
               currentUrl === '/friends/friend%20list' ||
-              currentUrl.startsWith('/profile/') ||
-              currentUrl.startsWith('/detail/') ||
-              currentUrl.startsWith('/friends/friend%20request')
+              currentUrl.includes('/profile/') ||
+              currentUrl.includes('/detail/') ||
+              currentUrl.includes('/friend%20request')
             ) {
               this.isShowSpinner = false;
               this.router.navigate([currentUrl]);

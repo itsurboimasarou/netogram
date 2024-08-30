@@ -4,7 +4,8 @@
       <div class="post-header">
         <div class="right-top">
           <div class="profile-pic">
-            <img src="{{ (profileMine$ | async)?.avatarUrl }}">
+            <img src="{{ (profileMine$ | async)?.avatarUrl }} "
+                 onerror="this.onerror=null;this.src='public/images/avatar.jpg';">
           </div>
           <div class="username">{{ (profileMine$ | async)?.userName }}</div>
         </div>

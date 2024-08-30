@@ -1,4 +1,15 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles} from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    UseInterceptors,
+    UploadedFiles,
+    ParseFilePipe, MaxFileSizeValidator,
+} from '@nestjs/common';
 import { StorageService } from './storage.service';
 import { CreateStorageDto } from './dto/create-storage.dto';
 import { UpdateStorageDto } from './dto/update-storage.dto';
@@ -11,7 +22,9 @@ export class StorageController {
     @Post("upload")
     @UseInterceptors(FilesInterceptor('imageUrl') )
     async uploadFiles(
-        @UploadedFiles() files: Express.Multer.File[],
+      @UploadedFiles(new ParseFilePipe({
+          validators: [new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 })], // 5 MB
+      })) files: Express.Multer.File[],
         @Body("folderName") folderName: string,
     ): Promise<{ urls: string[] }> {
         console.log(files);
@@ -27,7 +40,9 @@ export class StorageController {
     @Post("upload/cover")
     @UseInterceptors(FilesInterceptor('imageUrl') )
     async uploadFilesCover(
-        @UploadedFiles() files: Express.Multer.File[],
+      @UploadedFiles(new ParseFilePipe({
+          validators: [new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 })], // 5 MB
+      })) files: Express.Multer.File[],
         @Body("folderName") folderName: string,
     ): Promise<{ urls: string[] }> {
         console.log(files);

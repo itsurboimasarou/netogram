@@ -42,12 +42,13 @@
       }}
     </mat-card-subtitle>
     <div class="post-options" *ngIf="contentLoaded">
-      <button mat-icon-button *ngIf="isProfilePage && postUser.uid === mineUid" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <button mat-icon-button *ngIf="isProfilePage && postUser.uid === mineUid" [matMenuTriggerFor]="menu"
+              aria-label="Example icon-button with a menu">
         <mat-icon>more_vert</mat-icon>
       </button>
     </div>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="deletePost()">
+      <button mat-menu-item (click)="deletePost(postUser.id)">
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
       </button>
@@ -116,13 +117,13 @@
       <mat-icon [ngClass]="{'favorite': favoriteIcon === 'favorite'}">{{ favoriteIcon }}</mat-icon>
       LIKE
     </button>
-<!--    <button mat-button (click)="toggleShare()">-->
-<!--      <mat-icon>{{ shareIcon }}</mat-icon>-->
-<!--      SHARE-->
-<!--    </button>-->
-<!--    <button *ngIf="isProfilePage && postUser.uid === mineUid" mat-button (click)="deletePost()">-->
-<!--      <mat-icon>{{ shareIcon }}</mat-icon>-->
-<!--      delete-->
-<!--    </button>-->
+    <!--    <button mat-button (click)="toggleShare()">-->
+    <!--      <mat-icon>{{ shareIcon }}</mat-icon>-->
+    <!--      SHARE-->
+    <!--    </button>-->
+    <!--    <button *ngIf="isProfilePage && postUser.uid === mineUid" mat-button (click)="deletePost()">-->
+    <!--      <mat-icon>{{ shareIcon }}</mat-icon>-->
+    <!--      delete-->
+    <!--    </button>-->
   </mat-card-actions>
 </mat-card>

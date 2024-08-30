@@ -9,13 +9,9 @@
     }
 
     <div class="profile-avatar-and-name" (click)="navigateToProfile()">
-      @if (!(profileMine$ | async)?.avatarUrl) {
-        <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
-        <span class="name">John Doe </span>
-      } @else {
-        <img src="{{(profileMine$|async)?.avatarUrl}}" alt="Avatar" class="avatar">
-        <span class="name">{{ (profileMine$|async)?.userName }}</span>
-      }
+      <img src="{{user.avatarUrl}}" alt="Avatar" class="avatar"
+           onerror="this.onerror=null;this.src='public/images/avatar.jpg';">
+      <span class="name">{{ (profileMine$|async)?.userName }}</span>
 
     </div>
   </div>

@@ -82,4 +82,8 @@ export class SidebarComponent implements OnInit {
       };
     }
   }
+
+  handleImageError(event: any) {
+    event.target.src = 'public/images/avatar.png';
+  }
 }

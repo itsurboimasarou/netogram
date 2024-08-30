@@ -1,7 +1,7 @@
 <div class="fullwcontainer">
   <div class="container">
     <div class="left">
-      <img src="../../../../public/images/logo.png"/>
+      <img class="logo" src="../../../../public/images/logo.png" (click)="navigateToHome()">
     </div>
     <div class="main">
       <div class="search">
@@ -14,18 +14,17 @@
 
     </div>
     <div class="right">
-      <div (click)="setActive(link)" [ngClass]="{'active': this.activeLink == true}" id="notiIcon">
-        <span id="notiIconsym" class="material-symbols-outlined">
-          notifications
-        </span>
-      </div>
+      <!--      <div (click)="setActive(link)" [ngClass]="{'active': this.activeLink == true}" id="notiIcon">-->
+      <!--        <span id="notiIconsym" class="material-symbols-outlined">-->
+      <!--          notifications-->
+      <!--        </span>-->
+      <!--      </div>-->
       <button mat-icon-button [matMenuTriggerFor]="menu">
-        @if (!(profileMine$ | async)?.avatarUrl) {
-          <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
-        } @else {
 
-          <img src="{{(profileMine$|async)?.avatarUrl}}" alt="Avatar" class="avatar">
-        }
+
+        <img src="{{user.avatarUrl}}" alt="Avatar" class="avatar"
+             onerror="this.onerror=null;this.src='public/images/avatar.jpg';">
+
       </button>
 
 

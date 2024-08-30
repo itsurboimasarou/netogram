@@ -48,7 +48,7 @@ mat-form-field {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  border:none;
+  border: none;
 
   button {
     background-color: var(--primary);
@@ -61,6 +61,7 @@ mat-form-field {
     cursor: pointer;
   }
 }
+
 /* iPad Pro Portrait */
 @media (max-width: 1024px) and (orientation: portrait) {
   .container {
@@ -77,6 +78,7 @@ mat-form-field {
     font-size: 20px;
   }
 }
+
 /* iPad Pro Landscape */
 @media (max-width: 1366px) and (orientation: landscape) {
   .container {
@@ -126,4 +128,10 @@ mat-form-field {
   button {
     font-size: 20px;
   }
+}
+
+
+.blur {
+  pointer-events: none;
+  opacity: 0.5;
 }

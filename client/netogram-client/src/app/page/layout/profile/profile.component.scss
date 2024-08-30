@@ -20,7 +20,7 @@
 }
 
 .left {
-  width: calc(18% - 2rem);
+  width: calc(18% - 4rem);
   height: 100%;
   padding-right: 2rem;
 }
@@ -168,10 +168,10 @@
 
 @media screen and (max-width: 1367px) {
 
-  .nameContainer{
+  .nameContainer {
     font-size: 14px;
   }
-  .profileContainer img{
+  .profileContainer img {
     max-width: 120px;
     max-height: 120px;
   }
@@ -192,17 +192,20 @@
   align-items: center;
   max-width: 672px;
 }
-.post{
+
+.post {
   width: 672px;
 }
 
 .posts {
   width: 100%;
 }
+
 .button {
   margin: 3px;
 }
-#confirmButton{
+
+#confirmButton {
   background-color: var(--primary);
   color: var(--onPrimary);
 }

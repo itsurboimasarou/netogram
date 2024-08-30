@@ -22,6 +22,7 @@ import { ProfileState } from '../../ngrx/profile/profile.state';
 import { AuthState } from '../../ngrx/auth/auth.state';
 import * as ProfileActions from '../../ngrx/profile/profile.actions';
 import { ProfileModel } from '../../models/profile.model';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -31,6 +32,7 @@ import { ProfileModel } from '../../models/profile.model';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
+    NgClass,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -38,6 +40,7 @@ import { ProfileModel } from '../../models/profile.model';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   subscription: Subscription[] = [];
+  isloading = false;
   regisForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     userName: new FormControl('', [
@@ -75,7 +78,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private store: Store<{
       profile: ProfileState;
       auth: AuthState;
-    }>
+    }>,
   ) {
     this.subscription.push(
       this.store.select('auth').subscribe((auth: AuthState) => {
@@ -87,12 +90,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
             uid: auth.authCredential.uid,
           });
         }
-      })
+      }),
     );
 
     merge(
       this.regisForm.get('userName')!.statusChanges,
-      this.regisForm.get('userName')!.valueChanges
+      this.regisForm.get('userName')!.valueChanges,
     )
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
@@ -100,12 +103,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createMineSuccess$.subscribe((isSuccess) => {
+      this.isloading = true;
       if (isSuccess) {
         this.store.dispatch(ProfileActions.getMine({ uid: this.uid }));
       }
     });
 
     this.getMineSuccess$.subscribe((isSuccess) => {
+      this.isloading = false;
       if (isSuccess) {
         this.router.navigate(['/home']).then();
       }
@@ -143,6 +148,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.errorMessage.set('Name must not exceed 20 characters');
       return;
     } else {
+      this.isloading = true;
       console.log('run');
       this.regisData = {
         email: this.regisForm.value.email ?? '',
@@ -152,10 +158,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
         avatarUrl: this.regisForm.value.avatarUrl ?? '',
         coverUrl: '',
       };
+      this.store.dispatch(ProfileActions.createMine({ mine: this.regisData }));
     }
 
     console.log(this.regisData);
-
-    this.store.dispatch(ProfileActions.createMine({ mine: this.regisData }));
   }
 }

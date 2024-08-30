@@ -3,9 +3,8 @@
     <mat-spinner></mat-spinner>
   </div>
 } @else {
-  <div class="container"
 
-  >
+  <div class="container">
     <div class="left">
       <button id="backButton" (click)="goBack()" mat-fab>
         <mat-icon>arrow_back</mat-icon>
@@ -37,12 +36,12 @@
         <div class="profileContainer">
           <div class="avatarContainer">
             <img
-              src="{{mineProfile.avatarUrl}}">
+              src="{{mineProfile.avatarUrl}}" onerror="this.onerror=null;this.src='public/images/avatar.jpg';">
           </div>
           <div class="nameContainer">
             <span>{{ mineProfile.userName }}</span>
-            @if ((mutualFriends$ | async) != 0){
-              <p>{{mutualFriends$ | async}} Mutual Friends</p>
+            @if ((mutualFriends$ | async) != 0) {
+              <p>{{ mutualFriends$ | async }} Mutual Friends</p>
             }
           </div>
           <div class="addfrButtonContainer">
@@ -58,18 +57,18 @@
                 </div>
               </button>
             } @else {
-              @if ((friendshipStatus$ | async) == null){
-              <button (click)="sentFriendRequest()" class="btnProfile" mat-stroked-button>
-                <div class="box">
+              @if ((friendshipStatus$ | async) == null) {
+                <button (click)="sentFriendRequest()" class="btnProfile" mat-stroked-button>
+                  <div class="box">
             <span class="material-symbols-outlined">
               person_add
             </span>
-                  Add Friend
-                </div>
-              </button>
-              } @else if ((friendshipStatus$ | async)?.status == 'pending'){
-                @if ((friendshipStatus$ | async)?.uid == mineUid){
-                  <button class="btnProfile"  (click)="sendUnfriend()" mat-stroked-button>
+                    Add Friend
+                  </div>
+                </button>
+              } @else if ((friendshipStatus$ | async)?.status == 'pending') {
+                @if ((friendshipStatus$ | async)?.uid == mineUid) {
+                  <button class="btnProfile" (click)="sendUnfriend()" mat-stroked-button>
                     <div class="box">
                 <span class="material-symbols-outlined">
                   pending

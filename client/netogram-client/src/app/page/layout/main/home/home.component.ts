@@ -39,7 +39,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       post: PostState;
       profile: ProfileState;
     }>,
-  ) {}
+  ) {
+    this.store.dispatch(
+      PostActions.GetAllPost({
+        pageNumber: this.currentPage,
+        limitNumber: this.size,
+      }),
+    );
+  }
 
   isCreateLoading$ = this.store.select('post', 'isCreating');
   isCreateSuccess$ = this.store.select('post', 'isCreateSuccess');
@@ -54,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   mine: ProfileModel = <ProfileModel>{};
 
   currentPage = 1;
-  size = 4;
+  size = 10;
   itemsCount = 0;
   tempArray: PostModel[] = [];
 
@@ -62,23 +69,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription.push(
-      // this.isCreateSuccess$.subscribe((success) => {
-      //   if (success) {
-      //     console.log('success');
-      //     this.store.dispatch(
-      //       PostActions.GetAllPost({
-      //         pageNumber: this.currentPage,
-      //         limitNumber: this.size,
-      //       }),
-      //     );
-      //   }
-      // }),
       this.allPosts$.subscribe((posts) => {
         if (posts.limitNumber > 0) {
-          this.tempArray = [...this.allPosts];
-          this.allPosts = [...this.tempArray, ...posts.data];
-          console.log(posts);
-          this.itemsCount = posts.limitNumber;
+          // this.tempArray = [...this.allPosts];
+
+          this.allPosts = [...this.allPosts, ...posts.data];
+
+          this.itemsCount = posts.limitNumber + 10;
         }
       }),
 
@@ -92,7 +89,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.forEach((sub) => sub.unsubscribe());
-    // this.store.dispatch(PostActions.ClearAllPosts());
+    this.store.dispatch(PostActions.ClearAllPosts());
   }
 
   openDialog(): void {
@@ -114,12 +111,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onScrollDown(ev: any) {
-    console.log('scrolled down!!', ev);
     this.currentPage += 1;
     console.log(this.currentPage);
 
     if (this.currentPage <= this.itemsCount) {
-      console.log('get more post');
       this.store.dispatch(
         PostActions.GetAllPost({
           pageNumber: this.currentPage,
@@ -127,5 +122,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         }),
       );
     }
+  }
+
+  handleImageError(event: any) {
+    event.target.src = 'public/images/avatar.png';
   }
 }
