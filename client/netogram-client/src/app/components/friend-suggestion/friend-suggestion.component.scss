@@ -66,6 +66,7 @@ h3 {
   border-radius: 12px;
   color: var(--onPrimary);
   text-transform: none;
+  padding-right: 15px;
 
   @media only screen and (max-width: 1366px) {
     padding: 0;
@@ -85,4 +86,11 @@ h3 {
     font-size: 18px;
     padding-left: 15px;
   }
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  //gap: 10px;
 }
